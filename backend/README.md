@@ -10,3 +10,8 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+
+## Make admin user
+```
+python manage.py createsuperuser
+```
