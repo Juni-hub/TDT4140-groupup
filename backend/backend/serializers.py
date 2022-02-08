@@ -1,7 +1,24 @@
+from importlib.metadata import requires
+from wsgiref.validate import validator
 from rest_framework import serializers
-from .models import User
+from django.contrib.auth.models import User
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
 
-class userSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ("username", "password", "email", "id")
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data["username"],
+            email = validated_data["email"],
+        )
+        user.set_password(validated_data["password"])
+        user.save()
+        return user
