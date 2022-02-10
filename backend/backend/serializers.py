@@ -22,3 +22,16 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+
+class GetUserData(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "id")
+
+    def create(self, validated_data):
+        user = User.objects.create()
+        return user
