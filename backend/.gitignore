@@ -5,3 +5,15 @@
 __pycache__
 db.sqlite3
 media
+
+# Virtualenv related
+bin/
+include/
+pip-selfcheck.json
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
