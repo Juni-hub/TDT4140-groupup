@@ -16,6 +16,11 @@ python manage.py runserver
 python manage.py createsuperuser
 ```
 
+## Test project
+```
+python manage.py test
+```
+
 ## Virtual environment  
 We want to use a python venv to keep track of libraries we've installed. To initialize the venv, simply install venv 
 ```
