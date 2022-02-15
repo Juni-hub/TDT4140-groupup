@@ -39,18 +39,15 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class GetUserData(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
 
-# class ProfileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Profile
-#         fields = ("age", "user")
+    class Meta:
+        model = User
+        fields = ("username", "email", "id")
 
-#     def create(self, validated_data):
-#         profile = Profile.objects.create(
-#             user = validated_data.user,
-#             age = validated_data.age
-#         )
-#         profile.save()
-#         return profile
-    
- 
+    def create(self, validated_data):
+        user = User.objects.create()
+        return user
