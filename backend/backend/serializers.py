@@ -11,6 +11,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ("age",)
         
+        #Validates the age field
     def validate_age(self, value):
         if value >= 18:
             return value
