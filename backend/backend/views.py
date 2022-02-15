@@ -19,9 +19,7 @@ class RegisterView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-
         token, created = Token.objects.get_or_create(user_id=response.data["id"])
-        print(token)
         response.data["token"] = str(token)
         return response
 

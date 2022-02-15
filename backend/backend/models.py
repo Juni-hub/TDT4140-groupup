@@ -1,4 +1,8 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
-class User(AbstractUser):
-    phone_number = models.CharField(max_length=11, blank=True, null=True)
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    age = models.IntegerField(null=False, blank=False)
