@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 from .models import Group, Profile, User
 from django.contrib.auth.models import User
 
-class RegisterTest(APITestCase):
+class UserTest(APITestCase):   
     def test_register_user(self):
         """
         Ensure we can create a new profile object.
@@ -45,14 +45,13 @@ class RegisterTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Profile.objects.count(), 0)
         self.assertEqual(User.objects.count(), 0)
-        
-class GetTest(APITestCase):
-    def test_fetch_user(self):
+
+    def test_get_user(self):
         """
         Ensure we can fetch user information
         """
-            #Register user
-        registerUrl = reverse('register')
+        #SetUp
+        url = reverse('register')
         data = {
             "username":"trondk",
             "password":"password",
@@ -61,12 +60,12 @@ class GetTest(APITestCase):
             "first_name":"Trond",
             "last_name":"Kristiansen"
         }
-        registerResponse = self.client.post(registerUrl, data, format='json').json()
+        registerResponse = self.client.post(url, data, format='json')
+        token= registerResponse.data["token"]
         
-            #Fetch user
-        userUrl = reverse('user')
-        token= registerResponse['token']
-        response = self.client.get(userUrl, HTTP_AUTHORIZATION = f'Token {token}').json()
+        #Test
+        url = reverse('user')
+        response = self.client.get(url, HTTP_AUTHORIZATION = f'Token {token}').json()
         
         responseData = {
             "username":"trondk",
@@ -79,7 +78,7 @@ class GetTest(APITestCase):
         
         for key,value in responseData.items():
             self.assertEqual(value,response[key])
-    
+        
 class GroupTest(APITestCase):
     def setUp(self):
         url = reverse('register')
@@ -95,6 +94,7 @@ class GroupTest(APITestCase):
             }
             response = self.client.post(url, data, format="json")
         self.token = response.data["token"]
+    
     def test_post_group(self):
         url = reverse("group")
         data = {

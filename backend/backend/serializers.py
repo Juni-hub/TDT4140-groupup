@@ -47,19 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-class GroupSerializer(serializers.ModelSerializer):
-
-    class Meta: 
-        model = Group
-        fields = ("admin", "name", "members")
-
-    def create(self, validated_data):
-        members = validated_data.pop("members")
-        members.append(validated_data["admin"])
-        group = Group.objects.create(**validated_data)
-        group.members.set(members)
-        return group
-        
 class GetUserData(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True, validators=[UniqueValidator(queryset=User.objects.all())]
@@ -72,3 +59,17 @@ class GetUserData(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create()
         return user
+
+
+class GroupSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = Group
+        fields = ("admin", "name", "members")
+
+    def create(self, validated_data):
+        members = validated_data.pop("members")
+        members.append(validated_data["admin"])
+        group = Group.objects.create(**validated_data)
+        group.members.set(members)
+        return group
