@@ -2,7 +2,7 @@ from cmath import pi
 from urllib import response
 from django.contrib.auth.models import User
 from .models import Profile
-from .serializers import UserSerializer, GroupSerializer, GetUserData
+from .serializers import UserSerializer, GetUserData, ProfileSerializer, GroupSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
@@ -50,4 +50,10 @@ class UserView(APIView):
         #Sends user to serializer and returning user data
         serializer = GetUserData(query_set,
                                 context={'request': request},)
-        return Response(serializer.data)
+                                
+        age = Profile.objects.get(user=user_id).age
+        finalData={}
+        finalData.update(serializer.data)
+        finalData.update({'age': age})
+
+        return Response(finalData)

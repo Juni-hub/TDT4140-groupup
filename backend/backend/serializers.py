@@ -67,7 +67,7 @@ class GetUserData(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "email", "id")
+        fields = ("username", "email", "id", "first_name", "last_name")
 
     def create(self, validated_data):
         user = User.objects.create()
