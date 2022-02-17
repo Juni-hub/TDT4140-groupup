@@ -41,6 +41,10 @@ class GroupView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserView(APIView):
+    #Autentication-token required to access
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
     def get(self, request):
 
         #Fetching user object related to token
@@ -50,10 +54,11 @@ class UserView(APIView):
         #Sends user to serializer and returning user data
         serializer = GetUserData(query_set,
                                 context={'request': request},)
-                                
+
         age = Profile.objects.get(user=user_id).age
         finalData={}
         finalData.update(serializer.data)
         finalData.update({'age': age})
 
         return Response(finalData)
+
