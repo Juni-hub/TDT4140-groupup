@@ -46,11 +46,8 @@ class GetTest(APITestCase):
         
             #Fetch user
         userUrl = reverse('user')
-        print(registerResponse)
         token= registerResponse['token']
-        header = {'Authorization':'Token ' + token}
-        print(header)
-        response = self.client.get(userUrl, headers=header).json()
+        response = self.client.get(userUrl, HTTP_AUTHORIZATION = f'Token {token}').json()
         
         responseData = {
             "username":"trondk",
@@ -60,8 +57,6 @@ class GetTest(APITestCase):
             "last_name":"Kristiansen",
             "age": 20
         }
-        
-        print(response)
         
         for key,value in responseData.items():
             self.assertEqual(value,response[key])
