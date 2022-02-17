@@ -50,14 +50,10 @@ class UserView(APIView):
         #Sends user to serializer and returning user data
         serializer = GetUserData(query_set,
                                 context={'request': request},)
-<<<<<<< backend/backend/views.py
-
+                                
         age = Profile.objects.get(user=user_id).age
         finalData={}
         finalData.update(serializer.data)
         finalData.update({'age': age})
 
         return Response(finalData)
-=======
-        return Response(serializer.data)
->>>>>>> backend/backend/views.py
