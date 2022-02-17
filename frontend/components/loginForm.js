@@ -24,11 +24,11 @@ const LoginForm = () => {
                         <Label>Password</Label>
                         <Input type="text" style={{marginBottom:"30px"}}></Input>
                         <br></br>
-                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px"}} type="submit">Sign in</Button>
+                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px",width:"100%"}} type="submit">Sign in</Button>
                       </Form>
                       <br />
-                      <CardText>Or if you dont have a profile, register new user</CardText>
-                      <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black"}}> Register</Button>
+                      <CardText style={{textAlign:"center"}}>Or if you dont have a profile, register new user</CardText>
+                      <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", width:"100%"}}> Register</Button>
                     </CardBody>
                   </Card>
                 </Col>
