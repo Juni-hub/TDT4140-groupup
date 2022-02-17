@@ -1,29 +1,43 @@
 import React from "react";
-import styles from "../styles/Home.module.css"
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { Button, CardBody,CardImg, CardHeader, Input, Label, Row, Col, Card, Form, CardText } from "reactstrap";
+
+
 
 
 const LoginForm = () => {
     return (
-        <div className={styles.loginContainer}>
-            <form className={styles.loginForm}> 
-
-                <label className={styles.field}>
-                    UserName:
-                    <input className={styles.textField} type="text" name="username" />
-                </label>
-                
-                <label className={styles.field}>
-                    Password:
-                    <input className={styles.textField} type="text" name="password" />
-                </label>
-                <button className={styles.button} type="submit">Logg in</button>
-            </form>
             <div>
-                <p>If you don't already have a user?</p>
-                <button className={styles.button} type ="button"> Register new user</button>
+
+                <Row style={{height:"15vh", textAlign:"center", color:"green", marginTop:"35px"}}>
+                    <h2 style={{fontSize:"55px"}}>Welcome to groupUp</h2>
+                </Row>
+                <Row>
+                <Col xs="4"></Col>
+                <Col xs="4">
+                  <Card>
+                    <CardHeader style={{backgroundColor:"rgba(132, 222, 89, 0.8)", textAlign:"center"}}>Sign into your account</CardHeader>
+                    <CardBody>
+                      <Form onSubmit="">
+                        <Label>Username</Label>
+                        <Input type="text" style={{marginBottom:"30px"}}></Input>
+                        <Label>Password</Label>
+                        <Input type="text" style={{marginBottom:"30px"}}></Input>
+                        <br></br>
+                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px",width:"100%"}} type="submit">Sign in</Button>
+                      </Form>
+                      <br />
+                      <CardText style={{textAlign:"center"}}>Or if you dont have a profile, register new user</CardText>
+                      <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", width:"100%"}}> Register</Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col xs="4"></Col>
+              </Row>
+
             </div>
-        </div>
-    )
-}
+          );
+        };
+        
 
 export default LoginForm;
