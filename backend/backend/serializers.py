@@ -10,6 +10,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ("age",)
+        
+        #Validates the age field
+    def validate_age(self, value):
+        if value >= 18:
+            return value
+        raise serializers.ValidationError(
+            'User must be 18 or over')
 
 class UserSerializer(serializers.ModelSerializer):
 
