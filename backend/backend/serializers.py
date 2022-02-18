@@ -7,10 +7,23 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password 
 from .models import Profile, Group
 
+class UserSerializer(serializers.ModelSerializer):
+
+    email = serializers.EmailField(
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+
+    class Meta:
+        model = User
+        fields = ("username", "password", "email", "id", "first_name", "last_name")
+
 class ProfileSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
+
     class Meta:
         model = Profile
-        fields = ("age",)
+        fields = ("age", "user")
         
         #Validates the age field
     def validate_age(self, value):
@@ -18,47 +31,24 @@ class ProfileSerializer(serializers.ModelSerializer):
             return value
         raise serializers.ValidationError(
             'User must be 18 or over')
-
-class UserSerializer(serializers.ModelSerializer):
-
-    profile = ProfileSerializer()
-
-    email = serializers.EmailField(
-        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
-    )
-
-    class Meta:
-        model = User
-        fields = ("username", "password", "email", "id", "first_name", "last_name", "profile")
-
+    
     def create(self, validated_data):
-        profile_data = validated_data.pop('profile')
+        user_data = validated_data.pop('user')
         user = User.objects.create(
-            username=validated_data["username"],
-            first_name = validated_data["first_name"],
-            last_name = validated_data["last_name"],
-            email = validated_data["email"],
+            username=user_data["username"],
+            first_name = user_data["first_name"],
+            last_name = user_data["last_name"],
+            email = user_data["email"],
         )
-        Profile.objects.create(
-            user=user,
-            **profile_data
-        )
-        user.set_password(validated_data["password"])
+        user.set_password(user_data["password"])
         user.save()
-        return user
+        profile = Profile.objects.create(
+            user=user,
+            **validated_data
+        )
+        profile.save()
+        return profile
 
-class GetUserData(serializers.ModelSerializer):
-    email = serializers.EmailField(
-        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
-    )
-
-    class Meta:
-        model = User
-        fields = ("username", "email", "id", "first_name", "last_name")
-
-    def create(self, validated_data):
-        user = User.objects.create()
-        return user
 
 
 class GroupSerializer(serializers.ModelSerializer):

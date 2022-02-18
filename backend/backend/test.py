@@ -5,20 +5,35 @@ from rest_framework.test import APITestCase
 from .models import Group, Profile, User
 from django.contrib.auth.models import User
 
+legal_user = {
+    "age":20,
+    "user":{
+        "username":"trondk",
+        "password":"password",
+        "email":"trondk@gmail.com",
+        "first_name":"Trond",
+        "last_name":"Kristiansen"
+    }
+}
+
+illegal_user = {
+    "age":17,
+    "user":{
+        "username":"trondk",
+        "password":"password",
+        "email":"trondk@gmail.com",
+        "first_name":"Trond",
+        "last_name":"Kristiansen"
+    }
+}
+
 class UserTest(APITestCase):   
     def test_register_user(self):
         """
         Ensure we can create a new profile object.
         """
         url = reverse('register')
-        data = {
-            "username":"trondk",
-            "password":"password",
-            "email":"trondk@gmail.com",
-            "profile":{"age":20},
-            "first_name":"Trond",
-            "last_name":"Kristiansen"
-        }
+        data = legal_user
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Profile.objects.count(), 1)
@@ -33,14 +48,7 @@ class UserTest(APITestCase):
         Ensure we can't create new profile objects with age under 18'
         """
         url = reverse('register')
-        data = {
-            "username":"trond",
-            "password":"password",
-            "email":"trond@gmail.com",
-            "profile":{"age":17},
-            "first_name":"Trond",
-            "last_name":"Kristiansen"
-        }
+        data = illegal_user
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Profile.objects.count(), 0)
@@ -52,32 +60,27 @@ class UserTest(APITestCase):
         """
         #SetUp
         url = reverse('register')
-        data = {
-            "username":"trondk",
-            "password":"password",
-            "email":"trondk@gmail.com",
-            "profile":{"age":20},
-            "first_name":"Trond",
-            "last_name":"Kristiansen"
-        }
+        data = legal_user
         registerResponse = self.client.post(url, data, format='json')
-        token= registerResponse.data["token"]
+        token = registerResponse.data["token"]
         
         #Test
-        url = reverse('user')
+        url = reverse('profile')
         response = self.client.get(url, HTTP_AUTHORIZATION = f'Token {token}').json()
         
         responseData = {
-            "username":"trondk",
-            "email":"trondk@gmail.com",
-            "id":1,
-            "first_name":"Trond",
-            "last_name":"Kristiansen",
-            "age": 20
+            "age":20,
+            "user":{
+                "id":1,
+                "username":"trondk",
+                "email":"trondk@gmail.com",
+                "first_name":"Trond",
+                "last_name":"Kristiansen"
+            }
         }
         
-        for key,value in responseData.items():
-            self.assertEqual(value,response[key])
+        for key,value in responseData["user"].items():
+            self.assertEqual(value,response["user"][key])
         
 class GroupTest(APITestCase):
     def setUp(self):
@@ -85,12 +88,15 @@ class GroupTest(APITestCase):
         for j in range(0,3):
             i = ascii(j+65)
             data = {
-                "username":i,
-                "password":i,
-                "email":f'{i}@{i}.com',
-                "profile":{"age":20},
-                "first_name":i,
-                "last_name":i
+                "age":20,
+                "user":{
+                    "username":i,
+                    "password":i,
+                    "email":f'{i}@{i}.com',
+                    "profile":{"age":20},
+                    "first_name":i,
+                    "last_name":i
+                }
             }
             response = self.client.post(url, data, format="json")
         self.token = response.data["token"]
@@ -107,4 +113,16 @@ class GroupTest(APITestCase):
         group = Group.objects.get()
         self.assertEqual(group.name, "grupp1")
         self.assertEqual(group.admin.id, 3)
-        
+
+    def test_get_groups(self):
+        url = reverse("group")
+        data = {
+            "name":"grupp1",
+            "members":[1,2]
+        }
+        self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        response = self.client.get(url, None, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        self.assertEqual(len(response.data), 1)
+        self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        response = self.client.get(url, None, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        self.assertEqual(len(response.data), 2)
