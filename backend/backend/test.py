@@ -81,6 +81,18 @@ class UserTest(APITestCase):
         
         for key,value in responseData["user"].items():
             self.assertEqual(value,response["user"][key])
+
+    def test_get_users(self):
+        #SetUp
+        url = reverse('register')
+        data = legal_user
+        registerResponse = self.client.post(url, data, format='json')
+        token = registerResponse.data["token"]
+
+        url = reverse('users')
+        response = self.client.get(url, HTTP_AUTHORIZATION = f'Token {token}').json()
+        self.assertEqual(1, len(response))
+        
         
 class GroupTest(APITestCase):
     def setUp(self):
