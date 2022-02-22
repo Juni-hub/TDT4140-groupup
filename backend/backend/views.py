@@ -57,3 +57,14 @@ class ProfileView(APIView):
         serializer = ProfileSerializer(queryset)
         return Response(serializer.data)
 
+
+class UsersView(APIView):
+    #Autentication-token required to access
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get(self, request):
+        #Fetching user object related to token
+        queryset = Profile.objects.all()
+        serializer = ProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
