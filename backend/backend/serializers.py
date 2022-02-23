@@ -12,7 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True, validators=[UniqueValidator(queryset=User.objects.all())]
     )
-
     class Meta:
         model = User
         fields = ("username", "password", "email", "id", "first_name", "last_name")
@@ -52,10 +51,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-
+    
+    expanded_members = serializers.SerializerMethodField()
     class Meta: 
         model = Group
-        fields = ("admin", "name", "members")
+        fields = "__all__"
 
     def create(self, validated_data):
         members = validated_data.pop("members")
@@ -63,3 +63,8 @@ class GroupSerializer(serializers.ModelSerializer):
         group = Group.objects.create(**validated_data)
         group.members.set(members)
         return group
+    
+    def get_expanded_members(self,instance):
+        serializer = UserSerializer(instance.members.all(), many = True)
+        return serializer.data
+    
