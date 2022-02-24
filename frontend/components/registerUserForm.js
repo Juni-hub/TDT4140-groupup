@@ -95,6 +95,6 @@ const handleAgeChange = (e) => {
            </Row>
         </>
     )
-}
+};
 
 export default RegisterUserForm;
