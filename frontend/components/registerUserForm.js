@@ -1,49 +1,76 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import React from "react";
-import styles from "../styles/Home.module.css"
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button, Card, CardBody, CardHeader, Col, Form, Input, InputGroup, InputGroupText, Label, Row } from "reactstrap";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 
-import { useRouter } from 'next/router'
+import styles from "../styles/Home.module.css";
+import { useRouter } from 'next/router';
 
 const  RegisterUserForm = () => {
     const[isValid,setIsValid] = useState(true); 
-    const [ageIsValid, setAgeIsValid] = useState(true);
+    const ageError = useRef('');
+    const [ageIsValid,setAgeIsValid] = useState(true);
     const router = useRouter();
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify(body),
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const firstName = e.target.firstName.value;
+        const lastName = e.target.lastName.value;
+        const username = e.target.username.value;
+        const email = e.target.email.value;
+        const age = e.target.age.value;
+        const password = e.target.password.value;
+        const user = {
+            username: username,
+            password: password,
+            email: email,
+            first_name: firstName,
+            last_name: lastName
+        }
+        const body = {user, age};
+        registerPost(body);
     }
-    const response = await fetch(`http://localhost:8000/register/`, requestOptions)
-    .then(
-        async (response) =>{
-            if(response.status!=201){
-                setIsValid(false);
-                return
+
+    const registerPost = async (body) =>{
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(body),
+        }
+        const response = await fetch(`http://localhost:8000/register/`, requestOptions)
+        .then(
+            async (response) =>{
+                if(response.status!=201){
+                    setIsValid(false);
+                    return
+                }
+                const data = await response.json()
+                console.log(data);
+                localStorage.setItem("Token", data.token)
+                router.push("/loginPage");
             }
-            const data = await response.json()
-            console.log(data);
-            localStorage.setItem("Token", data.token)
-            router.push("/loginPage");
-        }
-    ).catch(
-        (error) =>{
-            console.log(error)
-        }
-    )
+        ).catch(
+            (error) =>{
+                console.log(error)
+            }
+        )
+    }
+
 
 const handleAgeChange = (e) => {
+    ageError.current ='';
     setAgeIsValid(true);
     const age = e.target.value;
     console.log(age);
-    const ageRegEx = new RegExp("/^(1[89]|[2-9][0-9])$");
+    const ageRegEx = /^(1[89]|[2-9][0-9])$/;
     if (!ageRegEx.test((age))) {
+        ageError.current = 'Alder må være 18 eller høyere';
         setAgeIsValid(false);
     }
-    console.log(ageIsValid);
+    console.log(ageError.current);
 }
+
     return(
         <>
            <Row style={{ height: "15vh" }}></Row>
@@ -73,8 +100,7 @@ const handleAgeChange = (e) => {
                                     <InputGroupText style={{width:"100px"}}>Alder</InputGroupText>
                                     <Input type="text" placeholder="Alder" name="age" onBlur={(e)=>handleAgeChange(e)} ></Input>
                                 </InputGroup>
-                                {!ageIsValid && <div style={{ color: "red" }}>Age must be 18 or over</div>}
-                                {ageIsValid && <div style={{ color: "red" }}>yes</div>}
+                                <div style={{ color: "red" }}>{ageError.current}</div>
                                 <br />
                                 <InputGroup>
                                     <InputGroupText style={{width:"100px"}}>E-mail</InputGroupText>
