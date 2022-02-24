@@ -62,13 +62,11 @@ const handleAgeChange = (e) => {
     ageError.current ='';
     setAgeIsValid(true);
     const age = e.target.value;
-    console.log(age);
     const ageRegEx = /^(1[89]|[2-9][0-9])$/;
     if (!ageRegEx.test((age))) {
         ageError.current = 'Alder må være 18 eller høyere';
         setAgeIsValid(false);
     }
-    console.log(ageError.current);
 }
 
     return(
