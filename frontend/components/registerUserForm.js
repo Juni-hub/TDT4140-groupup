@@ -8,7 +8,6 @@ const  RegisterUserForm = () => {
     const[isValid,setIsValid] = useState(true); 
     const router = useRouter();
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const firstName = e.target.firstName.value;
@@ -17,7 +16,6 @@ const  RegisterUserForm = () => {
         const email = e.target.email.value;
         const age = e.target.age.value;
         const password = e.target.password.value;
-        
         const user = {
             username: username,
             password: password,
@@ -26,11 +24,8 @@ const  RegisterUserForm = () => {
             last_name: lastName
         }
         const body = {user, age};
-        
-        console.log(body);
         registerPost(body);
     }
-
 
     const registerPost = async (body) =>{
 
@@ -50,18 +45,13 @@ const  RegisterUserForm = () => {
                 console.log(data);
                 localStorage.setItem("Token", data.token)
                 router.push("/loginPage");
-
             }
         ).catch(
             (error) =>{
                 console.log(error)
             }
         )
-
-
     }
-
-
 
     return(
         <>
@@ -105,9 +95,6 @@ const  RegisterUserForm = () => {
                                 <br />
                                 <Button type="submit" style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black" }}>Register</Button>
                                 {!isValid && <p>Dataen du sendte inn var ugyldig</p>}
-                                
-                               
-
                             </Form>
                        </CardBody>
                    </Card>
