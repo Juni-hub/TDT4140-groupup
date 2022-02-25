@@ -1,13 +1,17 @@
-import React, {useState} from "react";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Button, CardBody, CardHeader, Input, Label, Row, Col, Card, Form ,InputGroup, InputGroupText} from "reactstrap";
-import { useRouter } from 'next/router'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Button, Card, CardBody, CardHeader, Col, Form, Input, InputGroup, InputGroupText, Label, Row } from "reactstrap";
+import React, {useRef, useState} from "react";
+
+import styles from "../styles/Home.module.css";
+import { useRouter } from 'next/router';
 
 const  RegisterUserForm = () => {
-
     const[isValid,setIsValid] = useState(true); 
+    const ageError = useRef('');
+    const [ageIsValid,setAgeIsValid] = useState(true);
     const router = useRouter();
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const firstName = e.target.firstName.value;
@@ -53,6 +57,18 @@ const  RegisterUserForm = () => {
         )
     }
 
+
+const handleAgeChange = (e) => {
+    ageError.current ='';
+    setAgeIsValid(true);
+    const age = e.target.value;
+    const ageRegEx = /^(1[89]|[2-9][0-9])$/;
+    if (!ageRegEx.test((age))) {
+        ageError.current = 'Alder må være 18 eller høyere';
+        setAgeIsValid(false);
+    }
+}
+
     return(
         <>
            <Row style={{ height: "15vh" }}></Row>
@@ -80,8 +96,9 @@ const  RegisterUserForm = () => {
                                 <br />
                                 <InputGroup>
                                     <InputGroupText style={{width:"100px"}}>Alder</InputGroupText>
-                                    <Input type="number" placeholder="Alder" name="age"></Input>
+                                    <Input type="text" placeholder="Alder" name="age" onBlur={(e)=>handleAgeChange(e)} ></Input>
                                 </InputGroup>
+                                <div style={{ color: "red" }}>{ageError.current}</div>
                                 <br />
                                 <InputGroup>
                                     <InputGroupText style={{width:"100px"}}>E-mail</InputGroupText>
