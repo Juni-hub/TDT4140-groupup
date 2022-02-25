@@ -43,7 +43,7 @@ class GroupView(APIView):
     def get(self, request):
         queryset = request.user.member_groups
         serializer = GroupSerializer(queryset, many=True)
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
 class ProfileView(APIView):
     #Autentication-token required to access

@@ -3,6 +3,9 @@ from django.contrib import admin
 from rest_framework.authtoken import views as auth_views
 from .views import RegisterView, GroupView, ProfileView, UsersView
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("login/", auth_views.obtain_auth_token, name="login"),
@@ -10,4 +13,4 @@ urlpatterns = [
     path("group/", GroupView.as_view(), name="group"),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("users", UsersView.as_view(), name="users"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
