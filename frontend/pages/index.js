@@ -1,11 +1,14 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import LoginForm from '../components/loginForm';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 
 export default function Home() {
+  const router = useRouter()
+  useEffect(()=>
+    router.push("/loginPage"),
+    []
+  )
   return (
-    <div className="">
-      <LoginForm />
-    </div>
+    <></>
   )
 }
