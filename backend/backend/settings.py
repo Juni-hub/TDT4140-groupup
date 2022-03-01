@@ -1,3 +1,5 @@
+from os import environ
+
 """
 Django settings for backend project.
 
@@ -82,11 +84,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'main': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'test_db.sqlite3',
     }
 }
+
+default_database = environ.get('DJANGO_DATABASE', 'main')
+DATABASES['default'] = DATABASES[default_database]
 
 
 # Password validation
