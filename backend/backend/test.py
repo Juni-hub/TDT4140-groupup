@@ -1,4 +1,5 @@
 from json import JSONDecoder
+from tokenize import group
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -138,3 +139,24 @@ class GroupTest(APITestCase):
         self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
         response = self.client.get(url, None, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
         self.assertEqual(len(response.data), 2)
+
+    def test_put_groups(self):
+        url = reverse("group")
+        put_url = reverse("group_detail", args=(1,))
+        data = {
+            "name":"grupp1",
+            "members":[1,2]
+        }
+        put_data = {
+            "description":"Vi finner på mye gøy!",
+            "member_limit":"2",
+            "members":[1],
+            "name":"HeiHei",
+            "minimum_age":18,
+            "activity_date":"2022-08-01",
+            "interests": [{"interest_name":"edfdw"}, {"interest_name":"zd"}],
+            "tags":[{"tag_name":"CULTURAL"},{"tag_name":"CHILL"}]
+        }
+        self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        response = self.client.put(put_url, put_data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
