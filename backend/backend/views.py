@@ -1,8 +1,11 @@
 from cmath import pi
+from functools import partial
+from tokenize import group
 from urllib import response
 from django.contrib.auth.models import User
-from .models import Group, Profile
-from .serializers import UserSerializer, ProfileSerializer, GroupSerializer
+from django.http import Http404
+from .models import Group, Interest, Profile, Tag
+from .serializers import InterestSerializer, UserSerializer, ProfileSerializer, GroupSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
@@ -34,7 +37,7 @@ class GroupView(APIView):
         data = request.data
         user_id = Token.objects.get(key=request.auth.key).user_id
         data["admin"] = user_id
-        serializer = GroupSerializer(data=data)
+        serializer = GroupSerializer(data=data, partial=True)
         if serializer.is_valid():
             group = serializer.save()
             return Response(serializer.data)
@@ -43,7 +46,26 @@ class GroupView(APIView):
     def get(self, request):
         queryset = request.user.member_groups
         serializer = GroupSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) 
+    
+class GroupDetailView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk):
+        group = self.get_object(pk)
+        serializer = GroupSerializer(group, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
 
 class ProfileView(APIView):
     #Autentication-token required to access
@@ -51,12 +73,26 @@ class ProfileView(APIView):
     permission_classes = (IsAuthenticated,)       
 
     def get(self, request):
-
         #Fetching user object related to token
         queryset = Profile.objects.get(user=request.user)
         serializer = ProfileSerializer(queryset)
         return Response(serializer.data)
 
+class TagView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get(self, _):
+        return Response(Tag.tag_name.field.choices)
+
+class InterestView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get(self, _):
+        queryset = Interest.objects.all()
+        serializer = InterestSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class UsersView(APIView):
     #Autentication-token required to access
