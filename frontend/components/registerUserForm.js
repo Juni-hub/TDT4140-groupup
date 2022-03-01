@@ -47,8 +47,8 @@ const  RegisterUserForm = () => {
                 }
                 const data = await response.json()
                 console.log(data);
-                localStorage.setItem("Token", data.token)
-                router.push("/loginPage");
+                localStorage.setItem("Token", "Token "+data.token)
+                router.push("/profile");
             }
         ).catch(
             (error) =>{

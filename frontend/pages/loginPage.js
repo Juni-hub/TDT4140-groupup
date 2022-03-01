@@ -3,9 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button, CardBody,CardImg, CardHeader, Input, Label, Row, Col, Card, Form, CardText } from "reactstrap";
 import { useRouter } from 'next/router';
 
-
-
-
 const LoginForm = () => {
 
     const[isValid,setIsValid] = useState(true); 

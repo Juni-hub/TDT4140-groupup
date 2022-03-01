@@ -26,5 +26,6 @@ tzdata==2021.5
 urllib3==1.26.7
 virtualenv==20.13.1
 wrapt==1.12.1
+django-cors-headers==3.11.0
 Pillow==9.0.1
 django-cors-headers==3.11.0
