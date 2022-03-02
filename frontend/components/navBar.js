@@ -12,13 +12,21 @@ const NavigationBar = (props) => {
     // did it with props for now, but here is the code for localStorage if we decide this is more convenient later on
     // if (typeof window !== "undefined") localStorage.setItem("group", "<insert-groupname-here>");
     // const group = typeof window !== "undefined" ? localStorage.getItem("group") : null;
+    
+    /**
+     * 
+     * const group = [
+            { title: 'Gruppe 1'}, ];
+    */
+   const group = props.group;
 
     return ( 
         <div>
             <Navbar 
                 color="light"
                 expand="md"
-                light>
+                light 
+                group="">
 
                 <NavbarBrand
                 className="me-auto" 

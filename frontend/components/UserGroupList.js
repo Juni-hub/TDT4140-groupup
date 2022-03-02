@@ -10,6 +10,8 @@ const UserGroupList = () => {
     const [groupData, setGroupData] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
+    const router = useRouter()
+
     function getImage(url){
         if (url != null){
             return "http://localhost:8000" + url;
@@ -39,6 +41,10 @@ const UserGroupList = () => {
           })
     }
 
+    const goToGroup = (id) =>{
+        router.push("groupPage/"+id)
+    }
+
     useEffect(() => {
         setLoading(true)
         getGroupData();
@@ -60,33 +66,32 @@ const UserGroupList = () => {
         sm="3"
         xs="1"
     >
-    {[...groupData].map((x, i) =>
-           <><Card style={{margin: "10px", minWidth: "300px" }}>
-           <CardBody>
+    {[...groupData].map((group, i) =>(
+           <>
+           <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
             <CardImg
                 alt="Card image cap"
-                src= {getImage(groupData[i].image)}
+                src= {getImage(group.image)}
                 top
                 width="150px" />
             <CardBody>
                 <CardTitle tag="h5">
-                {groupData[i].name}
+                {group.name}
                 </CardTitle>
                 <CardSubtitle
                     className="mb-2 text-muted"
                     tag="h6"
                 >
-                    {groupData[i].expanded_members.length} medlemmer
+                    {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
                     Gruppebesktivelse
                 </CardText>
             </CardBody>
-        </CardBody>
         </Card>
         </>
-        )}
-        </Row>
+    ))}
+    </Row>
 </div>
   )
 }
