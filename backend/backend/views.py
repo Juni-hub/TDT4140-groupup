@@ -58,6 +58,11 @@ class GroupDetailView(APIView):
         except Group.DoesNotExist:
             raise Http404
 
+    def get(self, request, pk):
+        group = self.get_object(pk)
+        serializer = GroupSerializer(group)
+        return Response(serializer.data)
+
     def put(self, request, pk):
         group = self.get_object(pk)
         serializer = GroupSerializer(group, data=request.data, partial=True)
