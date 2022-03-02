@@ -1,6 +1,8 @@
-import React, {useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Button, CardBody,CardImg, CardHeader, Input, Label, Row, Col, Card, Form, CardText } from "reactstrap";
+
+import { Button, Card, CardBody, CardHeader, CardImg, CardText, Col, Form, Input, Label, Row } from "reactstrap";
+import React, {useState} from "react";
+
 import { useRouter } from 'next/router';
 
 const LoginForm = () => {
@@ -62,16 +64,18 @@ const LoginForm = () => {
                   <Card>
                     <CardHeader style={{backgroundColor:"rgba(132, 222, 89, 0.8)", textAlign:"center"}}>Logg inn på profilen din</CardHeader>
                     <CardBody>
+
                       <Form onSubmit={handleSubmit}>
                         <Label>Brukernavn</Label>
                         <Input type="text" name="username" style={{marginBottom:"30px"}}></Input>
                         <Label>Passord</Label>
                         <Input type="password" name="password" style={{marginBottom:"30px"}}></Input>
                         <br></br>
-                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px",width:"100%"}} type="submit">Logg inn</Button>
+                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px",width:"100%"}} type="submit" name="signIn">Logg inn</Button>
                       </Form>
                       {!isValid && <p style={{color:"red"}}>Brukernavn eller passord var ugyldig</p>}
                       <br />
+
                       <CardText style={{textAlign:"center"}}>Eller hvis du ikke har en bruker, registrer deg!</CardText>
                       <Button  onClick={routerRegister} style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", width:"100%"}}> Registrer</Button>
                     </CardBody>
