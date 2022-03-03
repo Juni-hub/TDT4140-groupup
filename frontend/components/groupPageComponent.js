@@ -52,7 +52,7 @@ const GroupPageComponent = () => {
         !(id && group)?<Spinner></Spinner>:
 
         <>
-            {/* <NavigationBar group={group.name} />*/}
+            <NavigationBar group={group.name} />
                    
             <Card style={{backgroundColor:"lightgreen"}}>
                 <CardBody>
