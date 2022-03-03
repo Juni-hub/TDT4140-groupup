@@ -82,6 +82,22 @@
   padding: 20px;
 }
 
+.testHeader {
+  color: aqua;
+}
+
+.testList {
+  list-style-type: none;
+}
+
+.testBox {
+  background-color: blueviolet;
+}
+
+.memberListItem:hover {
+  background-color: lightcoral;
+}
+
 .submitButton{
   background-color: #33AFFF;
 }
