@@ -133,7 +133,7 @@ const GroupPageComponent = () => {
                   Matchede grupper
                 </CardTitle>
                 <hr></hr>
-                <List style={{ listStyle: "none" }}>
+                {/* <List style={{ listStyle: "none" }}>
                   <li>
                     <Button color="success" outline size="lg" style={{ margin: "10px" }}>
                       {" "}
@@ -152,7 +152,7 @@ const GroupPageComponent = () => {
                       Jentene
                     </Button>
                   </li>
-                </List>
+                </List> */}
               </CardBody>
             </Card>
           </CardGroup>
