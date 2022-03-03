@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardHeader, CardImg, CardText, Col, Form, Input
 import React, {useState} from "react";
 
 import { useRouter } from 'next/router';
+import NavigationBar from '../components/navBar';
 
 const LoginForm = () => {
 
@@ -54,7 +55,6 @@ const LoginForm = () => {
 
     return (
             <div>
-
                 <Row style={{height:"15vh", textAlign:"center", color:"green", marginTop:"35px"}}>
                     <h2 style={{fontSize:"55px"}}>Velkommen til groupUp</h2>
                 </Row>
