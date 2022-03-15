@@ -1,16 +1,22 @@
 import React from 'react';
-import MyGroup from '../components/myGroups';
+import AllGroupsList from '../components/allGroupsList';
 import NavigationBar from '../components/navBar';
-import UserGroupList from '../components/UserGroupList';
+import {useState} from "react";
+import { Button, Container } from 'reactstrap';
 
-function findGroups() {
+const FindGroups = () => {
+    const [query, setQuery] = useState("")
+
     return (
         <div className="">
             <NavigationBar />
-            <UserGroupList />
-            <allGroupsList />
+            <Container fluid style={{ margin: "10px" }}>
+    
+            <AllGroupsList />
+            </Container>
         </div>
     );
 }
 
-export default findGroups;
+
+export default FindGroups;

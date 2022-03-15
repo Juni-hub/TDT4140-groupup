@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row} from "reactstrap";
+import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container} from "reactstrap";
 import { NextURL } from "next/dist/server/web/next-url";
 
-const UserGroupList = () => {
+const AllGroupsList = () => {
 
 
     const [groupData, setGroupData] = useState(null)
@@ -31,8 +31,8 @@ const UserGroupList = () => {
         }
     }
 
-    const getGroupData = () => {
-        fetch(`http://localhost:8000/group/`, requestOptions)
+    const getGroupData = (id) => {
+        fetch(`http://localhost:8000/all_groups/` + id , requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
@@ -47,53 +47,59 @@ const UserGroupList = () => {
 
     useEffect(() => {
         setLoading(true)
-        getGroupData();
+        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
+        getGroupData(groupId);
       }, [])
 
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Mine grupper</h5><hr/>Ingen grupper</p>
+      if (!groupData[0]) return <p><h5>Liste over alle grupper</h5><hr/>Ingen grupper</p>
 
 
   return (
-    <div class="col-md-8">
-                        
-    <h5>Mine grupper</h5>
-    <hr/>
-    <Row
-        md="4"
-        sm="3"
-        xs="1"
-    >
-    {[...groupData].map((group, i) =>(
-           <>
-           <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
-            <CardImg
-                alt="Card image cap"
-                src= {getImage(group.image)}
-                top
-                width="150px" />
-            <CardBody>
-                <CardTitle tag="h5">
-                {group.name}
-                </CardTitle>
-                <CardSubtitle
-                    className="mb-2 text-muted"
-                    tag="h6"
-                >
-                    {group.expanded_members.length} medlemmer
-                </CardSubtitle>
-                <CardText>
-                    Gruppebesktivelse
-                </CardText>
-            </CardBody>
-        </Card>
-        </>
-    ))}
-    </Row>
-</div>
+    <div>
+      <Container fluid style={{ margin: "10px" }}>
+
+        <div class="col-md-8">
+                            
+        <h5>Liste over alle grupper</h5>
+        <hr/>
+        <Row
+            md="4"
+            sm="3"
+            xs="1"
+        >
+        {[...groupData].map((group, i) =>(
+              <>
+              <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
+                <CardImg
+                    alt="Card image cap"
+                    src= {getImage(group.image)}
+                    top
+                    width="150px" />
+                <CardBody>
+                    <CardTitle tag="h5">
+                    {group.name}
+                    </CardTitle>
+                    <CardSubtitle
+                        className="mb-2 text-muted"
+                        tag="h6"
+                    >
+                        {group.expanded_members.length} medlemmer
+                    </CardSubtitle>
+                    <CardText>
+                        {group.description}
+                    </CardText>
+                </CardBody>
+            </Card>
+            </>
+        ))}
+        </Row>
+        </div>
+      </Container>
+    </div>
   )
 }
 
-export default UserGroupList
+export default AllGroupsList;

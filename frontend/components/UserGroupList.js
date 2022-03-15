@@ -42,6 +42,7 @@ const UserGroupList = () => {
     }
 
     const goToGroup = (id) =>{
+        if (typeof window !== "undefined") localStorage.setItem("group", id);
         router.push("groupPage/"+id)
     }
 
@@ -70,7 +71,7 @@ const UserGroupList = () => {
            <>
            <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
             <CardImg
-                alt="Card image cap"
+                alt="Gruppebilde for gruppe"
                 src= {getImage(group.image)}
                 top
                 width="150px" />
@@ -85,7 +86,7 @@ const UserGroupList = () => {
                     {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
-                    Gruppebesktivelse
+                    {group.description}
                 </CardText>
             </CardBody>
         </Card>
