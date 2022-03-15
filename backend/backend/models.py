@@ -63,6 +63,7 @@ class Group(models.Model):
     minimum_age = models.PositiveIntegerField(default=18)
     activity_date = models.DateField(null=True)
     tags = models.ManyToManyField(Tag, default=[])
+    location = models.ForeignKey(Location, null=True, default=None, on_delete=models.SET_DEFAULT)
 
     image = models.ImageField(upload_to=imagePath, blank=True, null=True)
 
