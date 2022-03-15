@@ -47,6 +47,22 @@ class GroupView(APIView):
         queryset = request.user.member_groups
         serializer = GroupSerializer(queryset, many=True)
         return Response(serializer.data) 
+
+class AllGroupsView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        group = self.get_object(pk)
+        queryset = Group.objects.all()
+        serializer = GroupSerializer(queryset.exclude(pk=group.id), many=True)
+        return Response(serializer.data)
     
 class GroupDetailView(APIView):
     authentication_classes = (TokenAuthentication,) # Add this line
