@@ -30,11 +30,16 @@ Navigate to the outer backend folder and initialize the venv
 ```
 python -m venv venv 
 ```
-You can now run
+Now actiavte the vvnv
+```
+source venv/bin/activate
+```
+
+If you want to see the installed libraries, you can now optionally run
 ```
 pip freeze
 ```
-to see the installed libraries.
+
 To install all the required libraries of the project, run 
 ```
 pip install -r requirements.txt
