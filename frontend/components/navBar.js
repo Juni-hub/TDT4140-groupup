@@ -48,6 +48,12 @@ const NavigationBar = (props) => {
                         nav-item py-md-2">
                             <NavLink href="/myGroups">Mine Grupper</NavLink>
                         </NavItem>
+
+                        <NavItem class="
+                        px-3 
+                        nav-item py-md-2">
+                            <NavLink href="/findGroups">Finn Grupper</NavLink>
+                        </NavItem>
                         
                         {group &&
                             <UncontrolledDropdown 
