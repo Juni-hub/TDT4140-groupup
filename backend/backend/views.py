@@ -4,7 +4,7 @@ from tokenize import group
 from urllib import response
 from django.contrib.auth.models import User
 from django.http import Http404
-from .models import Group, Interest, Profile, Tag
+from .models import Group, Interest, Location, Profile, Tag
 from .serializers import InterestSerializer, UserSerializer, ProfileSerializer, GroupSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -89,6 +89,13 @@ class TagView(APIView):
 
     def get(self, _):
         return Response(Tag.tag_name.field.choices)
+
+class LocationView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get(self, _):
+        return Response(Location.location_name.field.choices)
 
 class InterestView(APIView):
     authentication_classes = (TokenAuthentication,) # Add this line
