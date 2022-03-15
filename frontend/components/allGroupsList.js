@@ -54,7 +54,7 @@ const AllGroupsList = () => {
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Liste over alle grupper</h5><hr/>Ingen grupper</p>
+      if (!groupData[0]) return <p><h5>Finn nye grupper</h5><hr/>Ingen grupper</p>
 
 
   return (
@@ -63,7 +63,7 @@ const AllGroupsList = () => {
 
         <div class="col-md-8">
                             
-        <h5>Liste over alle grupper</h5>
+        <h5>Finn nye grupper</h5>
         <hr/>
         <Row
             md="4"
