@@ -132,3 +132,29 @@ class UsersView(APIView):
         queryset = Profile.objects.all()
         serializer = ProfileSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class LikeView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def get(self, _, pk):
+        group = self.get_object(pk)
+        queryset = group.liked_groups.all()
+        serializer = GroupSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+
+        liker_group = self.get_object(pk)
+        data = {"liked_groups":[request.data["liked_group_id"]]+list(map(lambda group: group.id, list(liker_group.liked_groups.all())))}
+        serializer = GroupSerializer(liker_group, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)

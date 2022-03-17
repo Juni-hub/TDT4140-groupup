@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib import admin
 from rest_framework.authtoken import views as auth_views
-from .views import InterestView, LocationView, RegisterView, GroupView, ProfileView, GroupDetailView, TagView, UsersView, AllGroupsView
+from .views import InterestView, LikeView, LocationView, RegisterView, GroupView, ProfileView, GroupDetailView, TagView, UsersView, AllGroupsView
 
 from django.conf.urls.static import static
 from django.conf import settings
@@ -18,4 +18,5 @@ urlpatterns = [
     path("interests/", InterestView.as_view(), name="interests"),
     path("locations/", LocationView.as_view(), name="locations"),
     path("users", UsersView.as_view(), name="users"),
+    path("like/<int:pk>/", LikeView.as_view(), name="like"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

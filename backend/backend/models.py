@@ -69,5 +69,7 @@ class Group(models.Model):
 
     image = models.ImageField(upload_to=imagePath, blank=True, null=True)
 
+    liked_groups = models.ManyToManyField("self", default=[], related_name="liked_by_groups", symmetrical=False)
+
     def __str__(self):
         return self.name + " (" + str(len(self.members.all())) + " members)"
