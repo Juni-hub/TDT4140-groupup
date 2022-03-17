@@ -64,6 +64,8 @@ class Group(models.Model):
     activity_date = models.DateField(null=True)
     tags = models.ManyToManyField(Tag, default=[])
 
+    is_gold = models.BooleanField(default=False)
+
     image = models.ImageField(upload_to=imagePath, blank=True, null=True)
 
     def __str__(self):
