@@ -37,6 +37,7 @@ class GroupView(APIView):
         data = request.data
         user_id = Token.objects.get(key=request.auth.key).user_id
         data["admin"] = user_id
+        data["members"].append(user_id)
         serializer = GroupSerializer(data=data, partial=True)
         if serializer.is_valid():
             group = serializer.save()

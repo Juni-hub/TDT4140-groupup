@@ -89,7 +89,6 @@ class GroupSerializer(serializers.ModelSerializer):
         interests = self.get_interests_from_data(validated_data)
         location = self.get_location_from_data(validated_data)
         members = validated_data.pop("members")
-        members.append(validated_data["admin"])
         group = Group.objects.create(**validated_data)
         group.members.set(members)
         group.interests.set(interests)
