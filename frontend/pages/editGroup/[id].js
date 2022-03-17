@@ -13,6 +13,7 @@ const EditGroup = () => {
   const [interest, setInterest] = useState("");
   const [tags, setTags] = useState(null);
   const [tagMap, setTagMap] = useState({});
+  const[image, setImage] = useState(null);
 
   const updateGroupData = (field, value) => {
     setGroupData({
@@ -53,14 +54,42 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
+  const addImage = (image) =>{
+    setImage(image);
+    console.log(image);
+  }
+
+  // const submitChanges = () => {
+  //   const requestOptions = {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: localStorage.getItem("Token"),
+  //     },
+  //     body: JSON.stringify({
+  //       activity_date: groupData.activity_date,
+  //       description: groupData.description,
+  //       member_limit:groupData.member_limit,
+  //       minimun_age: groupData.minimun_age,
+  //       name: groupData.name,
+  //       tags: groupData.tags.map((tag) => {
+  //         return { tag_name: tag };
+  //       }),
+  //       interests: groupData.interests.map((interest) => {
+  //         return { interest_name: interest };
+  //       }),
+  //     }),
+  //   };
+  //   console.log(requestOptions.body);
+  //   fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
+  // };
+
+
+  //HER ER JEG
   const submitChanges = () => {
-    const requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("Token"),
-      },
-      body: JSON.stringify({
+
+    const body = JSON.stringify(
+      {
         activity_date: groupData.activity_date,
         description: groupData.description,
         member_limit:groupData.member_limit,
@@ -71,10 +100,30 @@ const EditGroup = () => {
         }),
         interests: groupData.interests.map((interest) => {
           return { interest_name: interest };
-        }),
-      }),
+        })
+    })
+
+    console.log(body);
+
+    // const blob = new Blob([body], {
+    //   type: 'application/json'
+    // });
+
+    const data = new FormData();
+    // data.append("JSON", new Blob([body], { type: 'application/json' }), 'request.json');
+    data.append("JSON", body);
+    data.append("image", image, image.name);
+
+
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        
+        Authorization: localStorage.getItem("Token"),
+      },
+      body: data
     };
-    console.log(requestOptions.body);
+    delete requestOptions.headers['Content-Type'];
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
   };
 
@@ -115,7 +164,6 @@ const EditGroup = () => {
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
-  console.log(groupData)
   return !(groupData && tags) ? (
     <Spinner></Spinner>
   ) : (
@@ -181,6 +229,10 @@ const EditGroup = () => {
               {groupData.tags.map((tag, key) => tagButton(tag, key, () => removeTag(tag)))}
             </Row>
             <br></br>
+            <Row>
+              <Label>Last opp gruppebilde</Label>
+              <Input type="file"  onChange={(e) => addImage(e.target.files[0])}/>
+            </Row>
           </CardBody>
           <CardFooter>
             <Button className={styles.submitButton} onClick={submitChanges}>
