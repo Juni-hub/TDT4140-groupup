@@ -63,6 +63,7 @@ class Group(models.Model):
     minimum_age = models.PositiveIntegerField(default=18)
     activity_date = models.DateField(null=True)
     tags = models.ManyToManyField(Tag, default=[])
+    location = models.ForeignKey(Location, null=True, default=None, on_delete=models.SET_DEFAULT)
 
     is_gold = models.BooleanField(default=False)
 
