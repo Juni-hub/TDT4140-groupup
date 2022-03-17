@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row} from "reactstrap";
 import { NextURL } from "next/dist/server/web/next-url";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const UserGroupList = () => {
 
@@ -17,6 +19,12 @@ const UserGroupList = () => {
             return "http://localhost:8000" + url;
         }
         return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+    }
+    function isGold(goldBool){
+        if(goldBool){
+            return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08"}}  />
+        }
+        return null;
     }
 
     // Checking typof to only check localstorage on client-side (does not exist on server)
@@ -76,6 +84,7 @@ const UserGroupList = () => {
                 width="150px" />
             <CardBody>
                 <CardTitle tag="h5">
+                {isGold(group.is_gold)}
                 {group.name}
                 </CardTitle>
                 <CardSubtitle
