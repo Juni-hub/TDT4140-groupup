@@ -71,7 +71,7 @@ const GroupPageComponent = () => {
     <Spinner></Spinner>
   ) : (
     <>
-      <NavigationBar group={group.name} />
+      <NavigationBar />
 
       <Card style={{ backgroundColor: "lightgreen" }}>
         <CardBody>

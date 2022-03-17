@@ -1,30 +1,23 @@
-import React, {useState, useEffect} from "react";
-import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row} from "reactstrap";
+
+import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Progress, Row } from "reactstrap";
+import React, {useEffect, useState} from "react";
+
 import { NextURL } from "next/dist/server/web/next-url";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router'
 
-const UserGroupList = () => {
-
+const groupMatchesList = () => {
 
     const [groupData, setGroupData] = useState(null)
     const [isLoading, setLoading] = useState(false)
-
-    const router = useRouter()
+    const router = useRouter();
+    const id = router.query["id"];
 
     function getImage(url){
         if (url != null){
             return "http://localhost:8000" + url;
         }
         return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
-    }
-    function isGold(goldBool){
-        if(goldBool){
-            return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08"}}  />
-        }
-        return null;
     }
 
     // Checking typof to only check localstorage on client-side (does not exist on server)
@@ -40,7 +33,7 @@ const UserGroupList = () => {
     }
 
     const getGroupData = () => {
-        fetch(`http://localhost:8000/group/`, requestOptions)
+        fetch(`http://localhost:8000/matches/` + id + "/", requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
@@ -50,25 +43,25 @@ const UserGroupList = () => {
     }
 
     const goToGroup = (id) =>{
-        if (typeof window !== "undefined") localStorage.setItem("group", id);
         router.push("groupPage/"+id)
     }
 
     useEffect(() => {
         setLoading(true)
+        if(id)
         getGroupData();
-      }, [])
+      }, [id])
 
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Mine grupper</h5><hr/>Ingen grupper</p>
+      if (!groupData[0]) return <p><h5>Våre matchede grupper</h5><hr/>Ingen grupper</p>
 
 
   return (
     <div class="col-md-8">
                         
-    <h5>Mine grupper</h5>
+    <h5>Gruppas matcher</h5>
     <hr/>
     <Row
         md="4"
@@ -79,13 +72,12 @@ const UserGroupList = () => {
            <>
            <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
             <CardImg
-                alt="Gruppebilde for gruppe"
+                alt="Card image cap"
                 src= {getImage(group.image)}
                 top
                 width="150px" />
             <CardBody>
                 <CardTitle tag="h5">
-                {isGold(group.is_gold)}
                 {group.name}
                 </CardTitle>
                 <CardSubtitle
@@ -95,7 +87,7 @@ const UserGroupList = () => {
                     {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
-                    {group.description}
+                    Gruppebesktivelse
                 </CardText>
             </CardBody>
         </Card>
@@ -106,4 +98,4 @@ const UserGroupList = () => {
   )
 }
 
-export default UserGroupList
+export default groupMatchesList
