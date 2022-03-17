@@ -150,7 +150,8 @@ class LikeView(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk):
-
+        if pk==request.data["liked_group_id"]:
+            return Response("It is not possible to like a group as the same group", status=status.HTTP_404_NOT_FOUND)
         liker_group = self.get_object(pk)
         data = {"liked_groups":[request.data["liked_group_id"]]+list(map(lambda group: group.id, list(liker_group.liked_groups.all())))}
         serializer = GroupSerializer(liker_group, data=data, partial=True)
@@ -158,3 +159,20 @@ class LikeView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+class MatchView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def get(self, _, pk):
+        group = self.get_object(pk)
+        liked = group.liked_groups.all()
+        liked_by = group.liked_by_groups.all()
+        serializer = GroupSerializer((liked & liked_by), many=True)
+        return Response(serializer.data)
