@@ -75,7 +75,7 @@ const EditGroup = () => {
       }),
     };
     console.log(requestOptions.body);
-    fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
+    fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/group/${id}`));
   };
 
   const parseGroup = (group) => {

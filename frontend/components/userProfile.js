@@ -40,7 +40,7 @@ if(typeof window !== "undefined"){
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!userData) return <p style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>No profile data</p>
       if (userData.user == null) {
-          router.push('/loginPage')
+          router.push('/login')
         return <p style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>You are not logged in</p>
         }
       else {

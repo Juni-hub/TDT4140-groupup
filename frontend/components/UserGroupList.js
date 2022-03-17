@@ -42,7 +42,7 @@ const UserGroupList = () => {
     }
 
     const goToGroup = (id) =>{
-        router.push("groupPage/"+id)
+        router.push("group/"+id)
     }
 
     useEffect(() => {

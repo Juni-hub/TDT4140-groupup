@@ -4,15 +4,14 @@ import { Button, Card, CardBody, CardHeader, CardImg, CardText, Col, Form, Input
 import React, {useState} from "react";
 
 import { useRouter } from 'next/router';
-import NavigationBar from '../components/navBar';
 
-const LoginForm = () => {
+const Login = () => {
 
     const[isValid,setIsValid] = useState(true); 
     const router = useRouter();
 
     const routerRegister = () =>{
-      router.push("/registerPage")
+      router.push("/register")
     }
 
 
@@ -89,4 +88,4 @@ const LoginForm = () => {
         };
         
 
-export default LoginForm;
+export default Login;

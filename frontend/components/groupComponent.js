@@ -19,7 +19,7 @@ import {
 import { useRouter } from "next/router";
 import NavigationBar from "./navBar";
 
-const GroupPageComponent = () => {
+const GroupComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["id"];
@@ -174,4 +174,4 @@ const GroupPageComponent = () => {
   );
 };
 
-export default GroupPageComponent;
+export default GroupComponent;
