@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Card, CardBody, CardHeader, Col, Form, Input, InputGroup, InputGroupText, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, Col, Form, Input, InputGroup, InputGroupText, Container } from "reactstrap";
 import React, {useRef, useState} from "react";
 
 import styles from "../styles/Home.module.css";
@@ -71,52 +71,48 @@ const handleAgeChange = (e) => {
 
     return(
         <>
-           <Row style={{ height: "15vh" }}></Row>
-           <Row>
-               <Col xs ="4"></Col>
-               <Col xs="4">
-                   <Card>
-                       <CardHeader style={{backgroundColor:"rgba(132, 222, 89, 0.8)"}}> Register new user</CardHeader>
-                       <CardBody>
-                            <Form onSubmit={handleSubmit}>
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>Brukernavn</InputGroupText>
-                                    <Input type="text" placeholder="Brukernavn" name="username"></Input>
-                                </InputGroup>
-                                <br/>
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>Fornavn</InputGroupText>
-                                    <Input type="text" placeholder="Fornavn" name="firstName"></Input>
-                                </InputGroup>
-                                <br />
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>Etternavn</InputGroupText>
-                                    <Input type="text" placeholder="Etternavn" name="lastName"></Input>
-                                </InputGroup>
-                                <br />
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>Alder</InputGroupText>
-                                    <Input type="text" placeholder="Alder" name="age" onBlur={(e)=>handleAgeChange(e)} ></Input>
-                                </InputGroup>
-                                <div style={{ color: "red" }}>{ageError.current}</div>
-                                <br />
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>E-mail</InputGroupText>
-                                    <Input type="email" placeholder="E-mail" name="email"></Input>
-                                </InputGroup>
-                                <br />
-                                <InputGroup>
-                                    <InputGroupText style={{width:"100px"}}>Passord</InputGroupText>
-                                    <Input  type="password" placeholder="Passord" name="password"></Input>
-                                </InputGroup>
-                                <br />
-                                <Button type="submit" style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black" }}>Register</Button>
-                                {!isValid && <p>Dataen du sendte inn var ugyldig</p>}
-                            </Form>
-                       </CardBody>
-                   </Card>
-               </Col>
-           </Row>
+            <Container className="d-flex h-100" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop:"5%" }}>
+                <Card>
+                    <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}> Register new user</CardHeader>
+                    <CardBody>
+                        <Form onSubmit={handleSubmit}>
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>Brukernavn</InputGroupText>
+                                <Input type="text" placeholder="Brukernavn" name="username"></Input>
+                            </InputGroup>
+                            <br/>
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>Fornavn</InputGroupText>
+                                <Input type="text" placeholder="Fornavn" name="firstName"></Input>
+                            </InputGroup>
+                            <br />
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>Etternavn</InputGroupText>
+                                <Input type="text" placeholder="Etternavn" name="lastName"></Input>
+                            </InputGroup>
+                            <br />
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>Alder</InputGroupText>
+                                <Input type="text" placeholder="Alder" name="age" onBlur={(e)=>handleAgeChange(e)} ></Input>
+                            </InputGroup>
+                            <div style={{ color: "red" }}>{ageError.current}</div>
+                            <br />
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>E-mail</InputGroupText>
+                                <Input type="email" placeholder="E-mail" name="email"></Input>
+                            </InputGroup>
+                            <br />
+                            <InputGroup>
+                                <InputGroupText style={{width:"100px"}}>Passord</InputGroupText>
+                                <Input  type="password" placeholder="Passord" name="password"></Input>
+                            </InputGroup>
+                            <br />
+                            <Button type="submit" style={{backgroundColor:"#537E36", color:"white", marginBottom:"2px",width:"100%"}}>Register</Button>
+                            {!isValid && <p>Dataen du sendte inn var ugyldig</p>}
+                        </Form>
+                    </CardBody>
+                </Card>
+            </Container>
         </>
     )
 };

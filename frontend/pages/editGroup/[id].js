@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, React, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { CardBody, CardFooter, CardHeader, Input, Label, Spinner, Card, Form, Row, Button, List, ListGroup, ListGroupItem, Col } from "reactstrap";
+import { CardBody, InputGroup, Container, CardFooter, CardHeader, Input, Label, Spinner, Card, Form, Row, Button, List, ListGroup, ListGroupItem, Col, InputGroupText } from "reactstrap";
 import NavigatorBar from "../../components/navBar";
 import styles from "../../styles/Home.module.css";
 
@@ -24,7 +24,7 @@ const EditGroup = () => {
   const tagButton = (tagName, key, onClick) => {
     return (
       <Col md={2} key={key}>
-        <Button type="button" style={{ minWidth: "100px" }} onClick={onClick}>
+        <Button type="button" style={{ minWidth: "100px", backgroundColor:"#E5EEF0", color:"black"}} onClick={onClick}>
           {tagMap[tagName]}
         </Button>
       </Col>
@@ -121,74 +121,80 @@ const EditGroup = () => {
   ) : (
     <>
       <NavigatorBar name={groupData.name}></NavigatorBar>
-      <Card>
-        <CardHeader>Rediger {groupData.name}</CardHeader>
-        <Form>
-          <CardBody>
-            <Row>
-              <Label>Navn</Label>
-              <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Beskrivelse</Label>
-              <Input value={groupData.description} type="textarea" onChange={(e) => updateGroupData("description", e.target.value)}></Input>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Medlemsgrense</Label>
-              <Input value={groupData.member_limit} type="number" onChange={(e) => updateGroupData("member_limit", e.target.value)}></Input>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Aldersgrense</Label>
-              <Input value={groupData.minimum_age} type="number" onChange={(e) => updateGroupData("minimum_age", e.target.value)}></Input>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Dato for ønsket aktivitet</Label>
-              <Input value={groupData.activity_date} onChange={(e) => updateGroupData("activity_date", e.target.value)} type="date"></Input>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Interesser</Label>
-              <Input type="text" placeholder="Ny interesse" value={interest} onChange={(e) => setInterest(e.target.value.trim())}></Input>
-              <ListGroup>
-                {groupData.interests.map((interest, key) => (
-                  <ListGroupItem key={key} onClick={() => removeInterest(interest)}>
-                    {interest}
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-              <Button
-                type="button"
-                onClick={() => {
-                  interest == "" ? null : addInterest(interest);
-                  setInterest("");
-                }}
-              >
-                Legg til interesse
+      <Container style={{display:"flex", justifyContent:"center"}}>
+        <Card style={{margin:"20px"}}>
+          <CardHeader style={{backgroundColor:"#ABD08D", display:"inline-block", fontSize:"22px"}}>Rediger <h3>{groupData.name}</h3></CardHeader>
+          <Form>
+            <CardBody>
+              <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Navn</InputGroupText>
+                <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
+              </InputGroup>
+              <br/>
+              <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Beskrivelse</InputGroupText>
+                <Input value={groupData.description} type="textarea" onChange={(e) => updateGroupData("description", e.target.value)}></Input>
+              </InputGroup>
+              <br></br>
+              <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Medlemsgrense</InputGroupText>
+                <Input value={groupData.member_limit} type="number" onChange={(e) => updateGroupData("member_limit", e.target.value)}></Input>
+              </InputGroup>
+              <br></br>
+              <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Aldersgrense</InputGroupText>
+                <Input value={groupData.minimum_age} type="number" onChange={(e) => updateGroupData("minimum_age", e.target.value)}></Input>
+              </InputGroup>
+              <br></br>
+              <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Dato for ønsket<br/> aktivitet</InputGroupText>
+                <Input value={groupData.activity_date} onChange={(e) => updateGroupData("activity_date", e.target.value)} type="date"></Input>
+              </InputGroup>
+              <br></br>
+              <Row>
+                <Label>Interesser:</Label>
+                <InputGroup>
+                <InputGroupText style={{minWidth:"150px"}}>Ny Interesse:</InputGroupText>
+                  <Input type="text" placeholder="Ny interesse" value={interest} onChange={(e) => setInterest(e.target.value.trim())}></Input>
+                </InputGroup>
+                <ListGroup style={{marginLeft:"12px", marginTop:"10px"}}>
+                  {groupData.interests.map((interest, key) => (
+                    <ListGroupItem key={key} onClick={() => removeInterest(interest)}>
+                      {interest}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+                <Button
+                  style={{width:"30%", margin:"12px", backgroundColor:"#537E36"}}
+                  type="button"
+                  onClick={() => {
+                    interest == "" ? null : addInterest(interest);
+                    setInterest("");
+                  }}
+                >
+                  Legg til interesse
+                </Button>
+              </Row>
+              <br></br>
+              <Row>
+                <Label>Tilgjengelige tags</Label>
+                {tags.map((tag, key) => tagButton(tag, key, () => addTag(tag)))}
+              </Row>
+              <br></br>
+              <Row>
+                <Label>Gruppens tags</Label>
+                {groupData.tags.map((tag, key) => tagButton(tag, key, () => removeTag(tag)))}
+              </Row>
+              <br></br>
+            </CardBody>
+            <CardFooter style={{display:"flex", justifyContent:"center"}}>
+              <Button className={styles.submitButton} style={{backgroundColor:"#537E36"}} onClick={submitChanges}>
+                Oppdater gruppe
               </Button>
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Tilgjengelige tags</Label>
-              {tags.map((tag, key) => tagButton(tag, key, () => addTag(tag)))}
-            </Row>
-            <br></br>
-            <Row>
-              <Label>Gruppens tags</Label>
-              {groupData.tags.map((tag, key) => tagButton(tag, key, () => removeTag(tag)))}
-            </Row>
-            <br></br>
-          </CardBody>
-          <CardFooter>
-            <Button className={styles.submitButton} onClick={submitChanges}>
-              Oppdater gruppe
-            </Button>
-          </CardFooter>
-        </Form>
-      </Card>
+            </CardFooter>
+          </Form>
+        </Card>
+      </Container>
     </>
   );
 };

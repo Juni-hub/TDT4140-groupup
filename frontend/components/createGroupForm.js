@@ -193,7 +193,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         return(
             <Container className="d-flex h-100" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop:"5%" }}>
                 <Card style={{width:"50%"}}>
-                    <Card.Header style={{backgroundColor: "#A9DAB1"}}> Opprett Gruppe </Card.Header>
+                    <Card.Header style={{backgroundColor: "#ABD08D", fontSize:"22px"}}> Opprett Gruppe </Card.Header>
                    <Card.Body>
                         <InputGroup>
                             <InputGroupText>
@@ -228,7 +228,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
                         </Dropdown>
                     </Card.Body>
                     <Card.Footer>
-                        <Button id='createGroup' type="submit" onClick={(e) => this.handleSubmit(e)}>Opprett gruppe</Button>
+                        <Button style={{backgroundColor: "#537E36"}} id='createGroup' type="submit" onClick={(e) => this.handleSubmit(e)}>Opprett gruppe</Button>
                     </Card.Footer>
                 </Card>
             </Container>

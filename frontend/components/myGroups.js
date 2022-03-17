@@ -1,6 +1,6 @@
 import React from "react";
 import GroupBox from "./groupBox";
-import { Row, Col, Container, Badge } from "reactstrap";
+import { Row, Col, Container, Button, Card, CardHeader, CardFooter } from "reactstrap";
 import UserGroupList from "./UserGroupList";
 
 const MyGroup = () => {
@@ -13,23 +13,18 @@ const MyGroup = () => {
     
     return (
         <div>
-            <Container fluid style={{ margin: "10px" }}>
-
-                 {//Maps every group component to myGroups-page
-                 }   
-                <Row style={{ marginBottom: "15px" }}>
-                    <UserGroupList></UserGroupList> 
-
-                    {//Button to create groups}
-                    }
-                    <Col>
-                        <div class="text-center">
-                            <Badge href="/newGroup" style={{ backgroundColor: "black" }}>
-                                <h5>Opprett gruppe</h5>
-                            </Badge>
-                        </div>
-                    </Col>
-                </Row>
+            <Container style={{ margin: "10px"}}>
+                 <Card style={{marginTop:"20px"}}>
+                     <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+                         Mine Grupper
+                    </CardHeader>
+                    <UserGroupList/>
+                    <CardFooter style={{display:"flex", justifyContent:"center"}}>
+                        <Button href="/newGroup" style={{backgroundColor:"#537E36"}}>
+                            Opprett gruppe
+                        </Button>
+                    </CardFooter>
+                </Card>
             </Container>
         </div>
     );

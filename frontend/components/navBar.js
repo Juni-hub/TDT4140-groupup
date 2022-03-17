@@ -31,7 +31,7 @@ const NavigationBar = (props) => {
                 <NavbarBrand
                 className="me-auto" 
                     href="/">
-                    GroupUp
+                    <img src="../groupup_transparent.png" alt={"GroupUp Logo"} style={{height:"60px", width:"auto", marginInline:"20px"}}></img>
                 </NavbarBrand>
                 <NavbarToggler onClick={function noRefCheck(){}}/>
                 <Collapse navbar>

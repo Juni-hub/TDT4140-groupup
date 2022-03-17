@@ -57,23 +57,17 @@ const UserGroupList = () => {
 
 
   return (
-    <div class="col-md-8">
-                        
-    <h5>Mine grupper</h5>
-    <hr/>
-    <Row
-        md="4"
-        sm="3"
-        xs="1"
-    >
-    {[...groupData].map((group, i) =>(
+    <div class="col-md-8" style={{width:"100%", alignItems:"center", justifyContent:"center", padding:"2%", paddingTop:"0%"}}>
+    <Row md="4" sm="3" xs="1" style={{alignItems:"center"}}>
+        
+        {[...groupData].map((group, i) =>(
            <>
-           <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
+           <Card style={{padding:"0px", margin: "1.66%", width:"30%", minWidth:"min-content", backgroundColor:"#E5EEF0", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={()=>goToGroup(group.id)}>
             <CardImg
                 alt="Card image cap"
                 src= {getImage(group.image)}
-                top
-                width="150px" />
+                width="inherit" 
+                style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}}/>
             <CardBody>
                 <CardTitle tag="h5">
                 {group.name}

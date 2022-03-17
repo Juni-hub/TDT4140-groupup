@@ -98,6 +98,10 @@
   background-color: lightcoral;
 }
 
+.button:hover{
+  background-color: #476C2E;
+}
+
 .submitButton{
   background-color: #33AFFF;
 }
