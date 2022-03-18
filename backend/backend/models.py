@@ -34,6 +34,24 @@ class Tag(models.Model):
     
     tag_name = models.CharField(choices=TAG_NAME_CHOICES, max_length=30)
 
+class Location(models.Model):
+
+    LOCATION_NAME_CHOICES = [
+        ("AGDER", "Agder"),
+        ("VIKEN","Viken"),
+        ("OSLO", "Oslo"),
+        ("VESTFOLD_OG_TELEMARK", "Vestfold og Telemark"),
+        ("VESTLAND", "Vestland"),
+        ("ROGALAND", "Rogaland"),
+        ("NORDLAND", "Nordland"),
+        ("TROMS_OG_FINNMARK", "Troms og Finnmark"),
+        ("TRONDELAG", "Trøndelag"),
+        ("MORE_OG_ROMSDAL", "Møre og Romsdal"),
+        ("INNLANDET", "Innlandet"),
+    ]
+    
+    location_name = models.CharField(choices=LOCATION_NAME_CHOICES, max_length=30)
+
 class Group(models.Model):
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name="admin_groups")
     members = models.ManyToManyField(User, related_name="member_groups")
@@ -45,8 +63,15 @@ class Group(models.Model):
     minimum_age = models.PositiveIntegerField(default=18)
     activity_date = models.DateField(null=True)
     tags = models.ManyToManyField(Tag, default=[])
+    location = models.ForeignKey(Location, null=True, default=None, on_delete=models.SET_DEFAULT)
+
+    super_liked_groups = models.ManyToManyField("self", default=[], related_name="super_liked_by_groups", symmetrical=False)
+    liked_groups = models.ManyToManyField("self", default=[], related_name="liked_by_groups", symmetrical=False)
+
+    is_gold = models.BooleanField(default=False)
 
     image = models.ImageField(upload_to=imagePath, blank=True, null=True)
+
 
     def __str__(self):
         return self.name + " (" + str(len(self.members.all())) + " members)"

@@ -18,6 +18,8 @@ import {
 } from "reactstrap";
 import { useRouter } from "next/router";
 import NavigationBar from "./navBar";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const GroupPageComponent = () => {
   const [group, setGroup] = useState(null);
@@ -58,6 +60,13 @@ const GroupPageComponent = () => {
     return leader;
   };
 
+  function isGold(goldBool){
+    if(goldBool){
+        return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
+    }
+    return null;
+}
+
   return !(id && group) ? (
     <Spinner></Spinner>
   ) : (
@@ -68,7 +77,10 @@ const GroupPageComponent = () => {
         <CardBody>
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
-              <CardTitle style={{ fontSize: "60px" }}>{group.name}</CardTitle>
+              <CardTitle style={{ fontSize: "60px" }}>
+              {isGold(group.is_gold)}
+                {group.name}
+                </CardTitle>
             </Col>
             <Col md={2}>
               <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe</Button>
@@ -81,7 +93,7 @@ const GroupPageComponent = () => {
                 <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
                 <br />
                 <br />
-                <CardTitle tag="h3">Gruppe leder: {getGroupAdmin()}</CardTitle>
+                <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
                 <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
                 <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
                 <br />

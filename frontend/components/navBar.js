@@ -4,8 +4,9 @@ import { Collapse, DropdownToggle, Navbar, NavbarToggler, UncontrolledDropdown, 
 
 const NavigationBar = () => {
 
+    const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
+
     const [groupData, setGroupData] = useState(null)
-    const [groupId, setGroupId] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
     if(typeof window !== "undefined"){
@@ -19,14 +20,13 @@ const NavigationBar = () => {
     }
 
     const getGroupData = (groupId) => {
-        setLoading(true)
         fetch(`http://localhost:8000/group/` + groupId + `/`, requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log("groupData:", groupData)
+            console.log(groupData)
+            setLoading(false)
           })
-        setLoading(false)
     }
 
     const removeGroupInLocalStorage = () => {
@@ -34,17 +34,12 @@ const NavigationBar = () => {
     }
 
     useEffect(() => {
-        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null
-        if (groupId != null){
-            setGroupId(groupId);
-            getGroupData(groupId);
-        }
-    }, [])
+        setLoading(true)
+        getGroupData(groupId);
+      }, [])
 
-    if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
-
-    console.log("groupId:", groupId);
-    console.log("groupData:", groupData);
+      if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
+      if (!groupData) return <p><h5>Ingen data</h5></p>
 
     return ( 
         <div>
@@ -75,7 +70,7 @@ const NavigationBar = () => {
                             <NavLink href="/myGroups" onClick={removeGroupInLocalStorage}>Mine Grupper</NavLink>
                         </NavItem>
                         
-                        {groupId && groupData &&
+                        {groupId &&
                             <UncontrolledDropdown 
                                 inNavbar 
                                 nav
