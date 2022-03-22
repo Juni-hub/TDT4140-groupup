@@ -4,9 +4,8 @@ import { Collapse, DropdownToggle, Navbar, NavbarToggler, UncontrolledDropdown, 
 
 const NavigationBar = () => {
 
-    const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
-
     const [groupData, setGroupData] = useState(null)
+    const [groupId, setGroupId] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
     if(typeof window !== "undefined"){
@@ -20,26 +19,36 @@ const NavigationBar = () => {
     }
 
     const getGroupData = (groupId) => {
+        setLoading(true)
         fetch(`http://localhost:8000/group/` + groupId + `/`, requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
-            setLoading(false)
+            console.log("groupData:", groupData)
           })
+        setLoading(false)
     }
 
     const removeGroupInLocalStorage = () => {
         if (typeof window !== "undefined") localStorage.setItem("group", "");
     }
 
-    useEffect(() => {
-        setLoading(true)
-        getGroupData(groupId);
-      }, [])
+    const logOut = () => {
+        if (typeof window !== "undefined") localStorage.removeItem("Token");
+    }
 
-      if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
-      if (!groupData) return <p><h5>Ingen data</h5></p>
+    useEffect(() => {
+        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null
+        if (groupId != null){
+            setGroupId(groupId);
+            getGroupData(groupId);
+        }
+    }, [])
+
+    if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
+
+    console.log("groupId:", groupId);
+    console.log("groupData:", groupData);
 
     return ( 
         <div>
@@ -57,7 +66,7 @@ const NavigationBar = () => {
                 <NavbarToggler onClick={function noRefCheck(){}}/>
                 <Collapse navbar>
 
-                    <Nav navbar>
+                    <Nav navbar className="container-fluid">
                         <NavItem class="
                             px-3 
                             nav-item py-md-2">
@@ -70,7 +79,7 @@ const NavigationBar = () => {
                             <NavLink href="/myGroups" onClick={removeGroupInLocalStorage}>Mine Grupper</NavLink>
                         </NavItem>
                         
-                        {groupId &&
+                        {groupId && groupData &&
                             <UncontrolledDropdown 
                                 inNavbar 
                                 nav
@@ -88,6 +97,9 @@ const NavigationBar = () => {
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }
+                        <NavItem className="ms-auto">
+                            <NavLink href="/loginPage" onClick={logOut}>Logg ut</NavLink>
+                        </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>

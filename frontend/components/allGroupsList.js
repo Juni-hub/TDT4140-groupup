@@ -69,7 +69,7 @@ const AllGroupsList = (props) => {
         Ingen grupper
       </p>
     );
-  
+
   return (
     <div>
       <Container fluid style={{ margin: "10px" }}>
@@ -81,7 +81,7 @@ const AllGroupsList = (props) => {
               .filter((group) => (props.filterFunction ? props.filterFunction(group) : true))
               .map((group, i) => (
                 <>
-                  <Card style={{ margin: "10px", minWidth: "300px" }} onClick={() => goToGroup(group.id)}>
+                  <Card style={{ margin: "10px", minWidth: "260px" }} onClick={() => goToGroup(group.id)}>
                     <CardImg alt="Card image cap" src={getImage(group.image)} top width="150px" />
                     <CardBody>
                       <CardTitle tag="h5">{group.name}</CardTitle>
