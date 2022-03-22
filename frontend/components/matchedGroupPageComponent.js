@@ -98,8 +98,7 @@ const MatchedGroupPageComponent = () => {
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
-              {isGold(group.is_gold)}
-                {"Matchet gruppe: " + group.name}
+                {"Matchet gruppe: " + group.name} {isGold(group.is_gold)}
                 </CardTitle>
             </Col>
           </Row>
