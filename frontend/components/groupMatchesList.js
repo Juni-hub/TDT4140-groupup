@@ -70,7 +70,7 @@ const groupMatchesList = () => {
     >
     {[...groupData].map((group, i) =>(
            <>
-           <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
+        <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
             <CardImg
                 alt="Card image cap"
                 src= {getImage(group.image)}
@@ -87,7 +87,7 @@ const groupMatchesList = () => {
                     {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
-                    Gruppebesktivelse
+                    {Group.description}
                 </CardText>
             </CardBody>
         </Card>
