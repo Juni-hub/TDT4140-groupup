@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row} from "reactstrap";
 import { NextURL } from "next/dist/server/web/next-url";
+import styles from "../styles/Home.module.css";
 
 const UserGroupList = () => {
 
@@ -53,40 +54,38 @@ const UserGroupList = () => {
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Mine grupper</h5><hr/>Ingen grupper</p>
+      if (!groupData[0]) return <div style={{width:"100%", display:"flex", justifyContent:"center"}}><p style={{margin:"40px"}}>Ingen Grupper</p></div>
 
 
   return (
-    <div class="col-md-8" style={{width:"100%", alignItems:"center", justifyContent:"center", padding:"2%", paddingTop:"0%"}}>
-    <Row md="4" sm="3" xs="1" style={{alignItems:"center"}}>
-        
-        {[...groupData].map((group, i) =>(
-           <>
-           <Card style={{padding:"0px", margin: "1.66%", width:"30%", minWidth:"min-content", backgroundColor:"#E5EEF0", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={()=>goToGroup(group.id)}>
-            <CardImg
-                alt="Card image cap"
-                src= {getImage(group.image)}
-                width="inherit" 
-                style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}}/>
-            <CardBody>
-                <CardTitle tag="h5">
-                {group.name}
-                </CardTitle>
-                <CardSubtitle
-                    className="mb-2 text-muted"
-                    tag="h6"
-                >
-                    {group.expanded_members.length} medlemmer
-                </CardSubtitle>
-                <CardText>
-                    Gruppebesktivelse
-                </CardText>
-            </CardBody>
-        </Card>
-        </>
-    ))}
-    </Row>
-</div>
+        <div style={{width:"100%", padding:"2%", paddingTop:"0%", boxSizing:"content-box", display:"flex", flexWrap:"wrap"}}>
+            
+            {[...groupData].map((group, i) =>(
+            <>
+            <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={()=>goToGroup(group.id)}>
+                <CardImg
+                    alt="Card image cap"
+                    src= {getImage(group.image)}
+                    width="inherit" 
+                    style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}}/>
+                <CardBody>
+                    <CardTitle tag="h5">
+                    {group.name}
+                    </CardTitle>
+                    <CardSubtitle
+                        className="mb-2 text-muted"
+                        tag="h6"
+                    >
+                        {group.expanded_members.length} medlemmer
+                    </CardSubtitle>
+                    <CardText>
+                        Gruppebesktivelse
+                    </CardText>
+                </CardBody>
+            </Card>
+            </>
+        ))}
+        </div>
   )
 }
 

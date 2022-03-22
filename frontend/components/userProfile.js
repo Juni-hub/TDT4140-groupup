@@ -48,7 +48,7 @@ if(typeof window !== "undefined"){
 
         <div style={{padding:"30px"}}>
             <Container className="d-flex h-100" style={{display: "flex", marginTop:"0%"}}>
-                <Card style={{marginRight:"15px", minWidth:"300px", minHeight:"100%"}}>
+                <Card style={{marginRight:"15px", minWidth:"300px", minHeight:"100%", maxWidth:"400px"}}>
                     <CardImg src="brukerbilde.jpeg" style={{aspectRatio:"1", objectFit:"cover"}}/>
                     <CardBody>
                         <h5 class="card-title">{userData.user.username}</h5>
@@ -57,7 +57,7 @@ if(typeof window !== "undefined"){
                     </CardBody>
                     <CardFooter style={{height:"30px"}}/>
                 </Card>
-                <Card>
+                <Card style={{minWidth:"500px"}}>
                     <CardHeader style={{backgroundColor: "#ABD08D", fontSize:"22px"}}>
                         {userData.user.username}s Grupper
                     </CardHeader>

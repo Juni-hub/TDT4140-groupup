@@ -107,7 +107,7 @@ const handleAgeChange = (e) => {
                                 <Input  type="password" placeholder="Passord" name="password"></Input>
                             </InputGroup>
                             <br />
-                            <Button type="submit" style={{backgroundColor:"#537E36", color:"white", marginBottom:"2px",width:"100%"}}>Register</Button>
+                            <Button type="submit" className={styles.submitButton} style={{arginBottom:"2px",width:"100%"}}>Register</Button>
                             {!isValid && <p>Dataen du sendte inn var ugyldig</p>}
                         </Form>
                     </CardBody>

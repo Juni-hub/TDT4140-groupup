@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import img from "/public/groupup_transparent.png";
 
 import { Button, Card, CardBody, CardFooter, CardHeader, CardImg, CardText, Col, Form, Input, InputGroup, InputGroupText, Label, Row } from "reactstrap";
 import React, {useState} from "react";

@@ -31,7 +31,6 @@ const EditGroup = () => {
       </Col>
     );
   };
-
   const removeInterest = (deletedInterest) => {
     updateGroupData(
       "interests",
@@ -54,9 +53,12 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
-  const addImage = (image) =>{
-    setImage(image);
-    console.log(image);
+
+  const getImage = (url) => {
+    if (url != null){
+        setImage( "http://localhost:8000" + url);
+    }
+    setImage("https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg");
   }
 
   // const submitChanges = () => {
@@ -88,7 +90,7 @@ const EditGroup = () => {
   //HER ER JEG
   const submitChanges = () => {
 
-    const body = JSON.stringify(
+    const body = 
       {
         activity_date: groupData.activity_date,
         description: groupData.description,
@@ -101,10 +103,9 @@ const EditGroup = () => {
         interests: groupData.interests.map((interest) => {
           return { interest_name: interest };
         })
-    })
+    }
 
-    console.log(body);
-
+    body = JSON.stringify(body)
     // const blob = new Blob([body], {
     //   type: 'application/json'
     // });
@@ -112,18 +113,17 @@ const EditGroup = () => {
     const data = new FormData();
     // data.append("JSON", new Blob([body], { type: 'application/json' }), 'request.json');
     data.append("JSON", body);
-    data.append("image", image, image.name);
-
+    //data.append("image", image, image);
 
     const requestOptions = {
       method: "PUT",
       headers: {
-        
+        //"Content-Type" : 'application/json',
         Authorization: localStorage.getItem("Token"),
       },
       body: data
     };
-    delete requestOptions.headers['Content-Type'];
+    //delete requestOptions.headers['Content-Type'];
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
   };
 
@@ -144,7 +144,8 @@ const EditGroup = () => {
       },
     };
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((response) => {
-      response.json().then((data) => setGroupData(parseGroup(data)));
+      response.json().then((data) => {setGroupData(parseGroup(data))
+      getImage(data.image)});
     });
     fetch(`http://localhost:8000/tags/`, requestOptions).then((response) => {
       response.json().then((data) => {
@@ -207,7 +208,7 @@ const EditGroup = () => {
                 </InputGroup>
                 <ListGroup style={{marginLeft:"12px", marginTop:"10px"}}>
                   {groupData.interests.map((interest, key) => (
-                    <ListGroupItem key={key} onClick={() => removeInterest(interest)}>
+                    <ListGroupItem className={styles.memberListItem} key={key} onClick={() => removeInterest(interest)}>
                       {interest}
                     </ListGroupItem>
                   ))}
@@ -236,7 +237,7 @@ const EditGroup = () => {
               <br></br>
             </CardBody>
             <CardFooter style={{display:"flex", justifyContent:"center"}}>
-              <Button className={styles.submitButton} style={{backgroundColor:"#537E36"}} onClick={submitChanges}>
+              <Button className={styles.submitButton} onClick={submitChanges}>
                 Oppdater gruppe
               </Button>
             </CardFooter>

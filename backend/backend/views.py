@@ -1,5 +1,7 @@
 from cmath import pi
+import json
 from functools import partial
+from operator import eq
 from tokenize import group
 from urllib import response
 from django.contrib.auth.models import User
@@ -64,10 +66,14 @@ class GroupDetailView(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk):
+        data = request.data
+        if "JSON" in request.data and (not "image" in json.loads(request.data["JSON"]).keys()):
+            data = json.loads(request.data["JSON"])
         group = self.get_object(pk)
-        serializer = GroupSerializer(group, data=request.data, partial=True)
+        serializer = GroupSerializer(group, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            #print(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 

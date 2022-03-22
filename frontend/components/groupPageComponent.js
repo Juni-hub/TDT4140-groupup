@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "../styles/Home.module.css";
 import {
   CardBody,
   CardImg,
@@ -16,7 +17,12 @@ import {
   CardTitle,
   Button,
   Input,
-  Label
+  Label,
+  Container,
+  InputGroup,
+  InputGroupText,
+  ListGroupItem,
+  ListGroup
 } from "reactstrap";
 import { useRouter } from "next/router";
 import NavigationBar from "./navBar";
@@ -104,115 +110,78 @@ const GroupPageComponent = () => {
     <>
       <NavigationBar group={group.name} />
 
-      <Card style={{ backgroundColor: "lightgreen" }}>
-        <CardBody>
-          <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
-            <Col md={10}>
-              <CardTitle style={{ fontSize: "60px" }}>{group.name}</CardTitle>
-            </Col>
-            <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
-            </Col>
-          </Row>
-          <CardGroup>
-            {/*Card containing basic group info*/}
-            <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
+      <div style={{width:"100%", padding:"15px", display:"flex", justifyContent:"center"}}>
+        <Card style={{width:"50%", marginRight:"10px"}}>
+          <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+            {group.name}
+          </CardHeader>
+          <CardBody style={{display:"flex"}}>
+            <Card style={{width:"50%", marginRight:"10px"}}>
+              <CardImg src={getImage(group.image)} alt="image" style={{display:"block", aspectRatio:"1", objectFit:"cover"}}></CardImg>
               <CardBody>
-                <CardImg src={getImage(group.image)} alt="image"></CardImg>
-                <Label>Velg nytt gruppebilde</Label>
+                <Label style={{marginBottom:"0px", fontSize:"12px"}}>Last opp bilde: </Label>
                 <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
-                
-                <br />
-                <br />
-                <CardTitle tag="h3">Gruppe leder: {getGroupAdmin()}</CardTitle>
-                <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
-                <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
-                <br />
-                <br />
-                <CardTitle tag="h5" style={{ fontSize: "25px" }}>
-                  {" "}
-                  Medlemmer:
-                </CardTitle>
-                <hr />
+                <br/>
+                <Label style={{marginBottom:"2px"}}>Gruppeleder:</Label>
+                <p style={{fontWeight:"bold", fontSize:"20px"}}><Badge>{getGroupAdmin()}</Badge></p>
+                <Label style={{marginBottom:"2px"}}>Antall Medlemmer:</Label>
+                <p style={{marginLeft:"10px", fontWeight:"bold"}}>{group.members.length}</p>
+                <Label style={{marginBottom:"2px"}}>Aldersgrense:</Label>
+                <p style={{marginLeft:"10px", fontWeight:"bold"}}>{group.minimum_age}</p>
+                <Label style={{marginBottom:"2px"}}>Medlemmer:</Label>
                 <List type="inline">
                   {group.expanded_members.map((member, key) => (
                     <ListInlineItem key={key} style={{ fontSize: "20px" }}>
-                      <Badge color="success">{member.username}</Badge>
+                      <Badge>{member.username}</Badge>
                     </ListInlineItem>
                   ))}
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing group description , intrests*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
+            <Card style={{width:"50%"}}>
+              <CardHeader style={{fontSize:"20px"}}>
+                Beskrivelse
+              </CardHeader>
               <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Beskrivelse
-                </CardTitle>
-                <hr></hr>
-                <CardText style={{ fontSize: "20px" }}>{group.description}</CardText>
-                <br />
-                <br />
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Interesser
-                </CardTitle>
-                <hr />
-
-                <List type="inline">
+                <CardText>{group.description}</CardText>
+              </CardBody>
+              <CardHeader style={{fontSize:"20px"}}>
+                Interesser
+              </CardHeader>
+                <InputGroup style={{display:"table", justifyContent:"center"}}>
                   {group.interests.map((interest, key) => (
-                    <ListInlineItem style={{ fontSize: "20px" }} key={key}>
-                      <Badge color="success">{interest.interest_name}</Badge>
-                    </ListInlineItem>
+                    <ListGroupItem key={key} style={{margin:"4px", backgroundColor:"#e4f0db", fontStyle:"italic"}}>
+                     {interest.interest_name}
+                    </ListGroupItem>
                   ))}
-                </List>
-              </CardBody>
+                </InputGroup>
+                <CardHeader style={{fontSize:"20px"}}>
+                  Tags
+                </CardHeader>
+                <CardBody>
+                  <Row style={{ height: "10vh", fontSize: "25px", textAlign: "" }}>
+                    <List type="inline">
+                      {group.tags.map((tag, key) => (
+                        <ListInlineItem key={key}>
+                          <Button style={{ minWidth: "100px", backgroundColor:"#E5EEF0", color:"black"}}>{tag.tag_name}</Button>
+                        </ListInlineItem>
+                      ))}
+                    </List>
+                  </Row>
+                </CardBody>
             </Card>
+          </CardBody>
+          <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
+            <Button className={styles.submitButton} style={{maxWidth:"max-content", marginBottom:"20px"}} onClick={() => router.push(`/editGroup/${id}`)}>Rediger Informasjon</Button>
+          </div>
+        </Card>
+        <Card style={{width:"40%"}}>
+          <CardHeader style ={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+            Matchede Grupper
+          </CardHeader>
+        </Card>
 
-            {/*Card containing the groups matched groups*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
-              <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Matchede grupper
-                </CardTitle>
-                <hr></hr>
-                {/* <List style={{ listStyle: "none" }}>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Vi som liker øl
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Guttebanden
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Jentene
-                    </Button>
-                  </li>
-                </List> */}
-              </CardBody>
-            </Card>
-          </CardGroup>
-
-          {/*Row for viewing tags*/}
-          <Row style={{ height: "10vh", fontSize: "25px", textAlign: "" }}>
-            <List type="inline">
-              <ListInlineItem style={{ fontSize: "30px" }}>Tags:</ListInlineItem>
-              {group.tags.map((tag, key) => (
-                <ListInlineItem key={key}>
-                  <Badge>{tag.tag_name}</Badge>
-                </ListInlineItem>
-              ))}
-            </List>
-          </Row>
-        </CardBody>
-      </Card>
+      </div>
     </>
   );
 };
