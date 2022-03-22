@@ -5,7 +5,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password 
-from .models import Interest, Profile, Group, Tag
+from .models import Interest, Location, Profile, Group, Tag
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -61,10 +61,17 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = "__all__"
 
+class LocationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Location
+        fields = "__all__"
+
 class GroupSerializer(serializers.ModelSerializer):
 
     interests = InterestSerializer(many=True)
     tags = TagSerializer(many=True)
+    location = LocationSerializer()
 
     
     expanded_members = serializers.SerializerMethodField()
@@ -80,17 +87,19 @@ class GroupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tags = self.get_tags_from_data(validated_data)
         interests = self.get_interests_from_data(validated_data)
+        location = self.get_location_from_data(validated_data)
         members = validated_data.pop("members")
-        members.append(validated_data["admin"])
         group = Group.objects.create(**validated_data)
         group.members.set(members)
         group.interests.set(interests)
+        group.location = location
         group.tags.set(tags)
         return group
     
     def update(self, instance, validated_data):
         instance.interests.set(self.get_interests_from_data(validated_data))
         instance.tags.set(self.get_tags_from_data(validated_data))
+        instance.location = self.get_location_from_data(validated_data)
         super().update(instance, validated_data)
         instance.save()
         return instance
@@ -112,6 +121,13 @@ class GroupSerializer(serializers.ModelSerializer):
                 tags.append(tag_obj.id)
             return tags
         return []
+
+    def get_location_from_data(self, validated_data):
+        if "location" in validated_data:
+            location = validated_data.pop("location")
+            location_obj, created = Location.objects.get_or_create(location_name=location["location_name"])
+            return location_obj 
+        return None 
 
     # def validate(self, data):
     #     member_limit = math.inf

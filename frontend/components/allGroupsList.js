@@ -1,13 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row} from "reactstrap";
+import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container} from "reactstrap";
 import { NextURL } from "next/dist/server/web/next-url";
-import styles from "../styles/Home.module.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 
-const UserGroupList = () => {
+const AllGroupsList = () => {
 
 
     const [groupData, setGroupData] = useState(null)
@@ -20,12 +17,6 @@ const UserGroupList = () => {
             return "http://localhost:8000" + url;
         }
         return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
-    }
-    function isGold(goldBool){
-        if(goldBool){
-            return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08"}}  />
-        }
-        return null;
     }
 
     // Checking typof to only check localstorage on client-side (does not exist on server)
@@ -40,8 +31,8 @@ const UserGroupList = () => {
         }
     }
 
-    const getGroupData = () => {
-        fetch(`http://localhost:8000/group/`, requestOptions)
+    const getGroupData = (id) => {
+        fetch(`http://localhost:8000/all_groups/` + id , requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
@@ -51,37 +42,45 @@ const UserGroupList = () => {
     }
 
     const goToGroup = (id) =>{
-        if (typeof window !== "undefined") localStorage.setItem("group", id);
         router.push("groupPage/"+id)
     }
 
     useEffect(() => {
         setLoading(true)
-        getGroupData();
+        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
+        getGroupData(groupId);
       }, [])
 
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <div style={{width:"100%", display:"flex", justifyContent:"center"}}><p style={{margin:"40px"}}>Ingen Grupper</p></div>
+      if (!groupData[0]) return <p><h5>Finn nye grupper</h5><hr/>Ingen grupper</p>
 
 
   return (
-        <div style={{width:"100%", padding:"2%", paddingTop:"0%", boxSizing:"content-box", display:"flex", flexWrap:"wrap"}}>
-            
-            {[...groupData].map((group, i) =>(
-            <>
-            <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)",
-                                                        
-                                                        }} onClick={()=>goToGroup(group.id)}>
+    <div>
+      <Container fluid style={{ margin: "10px" }}>
+
+        <div class="col-md-8">
+                            
+        <h5>Finn nye grupper</h5>
+        <hr/>
+        <Row
+            md="4"
+            sm="3"
+            xs="1"
+        >
+        {[...groupData].map((group, i) =>(
+              <>
+              <Card style={{margin: "10px", minWidth: "260px" }} onClick={()=>goToGroup(group.id)}>
                 <CardImg
                     alt="Card image cap"
                     src= {getImage(group.image)}
-                    width="inherit" 
-                    style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}}/>
+                    top
+                    width="150px" />
                 <CardBody>
                     <CardTitle tag="h5">
-                    {isGold(group.is_gold)}{group.name}
+                    {group.name}
                     </CardTitle>
                     <CardSubtitle
                         className="mb-2 text-muted"
@@ -90,14 +89,17 @@ const UserGroupList = () => {
                         {group.expanded_members.length} medlemmer
                     </CardSubtitle>
                     <CardText>
-                        Gruppebesktivelse
+                        {group.description}
                     </CardText>
                 </CardBody>
             </Card>
             </>
         ))}
+        </Row>
         </div>
+      </Container>
+    </div>
   )
 }
 
-export default UserGroupList
+export default AllGroupsList;

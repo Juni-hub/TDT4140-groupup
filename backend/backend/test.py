@@ -160,3 +160,18 @@ class GroupTest(APITestCase):
         self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
         response = self.client.put(put_url, put_data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")    
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_like(self):
+        url = reverse("group")
+        put_url = reverse("like", args=(1,))
+        data = {
+            "name":"grupp1",
+            "members":[1,2]
+        }
+        put_data = {
+            "liked_group_id":2
+        }
+        self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        self.client.post(url, data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")
+        response = self.client.put(put_url, put_data, HTTP_AUTHORIZATION = f'Token {self.token}', format="json")    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

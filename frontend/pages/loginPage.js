@@ -15,6 +15,29 @@ const LoginForm = () => {
       router.push("/registerPage")
     }
 
+    const ifLoggedIn = async () => {
+
+      if(typeof window !== "undefined" && localStorage.getItem('Token')){
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+              'Content-Type' : 'application/json',
+              'Authorization' : localStorage.getItem('Token')
+          },
+      }
+
+    await fetch(`http://localhost:8000/profile/`, requestOptions)
+      .then((res) => res.json())
+      .then((userData) => {
+        if (userData.user != null){
+          router.push("/profile");
+        }
+        return
+      })
+      }
+  }
+
+ifLoggedIn();
 
     const handleSubmit = (e) => {
       e.preventDefault();

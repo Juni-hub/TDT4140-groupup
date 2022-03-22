@@ -26,6 +26,8 @@ import {
 } from "reactstrap";
 import { useRouter } from "next/router";
 import NavigationBar from "./navBar";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const GroupPageComponent = () => {
   const [group, setGroup] = useState(null);
@@ -103,17 +105,23 @@ const GroupPageComponent = () => {
     if (id) getGroup();
   }, [id]);
 
+  function isGold(goldBool){
+    if(goldBool){
+        return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
+    }
+    return null;
+}
 
   return !(id && group) ? (
     <Spinner></Spinner>
   ) : (
     <>
-      <NavigationBar group={group.name} />
+      <NavigationBar />
 
       <div style={{width:"100%", padding:"15px", display:"flex", justifyContent:"center"}}>
         <Card style={{width:"50%", marginRight:"10px"}}>
           <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
-            {group.name}
+            {isGold(group.is_gold)}{group.name}
           </CardHeader>
           <CardBody style={{display:"flex"}}>
             <Card style={{width:"50%", marginRight:"10px"}}>
