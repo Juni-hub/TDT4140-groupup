@@ -69,15 +69,22 @@ const MatchedGroupPageComponent = () => {
   };
 
   const getContactEmail = () => {
-    const contactEmail = "No email";
+    const contactEmail = "Ingen e-post";
     group.expanded_members.map((member) => {
       if (member.id == group.admin) {
         contactEmail = member.email;
-        console.log("henter e-post");
-        console.log(modal);
       }
     });
     return contactEmail;
+  };
+
+  const getActivityDate = () => {
+    const activityDate = "Ingen dato spesifisert";
+    const date = new Date(group.activity_date);
+    const month = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return day + '.' + month + '.' + year;
   };
 
   function isGold(goldBool){
@@ -174,7 +181,7 @@ const MatchedGroupPageComponent = () => {
                         <ModalBody>
                             E-post: {getContactEmail()}
                             <br />
-                            Dato for ønsket møte: {group.activity_date}
+                            Dato for ønsket møte: {getActivityDate()}
                         </ModalBody>
                 <ModalFooter>
                  <Button color="primary" onClick={togglePopup}>Lukk</Button>
