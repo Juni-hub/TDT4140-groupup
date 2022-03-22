@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Collapse, DropdownToggle, Navbar, NavbarToggler, UncontrolledDropdown, NavbarBrand, Nav, NavItem, NavLink, DropdownMenu, DropdownItem, Progress } from "reactstrap";
+
+import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
+import React, {useEffect, useState} from "react";
 
 const NavigationBar = () => {
 
@@ -87,9 +88,9 @@ const NavigationBar = () => {
                                 {groupData.name}
                                 </DropdownToggle>
                                 <DropdownMenu left>
-                                    <DropdownItem href="/groupProfile">Gruppeprofil</DropdownItem>
-                                    <DropdownItem href="/matchedGroups">Matchede grupper</DropdownItem>
-                                    <DropdownItem href="/findGroups">Finn nye grupper</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}`}>Gruppeprofil</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}/matchedGroups`}>Matchede grupper</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}/findGroups`}>Finn nye grupper</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }

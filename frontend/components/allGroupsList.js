@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from "react";
-import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container} from "reactstrap";
+
+import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Container, Progress, Row } from "reactstrap";
+import React, {useEffect, useState} from "react";
+
 import { NextURL } from "next/dist/server/web/next-url";
+import { useRouter } from 'next/router'
 
 const AllGroupsList = () => {
 
@@ -11,6 +13,7 @@ const AllGroupsList = () => {
     const [isLoading, setLoading] = useState(false)
 
     const router = useRouter()
+    const originalId = router.query["id"];
 
     function getImage(url){
         if (url != null){
@@ -42,7 +45,7 @@ const AllGroupsList = () => {
     }
 
     const goToGroup = (id) =>{
-        router.push("groupPage/"+id)
+        router.push("../../groupPage/" + originalId + "/findGroups/"+id)
     }
 
     useEffect(() => {

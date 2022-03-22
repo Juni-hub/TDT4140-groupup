@@ -43,7 +43,7 @@ const groupMatchesList = () => {
     }
 
     const goToGroup = (id) =>{
-        router.push("groupPage/"+id)
+        router.push("../../groupPage/" + originalId + "/matchedGroups/"+id)
     }
 
     useEffect(() => {
