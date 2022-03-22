@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   CardBody,
@@ -15,6 +15,8 @@ import {
   CardGroup,
   CardTitle,
   Button,
+  Input,
+  Label
 } from "reactstrap";
 import { useRouter } from "next/router";
 import NavigationBar from "./navBar";
@@ -25,6 +27,7 @@ const GroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["id"];
+  const inputFile = useRef(null) 
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
   // Because Next.js will render parts of website server-side
@@ -46,9 +49,13 @@ const GroupPageComponent = () => {
         setGroup(groupData);
       });
   };
-  useEffect(() => {
-    if (id) getGroup();
-  }, [id]);
+
+  function getImage(url){
+    if (url != null){
+        return "http://localhost:8000" + url;
+    }
+    return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+}
 
   const getGroupAdmin = () => {
     const leader = group.admin;
@@ -60,12 +67,44 @@ const GroupPageComponent = () => {
     return leader;
   };
 
+  const handleImage = (e) =>{
+    e.stopPropagation();
+    e.preventDefault();
+    var image = e.target.files[0];
+    if( image!=null && (image.type.split('/')[0]) === 'image'){
+
+      const formData = new FormData();
+      formData.append("image", image, image.name);
+
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("Token"),
+        },
+        body: formData
+      };
+      delete requestOptions.headers['Content-Type'];
+      fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((res) => res.json())
+      .then((groupData) => {
+        setGroup(groupData);
+      });
+    }
+    else{
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (id) getGroup();
+  }, [id]);
+
   function isGold(goldBool){
     if(goldBool){
         return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
     }
     return null;
 }
+
 
   return !(id && group) ? (
     <Spinner></Spinner>
@@ -83,14 +122,17 @@ const GroupPageComponent = () => {
                 </CardTitle>
             </Col>
             <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe</Button>
+              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>
             {/*Card containing basic group info*/}
             <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
               <CardBody>
-                <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
+                <CardImg src={getImage(group.image)} alt="image"></CardImg>
+                <Label>Velg nytt gruppebilde</Label>
+                <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
+                
                 <br />
                 <br />
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
