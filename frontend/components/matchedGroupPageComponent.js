@@ -13,6 +13,10 @@ import {
   Col,
   List,
   ListInlineItem,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
@@ -23,7 +27,7 @@ import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const GroupPageComponent = () => {
+const MatchedGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
@@ -59,10 +63,21 @@ const GroupPageComponent = () => {
     group.expanded_members.map((member) => {
       if (member.id == leader) {
         leader = member.username;
-        contactEmail = member.email;
       }
     });
-    return leader, contactEmail;
+    return leader;
+  };
+
+  const getContactEmail = () => {
+    const contactEmail = "No email";
+    group.expanded_members.map((member) => {
+      if (member.id == group.admin) {
+        contactEmail = member.email;
+        console.log("henter e-post");
+        console.log(modal);
+      }
+    });
+    return contactEmail;
   };
 
   function isGold(goldBool){
@@ -84,11 +99,8 @@ const GroupPageComponent = () => {
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
               {isGold(group.is_gold)}
-                {group.name}
+                {"Matchet gruppe: " + group.name}
                 </CardTitle>
-            </Col>
-            <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe</Button>
             </Col>
           </Row>
           <CardGroup>
@@ -98,21 +110,10 @@ const GroupPageComponent = () => {
                 <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
                 <br />
                 <br />
-                <CardTitle tag="h3">Gruppeleder: {getGroupAdmin().leader}</CardTitle>
+                <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
                 <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
                 <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
-                <Button color="success" onclick={togglePopup}>Planlegg møte </Button>
- 
-                <Modal isopen={modal} toggle={togglePopup}>
-                        <ModalHeader toggle={togglePopup}>Planlegg møte</ModalHeader>
-                        <ModalBody>
-                            E-post: {getGroupAdmin().contactEmail}
-                            Dato for ønsket møte: {group.activity_date}
-                        </ModalBody>
-                <ModalFooter>
-                 <Button color="primary" onclick={togglePopup}>Lukk</Button>
-                </ModalFooter>
-                </Modal>
+                <Button color="success" onClick={togglePopup}>Planlegg møte </Button>
                 <br />
                 <br />
                 <CardTitle tag="h5" style={{ fontSize: "25px" }}>
@@ -154,36 +155,6 @@ const GroupPageComponent = () => {
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing the groups matched groups*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
-              <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Matchede grupper
-                </CardTitle>
-                <hr></hr>
-                {/* <List style={{ listStyle: "none" }}>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Vi som liker øl
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Guttebanden
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Jentene
-                    </Button>
-                  </li>
-                </List> */}
-              </CardBody>
-            </Card>
           </CardGroup>
 
           {/*Row for viewing tags*/}
@@ -199,8 +170,19 @@ const GroupPageComponent = () => {
           </Row>
         </CardBody>
       </Card>
+      <Modal isOpen={modal} toggle={togglePopup}>
+                        <ModalHeader toggle={togglePopup}>Planlegg møte</ModalHeader>
+                        <ModalBody>
+                            E-post: {getContactEmail()}
+                            <br />
+                            Dato for ønsket møte: {group.activity_date}
+                        </ModalBody>
+                <ModalFooter>
+                 <Button color="primary" onClick={togglePopup}>Lukk</Button>
+                </ModalFooter>
+                </Modal>
     </>
   );
 };
 
-export default GroupPageComponent;
+export default MatchedGroupPageComponent;

@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
-  CardBody,
-  CardImg,
-  CardHeader,
-  Row,
-  Col,
-  Card,
-  List,
-  CardText,
-  ListInlineItem,
   Badge,
-  Spinner,
-  CardGroup,
-  CardTitle,
   Button,
+  Card,
+  CardBody,
+  CardGroup,
+  CardHeader,
+  CardImg,
+  CardText,
+  CardTitle,
+  Col,
+  List,
+  ListInlineItem,
+  Row,
+  Spinner,
 } from "reactstrap";
-import { useRouter } from "next/router";
-import NavigationBar from "./navBar";
+import React, { useEffect, useState } from "react";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from "next/router";
 
 const GroupPageComponent = () => {
   const [group, setGroup] = useState(null);
