@@ -34,7 +34,6 @@ const AllGroupsList = (props) => {
       .then((res) => res.json())
       .then((groupData) => {
         setGroupData(groupData);
-        console.log(groupData);
         setLoading(false);
       });
   };
@@ -70,7 +69,7 @@ const AllGroupsList = (props) => {
         Ingen grupper
       </p>
     );
-
+  
   return (
     <div>
       <Container fluid style={{ margin: "10px" }}>
@@ -78,7 +77,6 @@ const AllGroupsList = (props) => {
           <h5>Finn nye grupper</h5>
           <hr />
           <Row md="4" sm="3" xs="1">
-            {props.filterFunction && console.log(props.filterFunction.toString())}
             {[...groupData]
               .filter((group) => (props.filterFunction ? props.filterFunction(group) : true))
               .map((group, i) => (
