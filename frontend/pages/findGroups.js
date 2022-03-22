@@ -22,7 +22,26 @@ const FindGroups = () => {
   };
 
   const applyFilters = (filterObject) => {
-    setFilterFunction((group) => (group) => group["minimum_age"] ? group["minimum_age"] >= filterObject.age : true);
+    setFilterFunction(
+
+      (group) => (group) =>
+    {
+      return (group.minimum_age && filterObject.age ? group.minimum_age >= filterObject.age : true) &&
+        (filterObject.location ? (group.location ? group.location.location_name == filterObject.location : false) : true) &&
+        (filterObject.tag ? (group.tags ? group.tags.find((tag) => tag.tag_name == filterObject.tag) : false) : true) &&
+        (filterObject.interest
+          ? group.interests
+            ? group.interests.find((interest) => interest.interest_name.toLowerCase() == filterObject.interest.toLowerCase())
+            : false
+          : true) &&
+        (filterObject.start_date || filterObject.end_date
+          ? group.activity_date
+            ? (filterObject.start_date ? Date.parse(filterObject.start_date) < Date.parse(group.activity_date) : true) &&
+              (filterObject.end_date ? Date.parse(filterObject.end_date) > Date.parse(group.activity_date) : true)
+            : false
+          : true)
+    }
+    );
   };
 
   useEffect(() => {
@@ -35,16 +54,11 @@ const FindGroups = () => {
       setLocationMap(data.locationMap);
     });
   }, []);
-console.log(loading)
-  return loading.some(l => l) ? (
+  return !(tags && locations && tagMap && locationMap) ? (
     <Spinner></Spinner>
   ) : (
     <div className="">
-      {
-        //Imports navBar component
-      }
       <NavigationBar />
-
       <Container fluid style={{ margin: "10px", marginLeft: "0px" }}>
         <CardGroup>
           <Card style={{ minWidth: "400px" }}>
@@ -69,11 +83,36 @@ console.log(loading)
               </Row>
               <Row>
                 <Label>Lokasjon</Label>
-                <Input type="select">
-                  {locations.map((location) => (
-                    <Option></Option>
-                  ))}
+              </Row>
+              <Row>
+                <Input type="select" onChange={(e) => updateFilterInfo("location", e.target.value)}>
+                  {[<option value={null}>Alle</option>].concat(
+                    locations.map((location) => <option value={location}>{locationMap[location]}</option>)
+                  )}
                 </Input>
+              </Row>
+              <Row>
+                <Label>Tag</Label>
+              </Row>
+              <Row>
+                <Input type="select" onChange={(e) => updateFilterInfo("tag", e.target.value)}>
+                  {[<option value={""}>Alle</option>].concat(tags.map((tag) => <option value={tag}>{tagMap[tag]}</option>))}
+                </Input>
+              </Row>
+              <Row>
+                <Label>Interesse</Label>
+              </Row>
+              <Row>
+                <Input type="text" placeholder="Interesse" onChange={(e) => updateFilterInfo("interest", e.target.value)}></Input>
+              </Row>
+              <Row>
+                <Label>Dato for ønsket aktivitet</Label>
+              </Row>
+              <Row>
+                <Label>Fra</Label>
+                <Input type="date" onChange={(e) => updateFilterInfo("start_date", e.target.value)}></Input>
+                <Label>Til</Label>
+                <Input type="date" onChange={(e) => updateFilterInfo("end_date", e.target.value)}></Input>
               </Row>
               <Button className="btn btn-dark" onClick={() => applyFilters(filterInfo)}>
                 Filtrer
