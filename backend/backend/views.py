@@ -161,6 +161,55 @@ class LikeView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
+class SuperLikeView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def get(self, _, pk):
+        group = self.get_object(pk)
+        if not group.is_gold:
+            return Response("A non-gold group has no superlikes", status=status.HTTP_404_NOT_FOUND)
+        queryset = group.super_liked_groups.all()
+        serializer = GroupSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        if pk==request.data["super_liked_group_id"]:
+            return Response("It is not possible to superlike a group as the same group", status=status.HTTP_404_NOT_FOUND)
+        liker_group = self.get_object(pk)
+        if not liker_group.is_gold:
+            return Response("A non-gold group can not superlike", status=status.HTTP_404_NOT_FOUND)
+        data = {"super_liked_groups":[request.data["super_liked_group_id"]]+list(map(lambda group: group.id, list(liker_group.super_liked_groups.all())))}
+        serializer = GroupSerializer(liker_group, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+class AllSuperLikesView(APIView):
+    authentication_classes = (TokenAuthentication,) # Add this line
+    permission_classes = (IsAuthenticated,)       
+
+    def get_object(self, pk):
+        try:
+            return Group.objects.get(id=pk)
+        except Group.DoesNotExist:
+            raise Http404
+
+    def get(self, _, pk):
+        group = self.get_object(pk)
+        if not group.is_gold:
+            return Response("A non-gold group can not see superlikes", status=status.HTTP_404_NOT_FOUND)
+        queryset = group.super_liked_by_groups.all()
+        serializer = GroupSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 class MatchView(APIView):
     authentication_classes = (TokenAuthentication,) # Add this line
     permission_classes = (IsAuthenticated,)       
@@ -173,7 +222,7 @@ class MatchView(APIView):
 
     def get(self, _, pk):
         group = self.get_object(pk)
-        liked = group.liked_groups.all()
-        liked_by = group.liked_by_groups.all()
+        liked = (group.liked_groups.all() | group.super_liked_groups.all())
+        liked_by = (group.liked_by_groups.all() | group.super_liked_by_groups.all())
         serializer = GroupSerializer((liked & liked_by), many=True)
         return Response(serializer.data)

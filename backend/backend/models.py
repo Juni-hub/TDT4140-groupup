@@ -65,11 +65,13 @@ class Group(models.Model):
     tags = models.ManyToManyField(Tag, default=[])
     location = models.ForeignKey(Location, null=True, default=None, on_delete=models.SET_DEFAULT)
 
+    super_liked_groups = models.ManyToManyField("self", default=[], related_name="super_liked_by_groups", symmetrical=False)
+    liked_groups = models.ManyToManyField("self", default=[], related_name="liked_by_groups", symmetrical=False)
+
     is_gold = models.BooleanField(default=False)
 
     image = models.ImageField(upload_to=imagePath, blank=True, null=True)
 
-    liked_groups = models.ManyToManyField("self", default=[], related_name="liked_by_groups", symmetrical=False)
 
     def __str__(self):
         return self.name + " (" + str(len(self.members.all())) + " members)"
