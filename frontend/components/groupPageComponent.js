@@ -1,33 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../styles/Home.module.css";
-import {
-  CardBody,
-  CardImg,
-  CardHeader,
-  Row,
-  Col,
-  Card,
-  List,
-  CardText,
-  ListInlineItem,
-  Badge,
-  Spinner,
-  CardGroup,
-  CardTitle,
-  Button,
-  Input,
-  Label,
-  Container,
-  InputGroup,
-  InputGroupText,
-  ListGroupItem,
-  ListGroup
-} from "reactstrap";
-import { useRouter } from "next/router";
-import NavigationBar from "./navBar";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useRouter } from "next/router";
+import {React, useEffect, useRef, useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody, CardHeader,
+  CardImg,
+  CardText, Input, InputGroup, Label,
+  List, ListGroupItem, ListInlineItem, Row, Spinner
+} from "reactstrap";
+import styles from "../styles/Home.module.css";
+import NavigationBar from "./navBar";
+
 
 const GroupPageComponent = () => {
   const [group, setGroup] = useState(null);
@@ -73,7 +60,6 @@ const GroupPageComponent = () => {
     return leader;
   };
 
-
   const handleImage = (e) =>{
     e.stopPropagation();
     e.preventDefault();
@@ -111,6 +97,7 @@ const GroupPageComponent = () => {
     }
     return null;
 }
+
 
   return !(id && group) ? (
     <Spinner></Spinner>

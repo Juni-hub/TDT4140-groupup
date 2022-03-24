@@ -1,24 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, React, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { React, useEffect, useState } from "react";
 import {
-  CardBody,
-  InputGroup,
-  Container,
-  CardFooter,
-  CardHeader,
-  Input,
-  Label,
-  Spinner,
-  Card,
-  Form,
-  Row,
-  Button,
-  List,
-  ListGroup,
-  ListGroupItem,
-  Col,
-  InputGroupText,
+  Button, Card, CardBody, CardFooter,
+  CardHeader, Col, Container, Form, Input, InputGroup, InputGroupText, Label, ListGroup,
+  ListGroupItem, Row, Spinner
 } from "reactstrap";
 import NavigatorBar from "../../components/navBar";
 import styles from "../../styles/Home.module.css";
@@ -70,7 +56,7 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
     const body = {
       activity_date: groupData.activity_date,
       description: groupData.description,
@@ -97,7 +83,10 @@ const EditGroup = () => {
       },
       body: data,
     };
-    fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
+    var result = await fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    if(result){
+      router.push(`/groupPage/${id}`)
+    }
   };
 
   const parseGroup = (group) => {
@@ -136,9 +125,35 @@ const EditGroup = () => {
     });
   };
 
+  const handleImage = (e) =>{
+    e.stopPropagation();
+    e.preventDefault();
+    var image = e.target.files[0];
+    if( image!=null && (image.type.split('/')[0]) === 'image'){
+
+      const formData = new FormData();
+      formData.append("image", image, image.name);
+
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("Token"),
+        },
+        body: formData
+      };
+      delete requestOptions.headers['Content-Type'];
+      fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    }else{
+      e.target.value = "Not valid image";
+      return;
+    }
+  };
+
+
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
+
   return !(groupData && tags) ? (
     <Spinner></Spinner>
   ) : (
@@ -154,6 +169,11 @@ const EditGroup = () => {
               <InputGroup>
                 <InputGroupText style={{ minWidth: "150px" }}>Navn</InputGroupText>
                 <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
+              </InputGroup>
+              <br />
+              <InputGroup>
+            <InputGroupText>Velg nytt gruppebilde</InputGroupText>
+            <Input type='file' id='file'accept="image/" onChange={handleImage}></Input>
               </InputGroup>
               <br />
               <InputGroup>
