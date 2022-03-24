@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
@@ -12,17 +11,14 @@ import {
   CardText,
   CardTitle,
   Col,
+  Input,
+  Label,
   List,
   ListInlineItem,
   Row,
-  Spinner,
-  CardGroup,
-  CardTitle,
-  Button,
-  Input,
-  Label
+  Spinner
 } from "reactstrap";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
