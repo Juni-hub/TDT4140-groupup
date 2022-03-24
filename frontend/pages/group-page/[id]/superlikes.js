@@ -58,7 +58,7 @@ const superlikes = () => {
   };
 
   const goToGroup = (id) => {
-    router.push("../../groupPage/" + originalId + "/otherGroup/"+id);
+    router.push("../../group-page/" + originalId + "/other-group/"+id);
   };
 
   useEffect(() => {

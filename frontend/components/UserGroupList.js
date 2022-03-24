@@ -50,7 +50,7 @@ const UserGroupList = () => {
 
     const goToGroup = (id) =>{
         if (typeof window !== "undefined") localStorage.setItem("group", id);
-        router.push("groupPage/"+id)
+        router.push("group-page/"+id)
     }
 
     useEffect(() => {

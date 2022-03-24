@@ -123,7 +123,7 @@ const GroupComponent = () => {
                 </CardTitle>
             </Col>
             <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
+              <Button onClick={() => router.push(`/edit-group/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>

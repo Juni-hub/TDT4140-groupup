@@ -44,7 +44,6 @@ const OtherGroupPageComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
-        console.log(groupData);
         setGroup(groupData);
       });
   };

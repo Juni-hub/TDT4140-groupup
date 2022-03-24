@@ -37,13 +37,12 @@ const groupMatchesList = () => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
             setLoading(false)
           })
     }
 
     const goToGroup = (id) =>{
-        router.push("../../groupPage/" + originalId + "/matchedGroups/"+id)
+        router.push("../../group-page/" + originalId + "/matched-groups/"+id)
     }
 
     useEffect(() => {

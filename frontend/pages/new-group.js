@@ -7,7 +7,6 @@ export default function NewGroup() {
   return (
     <div>
       <NavigationBar />
-      <CreateGroupForm />
       <RegisterGroupForm />
     </div>
   )
