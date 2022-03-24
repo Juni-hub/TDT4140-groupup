@@ -1,8 +1,9 @@
+import { Button, Card, CardGroup, Container, Row, width } from 'reactstrap';
+
+import AllGroupsList from '../../../components/allGroupsList';
+import NavigationBar from '../../../components/navBar';
 import React from 'react';
-import AllGroupsList from '../components/allGroupsList';
-import NavigationBar from '../components/navBar';
 import {useState} from "react";
-import { Button, Container, Card, Row, CardGroup, width } from 'reactstrap';
 
 const FindGroups = () => {
     const [query, setQuery] = useState("")
