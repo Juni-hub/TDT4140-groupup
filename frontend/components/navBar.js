@@ -34,6 +34,10 @@ const NavigationBar = () => {
         if (typeof window !== "undefined") localStorage.setItem("group", "");
     }
 
+    const logOut = () => {
+        if (typeof window !== "undefined") localStorage.removeItem("Token");
+    }
+
     useEffect(() => {
         const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null
         if (groupId != null){
@@ -63,7 +67,7 @@ const NavigationBar = () => {
                 <NavbarToggler onClick={function noRefCheck(){}}/>
                 <Collapse navbar>
 
-                    <Nav navbar>
+                    <Nav navbar className="container-fluid">
                         <NavItem class="
                             px-3 
                             nav-item py-md-2">
@@ -94,6 +98,9 @@ const NavigationBar = () => {
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }
+                        <NavItem className="ms-auto">
+                            <NavLink href="/loginPage" onClick={logOut}>Logg ut</NavLink>
+                        </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>
