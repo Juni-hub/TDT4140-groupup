@@ -53,7 +53,7 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -64,7 +64,7 @@ const EditGroup = () => {
         activity_date: groupData.activity_date,
         description: groupData.description,
         member_limit:groupData.member_limit,
-        minimun_age: groupData.minimun_age,
+        minimum_age: groupData.minimum_age,
         name: groupData.name,
         tags: groupData.tags.map((tag) => {
           return { tag_name: tag };
@@ -74,8 +74,10 @@ const EditGroup = () => {
         }),
       }),
     };
-    console.log(requestOptions.body);
-    fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
+    var result = await fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    if(result){
+      router.push(`/groupPage/${id}`)
+    }
   };
 
   const parseGroup = (group) => {
@@ -140,7 +142,8 @@ const EditGroup = () => {
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
-  console.log(groupData)
+
+
   return !(groupData && tags) ? (
     <Spinner></Spinner>
   ) : (
