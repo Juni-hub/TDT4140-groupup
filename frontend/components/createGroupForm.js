@@ -1,12 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import {Button, Container, DropdownItem, Form, FormGroup, Input, InputGroup, InputGroupText, Label, ListGroupItem, ListGroupItemHeading,} from 'reactstrap'
 import React, { Component, useState } from 'react';
-
-import Card from 'react-bootstrap/Card';
+import {Form, InputGroup, InputGroupText, Input, Container, Button, ListGroupItemHeading, ListGroupItem, DropdownItem,} from 'reactstrap'
 import Dropdown from 'react-bootstrap/Dropdown';
 import FormControl from 'react-bootstrap/FormControl'
 import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Home.module.css';
 import { withRouter } from 'next/router'
 
@@ -94,7 +92,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             console.log(error)
         }
     )
-}
+  }
 
   //Get all usernames that are not group creator
   var owner = ""
@@ -181,12 +179,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
       for (const i in this.state.groupParticipants){
         members.push(parseInt(this.state.groupParticipants[i].id))
       }
-
-      const gold = document.getElementById('groupType').checked;
       const group = {
           name: groupName,
-          members: members,
-          is_gold: gold
+          members: members
       }
       registerGroup(group);
       this.props.router.push('/myGroups')
@@ -213,13 +208,6 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
                             </InputGroupText>
                             <Input id='groupOwner' name="groupOwner" value={this.state.groupOwner.username} disabled style={{color: "#808080"}}/>
                         </InputGroup>
-                        <br/>
-                        <FormGroup check>
-                          <Label check>
-                            <Input type="checkbox" id='groupType' name="groupType"/>{' '}
-                                  Gullgruppe
-                          </Label>
-                        </FormGroup>
                         <br/>
                         <p className="card-subtitle mb-2 text-muted">Medlemmer:</p>
                         <ListGroup as={CustomList} activeKey = {0} id="1">
