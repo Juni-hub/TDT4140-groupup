@@ -74,7 +74,6 @@ const EditGroup = () => {
         }),
       }),
     };
-    console.log(requestOptions.body);
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/group/${id}`));
   };
 
@@ -115,7 +114,7 @@ const EditGroup = () => {
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
-  console.log(groupData)
+  
   return !(groupData && tags) ? (
     <Spinner></Spinner>
   ) : (

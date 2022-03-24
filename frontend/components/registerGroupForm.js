@@ -29,26 +29,20 @@ const  RegisterGroupForm = () => {
     }
 
     const handleSubmit = (e) => {
-        console.log("Submitting form");
-
         e.preventDefault();
         const groupName = e.target.groupName.value;
-        const groupOwner = e.target.groupOwner.value;
         const groupType = e.target.groupType.value;
         const members = groupMembers;
         const group = {
-            groupName: groupName,
-            groupOwner: groupOwner,
-            groupType: groupType,
+            name: groupName,
             members: members,
+            is_gold: groupType,
         }
         registerGroup(group);
         router.push('/myGroups');
     }
 
-    const registerGroup = async (body) =>{
-
-        const requestOptions = {
+    const registerGroup = async (body) =>{const requestOptions = {
             method: 'POST',
             headers: {'Content-Type' : 'application/json',
                       'Authorization': localStorage.getItem('Token')},
