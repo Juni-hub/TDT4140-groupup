@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import AllGroupsList from "../components/allGroupsList";
-import NavigationBar from "../components/navBar";
-import { useState } from "react";
 import { Button, Container, Card, Row, CardGroup, width, Input, Label, Col, Option, Spinner } from "reactstrap";
-import { fetchTags, fetchLocations } from "../utils/requests";
+import { fetchTags, fetchLocations } from "../../../utils/requests";
+import AllGroupsList from "../../../components/allGroupsList";
+import NavigationBar from "../../../components/navBar";
+import React from "react";
+import { useState, useEffect } from "react";
 
 const FindGroups = () => {
   const [query, setQuery] = useState("");
@@ -22,11 +22,9 @@ const FindGroups = () => {
   };
 
   const applyFilters = (filterObject) => {
-    setFilterFunction(
-
-      (group) => (group) =>
-    {
-      return (group.minimum_age && filterObject.age ? group.minimum_age >= filterObject.age : true) &&
+    setFilterFunction((group) => (group) => {
+      return (
+        (group.minimum_age && filterObject.age ? group.minimum_age >= filterObject.age : true) &&
         (filterObject.location ? (group.location ? group.location.location_name == filterObject.location : false) : true) &&
         (filterObject.tag ? (group.tags ? group.tags.find((tag) => tag.tag_name == filterObject.tag) : false) : true) &&
         (filterObject.interest
@@ -40,8 +38,8 @@ const FindGroups = () => {
               (filterObject.end_date ? Date.parse(filterObject.end_date) > Date.parse(group.activity_date) : true)
             : false
           : true)
-    }
-    );
+      );
+    });
   };
 
   useEffect(() => {

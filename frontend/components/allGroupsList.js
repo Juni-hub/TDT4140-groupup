@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container } from "reactstrap";
-import { NextURL } from "next/dist/server/web/next-url";
 
 const AllGroupsList = (props) => {
   const [groupData, setGroupData] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
   const router = useRouter();
+  const originalId = router.query["id"];
 
   function getImage(url) {
     if (url != null) {
@@ -28,6 +28,9 @@ const AllGroupsList = (props) => {
       },
     };
   }
+  const goToGroup = (id) => {
+    router.push("../../groupPage/" + originalId + "/findGroups/" + id);
+  };
 
   const getGroupData = (id) => {
     fetch(`http://localhost:8000/all_groups/` + id, requestOptions)
@@ -36,10 +39,6 @@ const AllGroupsList = (props) => {
         setGroupData(groupData);
         setLoading(false);
       });
-  };
-
-  const goToGroup = (id) => {
-    router.push("matchedGroups/" + id);
   };
 
   useEffect(() => {
