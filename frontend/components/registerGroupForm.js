@@ -43,7 +43,7 @@ const  RegisterGroupForm = () => {
             members: members,
         }
         registerGroup(group);
-        router.push('/myGroups');
+        router.push('/my-groups');
     }
 
     const registerGroup = async (body) =>{

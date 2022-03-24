@@ -24,7 +24,7 @@ const MyGroup = () => {
                     }
                     <Col>
                         <div class="text-center">
-                            <Badge href="/newGroup" style={{ backgroundColor: "black" }}>
+                            <Badge href="/new-group" style={{ backgroundColor: "black" }}>
                                 <h5>Opprett gruppe</h5>
                             </Badge>
                         </div>
