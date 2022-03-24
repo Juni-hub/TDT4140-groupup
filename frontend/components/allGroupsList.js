@@ -1,23 +1,23 @@
-import React, {useState, useEffect} from "react";
-import { useRouter } from 'next/router'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container} from "reactstrap";
-import { NextURL } from "next/dist/server/web/next-url";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const AllGroupsList = () => {
+import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Container, Progress, Row } from "reactstrap";
+import React, { useEffect, useState } from "react";
 
+import { useRouter } from "next/router";
 
-    const [groupData, setGroupData] = useState(null)
-    const [isLoading, setLoading] = useState(false)
+const AllGroupsList = (props) => {
+  const [groupData, setGroupData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
-    const router = useRouter()
+  const router = useRouter();
+  const originalId = router.query["id"];
 
-    function getImage(url){
-        if (url != null){
-            return "http://localhost:8000" + url;
-        }
-        return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+  function getImage(url) {
+    if (url != null) {
+      return "http://localhost:8000" + url;
     }
+    return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+  }
 
     // Checking typof to only check localstorage on client-side (does not exist on server)
     // Because Next.js will render parts of website server-side
@@ -36,13 +36,12 @@ const AllGroupsList = () => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
             setLoading(false)
           })
     }
 
     const goToGroup = (id) =>{
-        router.push("groupPage/"+id)
+        router.push("../../group-page/" + originalId + "/other-group/"+id)
     }
 
     useEffect(() => {
@@ -60,46 +59,31 @@ const AllGroupsList = () => {
   return (
     <div>
       <Container fluid style={{ margin: "10px" }}>
-
         <div class="col-md-8">
-                            
-        <h5>Finn nye grupper</h5>
-        <hr/>
-        <Row
-            md="4"
-            sm="3"
-            xs="1"
-        >
-        {[...groupData].map((group, i) =>(
-              <>
-              <Card style={{margin: "10px", minWidth: "260px" }} onClick={()=>goToGroup(group.id)}>
-                <CardImg
-                    alt="Card image cap"
-                    src= {getImage(group.image)}
-                    top
-                    width="150px" />
-                <CardBody>
-                    <CardTitle tag="h5">
-                    {group.name}
-                    </CardTitle>
-                    <CardSubtitle
-                        className="mb-2 text-muted"
-                        tag="h6"
-                    >
+          <h5>Finn nye grupper</h5>
+          <hr />
+          <Row md="4" sm="3" xs="1">
+            {[...groupData]
+              .filter((group) => (props.filterFunction ? props.filterFunction(group) : true))
+              .map((group, i) => (
+                <>
+                  <Card style={{ margin: "10px", minWidth: "260px" }} onClick={() => goToGroup(group.id)}>
+                    <CardImg alt="Card image cap" src={getImage(group.image)} top width="150px" />
+                    <CardBody>
+                      <CardTitle tag="h5">{group.name}</CardTitle>
+                      <CardSubtitle className="mb-2 text-muted" tag="h6">
                         {group.expanded_members.length} medlemmer
-                    </CardSubtitle>
-                    <CardText>
-                        {group.description}
-                    </CardText>
-                </CardBody>
-            </Card>
-            </>
-        ))}
-        </Row>
+                      </CardSubtitle>
+                      <CardText>{group.description}</CardText>
+                    </CardBody>
+                  </Card>
+                </>
+              ))}
+          </Row>
         </div>
       </Container>
     </div>
-  )
-}
+  );
+};
 
 export default AllGroupsList;

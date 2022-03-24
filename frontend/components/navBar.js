@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Collapse, DropdownToggle, Navbar, NavbarToggler, UncontrolledDropdown, NavbarBrand, Nav, NavItem, NavLink, DropdownMenu, DropdownItem, Progress } from "reactstrap";
+
+import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
+import React, {useEffect, useState} from "react";
 
 const NavigationBar = () => {
 
@@ -24,7 +25,6 @@ const NavigationBar = () => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log("groupData:", groupData)
           })
         setLoading(false)
     }
@@ -46,9 +46,6 @@ const NavigationBar = () => {
     }, [])
 
     if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
-
-    console.log("groupId:", groupId);
-    console.log("groupData:", groupData);
 
     return ( 
         <div>
@@ -76,7 +73,7 @@ const NavigationBar = () => {
                         <NavItem class="
                         px-3 
                         nav-item py-md-2">
-                            <NavLink href="/myGroups" onClick={removeGroupInLocalStorage}>Mine Grupper</NavLink>
+                            <NavLink href="/my-groups" onClick={removeGroupInLocalStorage}>Mine Grupper</NavLink>
                         </NavItem>
                         
                         {groupId && groupData &&
@@ -91,14 +88,14 @@ const NavigationBar = () => {
                                 {groupData.name}
                                 </DropdownToggle>
                                 <DropdownMenu left>
-                                    <DropdownItem href="/groupProfile">Gruppeprofil</DropdownItem>
-                                    <DropdownItem href="/matchedGroups">Matchede grupper</DropdownItem>
-                                    <DropdownItem href="/findGroups">Finn nye grupper</DropdownItem>
+                                    <DropdownItem href={`/group-page/${groupId}`}>Gruppeprofil</DropdownItem>
+                                    <DropdownItem href={`/group-page/${groupId}/matched-groups`}>Matchede grupper</DropdownItem>
+                                    <DropdownItem href={`/group-page/${groupId}/find-groups`}>Finn nye grupper</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }
                         <NavItem className="ms-auto">
-                            <NavLink href="/loginPage" onClick={logOut}>Logg ut</NavLink>
+                            <NavLink href="/login-page" onClick={logOut}>Logg ut</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>

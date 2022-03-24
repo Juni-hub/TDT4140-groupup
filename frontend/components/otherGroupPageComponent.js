@@ -1,33 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  CardBody,
-  CardImg,
-  CardHeader,
-  Row,
-  Col,
-  Card,
-  List,
-  CardText,
-  ListInlineItem,
-  Badge,
-  Spinner,
-  CardGroup,
-  CardTitle,
-  Button,
-  Input,
-  Label
-} from "reactstrap";
-import { useRouter } from "next/router";
-import NavigationBar from "./navBar";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 
-const GroupPageComponent = () => {
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardGroup,
+  CardHeader,
+  CardImg,
+  CardText,
+  CardTitle,
+  Col,
+  List,
+  ListInlineItem,
+  Row,
+  Spinner,
+} from "reactstrap";
+import React, { useEffect, useState } from "react";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NavigationBar from "./navBar";
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from "next/router";
+
+const OtherGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
-  const id = router.query["id"];
-  const inputFile = useRef(null) 
+  const id = router.query["otherId"];
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
   // Because Next.js will render parts of website server-side
@@ -45,17 +44,12 @@ const GroupPageComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
-        console.log(groupData);
         setGroup(groupData);
       });
   };
-
-  function getImage(url){
-    if (url != null){
-        return "http://localhost:8000" + url;
-    }
-    return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
-}
+  useEffect(() => {
+    if (id) getGroup();
+  }, [id]);
 
   const getGroupAdmin = () => {
     const leader = group.admin;
@@ -67,17 +61,12 @@ const GroupPageComponent = () => {
     return leader;
   };
 
-  useEffect(() => {
-    if (id) getGroup();
-  }, [id]);
-
   function isGold(goldBool){
     if(goldBool){
         return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
     }
     return null;
 }
-
 
   return !(id && group) ? (
     <Spinner></Spinner>
@@ -90,19 +79,15 @@ const GroupPageComponent = () => {
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
-              {isGold(group.is_gold)}
-                {group.name}
+                {group.name} {isGold(group.is_gold)}
                 </CardTitle>
-            </Col>
-            <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>
             {/*Card containing basic group info*/}
             <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
               <CardBody>
-                <CardImg src={getImage(group.image)} alt="image"></CardImg>
+                <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
                 <br />
                 <br />
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
@@ -149,36 +134,6 @@ const GroupPageComponent = () => {
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing the groups matched groups*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
-              <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Matchede grupper
-                </CardTitle>
-                <hr></hr>
-                {/* <List style={{ listStyle: "none" }}>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Vi som liker øl
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Guttebanden
-                    </Button>
-                  </li>
-                  <li>
-                    <Button color="success" outline size="lg" style={{ margin: "10px" }}>
-                      {" "}
-                      Jentene
-                    </Button>
-                  </li>
-                </List> */}
-              </CardBody>
-            </Card>
           </CardGroup>
 
           {/*Row for viewing tags*/}
@@ -198,4 +153,4 @@ const GroupPageComponent = () => {
   );
 };
 
-export default GroupPageComponent;
+export default OtherGroupPageComponent;

@@ -37,13 +37,12 @@ const groupMatchesList = () => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
             setLoading(false)
           })
     }
 
     const goToGroup = (id) =>{
-        router.push("groupPage/"+id)
+        router.push("../../group-page/" + originalId + "/matched-groups/"+id)
     }
 
     useEffect(() => {
@@ -70,7 +69,7 @@ const groupMatchesList = () => {
     >
     {[...groupData].map((group, i) =>(
            <>
-           <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
+        <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
             <CardImg
                 alt="Card image cap"
                 src= {getImage(group.image)}
@@ -87,7 +86,7 @@ const groupMatchesList = () => {
                     {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
-                    Gruppebesktivelse
+                    {Group.description}
                 </CardText>
             </CardBody>
         </Card>
