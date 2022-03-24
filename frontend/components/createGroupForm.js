@@ -184,7 +184,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
           members: members
       }
       registerGroup(group);
-      this.props.router.push('/myGroups')
+      this.props.router.push('/my-groups')
   }
     
 

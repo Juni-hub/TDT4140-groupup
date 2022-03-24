@@ -46,7 +46,7 @@ const NavigationBar = (props) => {
                         <NavItem class="
                         px-3 
                         nav-item py-md-2">
-                            <NavLink href="/myGroups">Mine Grupper</NavLink>
+                            <NavLink href="/my-groups">Mine Grupper</NavLink>
                         </NavItem>
                         
                         {group &&

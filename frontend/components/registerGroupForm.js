@@ -39,7 +39,7 @@ const  RegisterGroupForm = () => {
             is_gold: groupType,
         }
         registerGroup(group);
-        router.push('/myGroups');
+        router.push('/my-groups');
     }
 
     const registerGroup = async (body) =>{const requestOptions = {
