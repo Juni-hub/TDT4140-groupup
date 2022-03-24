@@ -1,7 +1,25 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, React, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { CardBody, InputGroup, Container, CardFooter, CardHeader, Input, Label, Spinner, Card, Form, Row, Button, List, ListGroup, ListGroupItem, Col, InputGroupText } from "reactstrap";
+import {
+  CardBody,
+  InputGroup,
+  Container,
+  CardFooter,
+  CardHeader,
+  Input,
+  Label,
+  Spinner,
+  Card,
+  Form,
+  Row,
+  Button,
+  List,
+  ListGroup,
+  ListGroupItem,
+  Col,
+  InputGroupText,
+} from "reactstrap";
 import NavigatorBar from "../../components/navBar";
 import styles from "../../styles/Home.module.css";
 
@@ -13,7 +31,6 @@ const EditGroup = () => {
   const [interest, setInterest] = useState("");
   const [tags, setTags] = useState(null);
   const [tagMap, setTagMap] = useState({});
-  const[image, setImage] = useState(null);
 
   const updateGroupData = (field, value) => {
     setGroupData({
@@ -25,7 +42,7 @@ const EditGroup = () => {
   const tagButton = (tagName, key, onClick) => {
     return (
       <Col md={2} key={key}>
-        <Button type="button" style={{ minWidth: "100px", backgroundColor:"#E5EEF0", color:"black"}} onClick={onClick}>
+        <Button type="button" style={{ minWidth: "100px", backgroundColor: "#E5EEF0", color: "black" }} onClick={onClick}>
           {tagMap[tagName]}
         </Button>
       </Col>
@@ -53,77 +70,33 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
-
-  const getImage = (url) => {
-    if (url != null){
-        setImage( "http://localhost:8000" + url);
-    }
-    setImage("https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg");
-  }
-
-  // const submitChanges = () => {
-  //   const requestOptions = {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: localStorage.getItem("Token"),
-  //     },
-  //     body: JSON.stringify({
-  //       activity_date: groupData.activity_date,
-  //       description: groupData.description,
-  //       member_limit:groupData.member_limit,
-  //       minimun_age: groupData.minimun_age,
-  //       name: groupData.name,
-  //       tags: groupData.tags.map((tag) => {
-  //         return { tag_name: tag };
-  //       }),
-  //       interests: groupData.interests.map((interest) => {
-  //         return { interest_name: interest };
-  //       }),
-  //     }),
-  //   };
-  //   console.log(requestOptions.body);
-  //   fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
-  // };
-
-
-  //HER ER JEG
   const submitChanges = () => {
+    const body = {
+      activity_date: groupData.activity_date,
+      description: groupData.description,
+      member_limit: groupData.member_limit,
+      minimun_age: groupData.minimun_age,
+      name: groupData.name,
+      tags: groupData.tags.map((tag) => {
+        return { tag_name: tag };
+      }),
+      interests: groupData.interests.map((interest) => {
+        return { interest_name: interest };
+      }),
+    };
 
-    const body = 
-      {
-        activity_date: groupData.activity_date,
-        description: groupData.description,
-        member_limit:groupData.member_limit,
-        minimun_age: groupData.minimun_age,
-        name: groupData.name,
-        tags: groupData.tags.map((tag) => {
-          return { tag_name: tag };
-        }),
-        interests: groupData.interests.map((interest) => {
-          return { interest_name: interest };
-        })
-    }
-
-    body = JSON.stringify(body)
-    // const blob = new Blob([body], {
-    //   type: 'application/json'
-    // });
+    body = JSON.stringify(body);
 
     const data = new FormData();
-    // data.append("JSON", new Blob([body], { type: 'application/json' }), 'request.json');
     data.append("JSON", body);
-    //data.append("image", image, image);
 
     const requestOptions = {
       method: "PUT",
       headers: {
-        //"Content-Type" : 'application/json',
         Authorization: localStorage.getItem("Token"),
       },
-      body: data
+      body: data,
     };
-    //delete requestOptions.headers['Content-Type'];
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/groupPage/${id}`));
   };
 
@@ -144,8 +117,9 @@ const EditGroup = () => {
       },
     };
     fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((response) => {
-      response.json().then((data) => {setGroupData(parseGroup(data))
-      getImage(data.image)});
+      response.json().then((data) => {
+        setGroupData(parseGroup(data));
+      });
     });
     fetch(`http://localhost:8000/tags/`, requestOptions).then((response) => {
       response.json().then((data) => {
@@ -170,43 +144,48 @@ const EditGroup = () => {
   ) : (
     <>
       <NavigatorBar name={groupData.name}></NavigatorBar>
-      <Container style={{display:"flex", justifyContent:"center"}}>
-        <Card style={{margin:"20px"}}>
-          <CardHeader style={{backgroundColor:"#ABD08D", display:"inline-block", fontSize:"22px"}}>Rediger <h3>{groupData.name}</h3></CardHeader>
+      <Container style={{ display: "flex", justifyContent: "center" }}>
+        <Card style={{ margin: "20px" }}>
+          <CardHeader style={{ backgroundColor: "#ABD08D", display: "inline-block", fontSize: "22px" }}>
+            Rediger <h3>{groupData.name}</h3>
+          </CardHeader>
           <Form>
             <CardBody>
               <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Navn</InputGroupText>
+                <InputGroupText style={{ minWidth: "150px" }}>Navn</InputGroupText>
                 <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
               </InputGroup>
-              <br/>
+              <br />
               <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Beskrivelse</InputGroupText>
+                <InputGroupText style={{ minWidth: "150px" }}>Beskrivelse</InputGroupText>
                 <Input value={groupData.description} type="textarea" onChange={(e) => updateGroupData("description", e.target.value)}></Input>
               </InputGroup>
               <br></br>
               <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Medlemsgrense</InputGroupText>
+                <InputGroupText style={{ minWidth: "150px" }}>Medlemsgrense</InputGroupText>
                 <Input value={groupData.member_limit} type="number" onChange={(e) => updateGroupData("member_limit", e.target.value)}></Input>
               </InputGroup>
               <br></br>
               <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Aldersgrense</InputGroupText>
+                <InputGroupText style={{ minWidth: "150px" }}>Aldersgrense</InputGroupText>
                 <Input value={groupData.minimum_age} type="number" onChange={(e) => updateGroupData("minimum_age", e.target.value)}></Input>
               </InputGroup>
               <br></br>
               <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Dato for ønsket<br/> aktivitet</InputGroupText>
+                <InputGroupText style={{ minWidth: "150px" }}>
+                  Dato for ønsket
+                  <br /> aktivitet
+                </InputGroupText>
                 <Input value={groupData.activity_date} onChange={(e) => updateGroupData("activity_date", e.target.value)} type="date"></Input>
               </InputGroup>
               <br></br>
               <Row>
                 <Label>Interesser:</Label>
                 <InputGroup>
-                <InputGroupText style={{minWidth:"150px"}}>Ny Interesse:</InputGroupText>
+                  <InputGroupText style={{ minWidth: "150px" }}>Ny Interesse:</InputGroupText>
                   <Input type="text" placeholder="Ny interesse" value={interest} onChange={(e) => setInterest(e.target.value.trim())}></Input>
                 </InputGroup>
-                <ListGroup style={{marginLeft:"12px", marginTop:"10px"}}>
+                <ListGroup style={{ marginLeft: "12px", marginTop: "10px" }}>
                   {groupData.interests.map((interest, key) => (
                     <ListGroupItem className={styles.memberListItem} key={key} onClick={() => removeInterest(interest)}>
                       {interest}
@@ -214,7 +193,7 @@ const EditGroup = () => {
                   ))}
                 </ListGroup>
                 <Button
-                  style={{width:"30%", margin:"12px", backgroundColor:"#537E36"}}
+                  style={{ width: "30%", margin: "12px", backgroundColor: "#537E36" }}
                   type="button"
                   onClick={() => {
                     interest == "" ? null : addInterest(interest);
@@ -236,7 +215,7 @@ const EditGroup = () => {
               </Row>
               <br></br>
             </CardBody>
-            <CardFooter style={{display:"flex", justifyContent:"center"}}>
+            <CardFooter style={{ display: "flex", justifyContent: "center" }}>
               <Button className={styles.submitButton} onClick={submitChanges}>
                 Oppdater gruppe
               </Button>

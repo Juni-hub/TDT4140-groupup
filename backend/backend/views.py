@@ -90,7 +90,6 @@ class GroupDetailView(APIView):
         serializer = GroupSerializer(group, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            #print(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
