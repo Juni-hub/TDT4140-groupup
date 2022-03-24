@@ -2,7 +2,7 @@
 
 describe('Login form', () => {
     beforeEach(() => {
-      cy.visit('localhost:3000/loginPage')
+      cy.visit('localhost:3000/login')
     })
   
     it('displays a form for login', () => {

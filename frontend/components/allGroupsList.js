@@ -36,13 +36,12 @@ const AllGroupsList = (props) => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
             setLoading(false)
           })
     }
 
     const goToGroup = (id) =>{
-        router.push("../../groupPage/" + originalId + "/otherGroup/"+id)
+        router.push("../../group-page/" + originalId + "/other-group/"+id)
     }
 
     useEffect(() => {

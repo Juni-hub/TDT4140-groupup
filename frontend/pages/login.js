@@ -4,15 +4,14 @@ import { Button, Card, CardBody, CardHeader, CardImg, CardText, Col, Form, Input
 import React, {useState} from "react";
 
 import { useRouter } from 'next/router';
-import NavigationBar from '../components/navBar';
 
-const LoginForm = () => {
+const Login = () => {
 
     const[isValid,setIsValid] = useState(true); 
     const router = useRouter();
 
     const routerRegister = () =>{
-      router.push("/registerPage")
+      router.push("/register")
     }
 
     const ifLoggedIn = async () => {
@@ -63,7 +62,6 @@ ifLoggedIn();
                   return
               }
               const data = await response.json()
-              console.log(data);
               localStorage.setItem("Token", "Token "+data.token)
               router.push("/profile");
           }
@@ -112,4 +110,4 @@ ifLoggedIn();
         };
         
 
-export default LoginForm;
+export default Login;

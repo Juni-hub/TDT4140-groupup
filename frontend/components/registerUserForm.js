@@ -46,7 +46,6 @@ const  RegisterUserForm = () => {
                     return
                 }
                 const data = await response.json()
-                console.log(data);
                 localStorage.setItem("Token", "Token "+data.token)
                 router.push("/profile");
             }

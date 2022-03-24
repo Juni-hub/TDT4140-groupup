@@ -25,7 +25,7 @@ import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const GroupPageComponent = () => {
+const GroupComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["id"];
@@ -47,7 +47,6 @@ const GroupPageComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
-        console.log(groupData);
         setGroup(groupData);
       });
   };
@@ -124,7 +123,7 @@ const GroupPageComponent = () => {
                 </CardTitle>
             </Col>
             <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
+              <Button onClick={() => router.push(`/edit-group/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>
@@ -210,4 +209,4 @@ const GroupPageComponent = () => {
   );
 };
 
-export default GroupPageComponent;
+export default GroupComponent;
