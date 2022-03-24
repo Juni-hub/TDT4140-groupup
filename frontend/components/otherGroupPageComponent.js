@@ -23,7 +23,7 @@ import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const FindGroupPageComponent = () => {
+const OtherGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
@@ -154,4 +154,4 @@ const FindGroupPageComponent = () => {
   );
 };
 
-export default FindGroupPageComponent;
+export default OtherGroupPageComponent;
