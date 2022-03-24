@@ -112,6 +112,31 @@ const EditGroup = () => {
     });
   };
 
+  const handleImage = (e) =>{
+    e.stopPropagation();
+    e.preventDefault();
+    var image = e.target.files[0];
+    if( image!=null && (image.type.split('/')[0]) === 'image'){
+
+      const formData = new FormData();
+      formData.append("image", image, image.name);
+
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("Token"),
+        },
+        body: formData
+      };
+      delete requestOptions.headers['Content-Type'];
+      fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    }else{
+      e.target.value = "Not valid image";
+      return;
+    }
+  };
+
+
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
@@ -129,6 +154,9 @@ const EditGroup = () => {
               <Label>Navn</Label>
               <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
             </Row>
+            <br></br>
+            <Label>Velg nytt gruppebilde</Label>
+            <Input type='file' id='file'accept="image/" onChange={handleImage}></Input>
             <br></br>
             <Row>
               <Label>Beskrivelse</Label>
