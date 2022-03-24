@@ -39,7 +39,7 @@ const AllGroupsList = (props) => {
   };
 
   const goToGroup = (id) => {
-    router.push("groupPage/" + id);
+    router.push("matchedGroups/" + id);
   };
 
   useEffect(() => {
