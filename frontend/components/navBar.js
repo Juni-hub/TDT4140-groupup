@@ -1,24 +1,55 @@
-import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Collapse, DropdownToggle, Navbar, NavbarToggler, UncontrolledDropdown, NavbarBrand, Nav, NavItem, NavLink, DropdownMenu, DropdownItem } from "reactstrap";
 
-const NavigationBar = (props) => {
+import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
+import React, {useEffect, useState} from "react";
 
-    // There are no pages yet where the navBar should be included, so this has to be added when such pages are added
-    // To include the navbar add <NavigationBar/>
-    // To include the navbar when the user is on a page connected to a single group add <NavigationBar group="<insert-group-name>"/>
+const NavigationBar = () => {
 
-    // can't decide wheter it's best to sent the group to different pages as a prop, or if it should be set in localStorage
-    // did it with props for now, but here is the code for localStorage if we decide this is more convenient later on
-    // if (typeof window !== "undefined") localStorage.setItem("group", "<insert-groupname-here>");
-    // const group = typeof window !== "undefined" ? localStorage.getItem("group") : null;
-    
-    /**
-     * 
-     * const group = [
-            { title: 'Gruppe 1'}, ];
-    */
-   const group = props.group;
+    const [groupData, setGroupData] = useState(null)
+    const [groupId, setGroupId] = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+    if(typeof window !== "undefined"){
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization' : localStorage.getItem('Token')
+            },
+        }
+    }
+
+    const getGroupData = (groupId) => {
+        setLoading(true)
+        fetch(`http://localhost:8000/group/` + groupId + `/`, requestOptions)
+          .then((res) => res.json())
+          .then((groupData) => {
+            setGroupData(groupData)
+            console.log("groupData:", groupData)
+          })
+        setLoading(false)
+    }
+
+    const removeGroupInLocalStorage = () => {
+        if (typeof window !== "undefined") localStorage.setItem("group", "");
+    }
+
+    const logOut = () => {
+        if (typeof window !== "undefined") localStorage.removeItem("Token");
+    }
+
+    useEffect(() => {
+        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null
+        if (groupId != null){
+            setGroupId(groupId);
+            getGroupData(groupId);
+        }
+    }, [])
+
+    if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
+
+    console.log("groupId:", groupId);
+    console.log("groupData:", groupData);
 
     return ( 
         <div>
@@ -36,20 +67,20 @@ const NavigationBar = (props) => {
                 <NavbarToggler onClick={function noRefCheck(){}}/>
                 <Collapse navbar>
 
-                    <Nav navbar>
+                    <Nav navbar className="container-fluid">
                         <NavItem class="
                             px-3 
                             nav-item py-md-2">
-                            <NavLink href="/profile">Min Profil</NavLink>
+                            <NavLink href="/profile" onClick={removeGroupInLocalStorage}>Min Profil</NavLink>
                         </NavItem>
                         
                         <NavItem class="
                         px-3 
                         nav-item py-md-2">
-                            <NavLink href="/my-groups">Mine Grupper</NavLink>
+                            <NavLink href="/myGroups" onClick={removeGroupInLocalStorage}>Mine Grupper</NavLink>
                         </NavItem>
                         
-                        {group &&
+                        {groupId && groupData &&
                             <UncontrolledDropdown 
                                 inNavbar 
                                 nav
@@ -58,15 +89,18 @@ const NavigationBar = (props) => {
                                 <DropdownToggle 
                                 caret
                                 nav>
-                                {group}
+                                {groupData.name}
                                 </DropdownToggle>
                                 <DropdownMenu left>
-                                    <DropdownItem href="/groupProfile">Gruppeprofil</DropdownItem>
-                                    <DropdownItem href="/matchedGroups">Matchede grupper</DropdownItem>
-                                    <DropdownItem href="/findGroups">Finn nye grupper</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}`}>Gruppeprofil</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}/matchedGroups`}>Matchede grupper</DropdownItem>
+                                    <DropdownItem href={`/groupPage/${groupId}/findGroups`}>Finn nye grupper</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }
+                        <NavItem className="ms-auto">
+                            <NavLink href="/loginPage" onClick={logOut}>Logg ut</NavLink>
+                        </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>

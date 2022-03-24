@@ -11,25 +11,28 @@ import {
   CardText,
   CardTitle,
   Col,
-  Input,
-  Label,
   List,
   ListInlineItem,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Row,
-  Spinner
+  Spinner,
 } from "reactstrap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const GroupComponent = () => {
+const MatchedGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
-  const id = router.query["id"];
-  const inputFile = useRef(null) 
+  const id = router.query["otherId"];
+  const [modal, setModal] = useState(false);
+  const togglePopup = () => setModal(!modal);
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
   // Because Next.js will render parts of website server-side
@@ -47,16 +50,13 @@ const GroupComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
+        console.log(groupData);
         setGroup(groupData);
       });
   };
-
-  function getImage(url){
-    if (url != null){
-        return "http://localhost:8000" + url;
-    }
-    return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
-}
+  useEffect(() => {
+    if (id) getGroup();
+  }, [id]);
 
   const getGroupAdmin = () => {
     const leader = group.admin;
@@ -68,36 +68,24 @@ const GroupComponent = () => {
     return leader;
   };
 
-  const handleImage = (e) =>{
-    e.stopPropagation();
-    e.preventDefault();
-    var image = e.target.files[0];
-    if( image!=null && (image.type.split('/')[0]) === 'image'){
-
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-
-      const requestOptions = {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("Token"),
-        },
-        body: formData
-      };
-      delete requestOptions.headers['Content-Type'];
-      fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((res) => res.json())
-      .then((groupData) => {
-        setGroup(groupData);
-      });
-    }
-    else{
-      return;
-    }
+  const getContactEmail = () => {
+    const contactEmail = "Ingen e-post";
+    group.expanded_members.map((member) => {
+      if (member.id == group.admin) {
+        contactEmail = member.email;
+      }
+    });
+    return contactEmail;
   };
 
-  useEffect(() => {
-    if (id) getGroup();
-  }, [id]);
+  const getActivityDate = () => {
+    const activityDate = "Ingen dato spesifisert";
+    const date = new Date(group.activity_date);
+    const month = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return day + '.' + month + '.' + year;
+  };
 
   function isGold(goldBool){
     if(goldBool){
@@ -105,7 +93,6 @@ const GroupComponent = () => {
     }
     return null;
 }
-
 
   return !(id && group) ? (
     <Spinner></Spinner>
@@ -118,27 +105,21 @@ const GroupComponent = () => {
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
-              {isGold(group.is_gold)}
-                {group.name}
+                {"Matchet gruppe: " + group.name} {isGold(group.is_gold)}
                 </CardTitle>
-            </Col>
-            <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>
             {/*Card containing basic group info*/}
             <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
               <CardBody>
-                <CardImg src={getImage(group.image)} alt="image"></CardImg>
-                <Label>Velg nytt gruppebilde</Label>
-                <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
-                
+                <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
                 <br />
                 <br />
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
                 <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
                 <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
+                <Button color="success" onClick={togglePopup}>Planlegg møte </Button>
                 <br />
                 <br />
                 <CardTitle tag="h5" style={{ fontSize: "25px" }}>
@@ -180,16 +161,6 @@ const GroupComponent = () => {
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing the groups matched groups*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
-              <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Matchede grupper
-                </CardTitle>
-                <hr></hr>
-              </CardBody>
-            </Card>
           </CardGroup>
 
           {/*Row for viewing tags*/}
@@ -205,8 +176,19 @@ const GroupComponent = () => {
           </Row>
         </CardBody>
       </Card>
+      <Modal isOpen={modal} toggle={togglePopup}>
+                        <ModalHeader toggle={togglePopup}>Planlegg møte</ModalHeader>
+                        <ModalBody>
+                            E-post: {getContactEmail()}
+                            <br />
+                            Dato for ønsket møte: {getActivityDate()}
+                        </ModalBody>
+                <ModalFooter>
+                 <Button color="primary" onClick={togglePopup}>Lukk</Button>
+                </ModalFooter>
+                </Modal>
     </>
   );
 };
 
-export default GroupComponent;
+export default MatchedGroupPageComponent;

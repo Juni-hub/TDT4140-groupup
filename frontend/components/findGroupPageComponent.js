@@ -11,25 +11,22 @@ import {
   CardText,
   CardTitle,
   Col,
-  Input,
-  Label,
   List,
   ListInlineItem,
   Row,
-  Spinner
+  Spinner,
 } from "reactstrap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const GroupComponent = () => {
+const FindGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
-  const id = router.query["id"];
-  const inputFile = useRef(null) 
+  const id = router.query["otherId"];
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
   // Because Next.js will render parts of website server-side
@@ -47,16 +44,13 @@ const GroupComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
+        console.log(groupData);
         setGroup(groupData);
       });
   };
-
-  function getImage(url){
-    if (url != null){
-        return "http://localhost:8000" + url;
-    }
-    return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
-}
+  useEffect(() => {
+    if (id) getGroup();
+  }, [id]);
 
   const getGroupAdmin = () => {
     const leader = group.admin;
@@ -68,44 +62,12 @@ const GroupComponent = () => {
     return leader;
   };
 
-  const handleImage = (e) =>{
-    e.stopPropagation();
-    e.preventDefault();
-    var image = e.target.files[0];
-    if( image!=null && (image.type.split('/')[0]) === 'image'){
-
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-
-      const requestOptions = {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("Token"),
-        },
-        body: formData
-      };
-      delete requestOptions.headers['Content-Type'];
-      fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((res) => res.json())
-      .then((groupData) => {
-        setGroup(groupData);
-      });
-    }
-    else{
-      return;
-    }
-  };
-
-  useEffect(() => {
-    if (id) getGroup();
-  }, [id]);
-
   function isGold(goldBool){
     if(goldBool){
         return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
     }
     return null;
 }
-
 
   return !(id && group) ? (
     <Spinner></Spinner>
@@ -118,22 +80,15 @@ const GroupComponent = () => {
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
-              {isGold(group.is_gold)}
-                {group.name}
+                {group.name} {isGold(group.is_gold)}
                 </CardTitle>
-            </Col>
-            <Col md={2}>
-              <Button onClick={() => router.push(`/editGroup/${id}`)}>Rediger gruppe informasjon</Button>
             </Col>
           </Row>
           <CardGroup>
             {/*Card containing basic group info*/}
             <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
               <CardBody>
-                <CardImg src={getImage(group.image)} alt="image"></CardImg>
-                <Label>Velg nytt gruppebilde</Label>
-                <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
-                
+                <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
                 <br />
                 <br />
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
@@ -180,16 +135,6 @@ const GroupComponent = () => {
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing the groups matched groups*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
-              <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Matchede grupper
-                </CardTitle>
-                <hr></hr>
-              </CardBody>
-            </Card>
           </CardGroup>
 
           {/*Row for viewing tags*/}
@@ -209,4 +154,4 @@ const GroupComponent = () => {
   );
 };
 
-export default GroupComponent;
+export default FindGroupPageComponent;

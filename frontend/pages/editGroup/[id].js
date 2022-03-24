@@ -53,7 +53,7 @@ const EditGroup = () => {
     updateGroupData("tags", groupData.tags.includes(addedTag) ? groupData.tags : [...groupData.tags, addedTag]);
   };
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -64,7 +64,7 @@ const EditGroup = () => {
         activity_date: groupData.activity_date,
         description: groupData.description,
         member_limit:groupData.member_limit,
-        minimun_age: groupData.minimun_age,
+        minimum_age: groupData.minimum_age,
         name: groupData.name,
         tags: groupData.tags.map((tag) => {
           return { tag_name: tag };
@@ -74,7 +74,10 @@ const EditGroup = () => {
         }),
       }),
     };
-    fetch(`http://localhost:8000/group/${id}/`, requestOptions).then(router.push(`/group/${id}`));
+    var result = await fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    if(result){
+      router.push(`/groupPage/${id}`)
+    }
   };
 
   const parseGroup = (group) => {
@@ -111,10 +114,36 @@ const EditGroup = () => {
     });
   };
 
+  const handleImage = (e) =>{
+    e.stopPropagation();
+    e.preventDefault();
+    var image = e.target.files[0];
+    if( image!=null && (image.type.split('/')[0]) === 'image'){
+
+      const formData = new FormData();
+      formData.append("image", image, image.name);
+
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("Token"),
+        },
+        body: formData
+      };
+      delete requestOptions.headers['Content-Type'];
+      fetch(`http://localhost:8000/group/${id}/`, requestOptions)
+    }else{
+      e.target.value = "Not valid image";
+      return;
+    }
+  };
+
+
   useEffect(() => {
     if (id) fetchData(id);
   }, [id]);
-  
+
+
   return !(groupData && tags) ? (
     <Spinner></Spinner>
   ) : (
@@ -128,6 +157,9 @@ const EditGroup = () => {
               <Label>Navn</Label>
               <Input value={groupData.name} onChange={(e) => updateGroupData("name", e.target.value)} type="text"></Input>
             </Row>
+            <br></br>
+            <Label>Velg nytt gruppebilde</Label>
+            <Input type='file' id='file'accept="image/" onChange={handleImage}></Input>
             <br></br>
             <Row>
               <Label>Beskrivelse</Label>
