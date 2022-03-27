@@ -64,7 +64,7 @@ const EditGroup = () => {
       activity_date: groupData.activity_date,
       description: groupData.description,
       member_limit: groupData.member_limit,
-      minimun_age: groupData.minimun_age,
+      minimum_age: groupData.minimum_age,
       name: groupData.name,
       tags: groupData.tags.map((tag) => {
         return { tag_name: tag };

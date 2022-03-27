@@ -8,19 +8,25 @@ const  RegisterGroupForm = () => {
 
     const [usersData, setUsersData] = useState(null);
     const [profileData, setProfileData] = useState(null);
+
     const [groupMembers, setgroupMembers] = useState([]);
+    const [isGold, setIsGold] = useState([]);
 
     const [isLoading, setLoading] = useState(false);
     const [dropDownIsOpen, setDropdownIsOpen] = useState(false);
 
     const router = useRouter();
 
-    const toggle = () => {
+    const toggleDropDown = () => {
         setDropdownIsOpen(!dropDownIsOpen);
     }
 
+    const toggleIsGold = () => {
+        setIsGold(!isGold);
+    }
+
     const handleAddMember = (userToAdd) => {
-        toggle();
+        toggleDropDown();
         setgroupMembers([...groupMembers, userToAdd]);
     }
 
@@ -32,15 +38,12 @@ const  RegisterGroupForm = () => {
 
         e.preventDefault();
         const groupName = e.target.groupName.value;
-        const groupType = e.target.groupType.value == "on"? true : false;
         const members = groupMembers.map(member => member.id);
-        console.log(members);
         const group = {
             name: groupName,
             members: members,
-            is_gold: groupType,
+            is_gold: isGold,
         }
-        console.log(group);
         registerGroup(group);
         router.push('/my-groups');
     }
@@ -128,7 +131,7 @@ const  RegisterGroupForm = () => {
                         <br/>
                         <InputGroup>
                             <Label check>
-                                <Input type="checkbox" id='groupType' name="groupType"/>{' '}
+                                <Input type="checkbox" id='groupType' name="groupType" checked={isGold} onClick={toggleIsGold}/>{' '}
                                 Gullgruppe
                             </Label>
                         </InputGroup>
@@ -140,7 +143,7 @@ const  RegisterGroupForm = () => {
                                 {member.username}
                             </ListGroupItem>)}
                         </ListGroup>
-                        <Dropdown isOpen={dropDownIsOpen} toggle={toggle}>
+                        <Dropdown isOpen={dropDownIsOpen} toggle={toggleDropDown}>
                             <DropdownToggle caret>
                                 Legg til medlem
                             </DropdownToggle>
