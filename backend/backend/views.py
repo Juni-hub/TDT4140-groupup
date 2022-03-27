@@ -209,8 +209,8 @@ class AllSuperLikesView(APIView):
 
     def get(self, _, pk):
         group = self.get_object(pk)
-        if not group.is_gold:
-            return Response("A non-gold group can not see superlikes", status=status.HTTP_404_NOT_FOUND)
+        # if not group.is_gold:
+        #     return Response("A non-gold group can not see superlikes", status=status.HTTP_404_NOT_FOUND)
         queryset = group.super_liked_by_groups.all()
         serializer = GroupSerializer(queryset, many=True)
         return Response(serializer.data)
