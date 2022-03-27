@@ -52,7 +52,7 @@ if(typeof window !== "undefined"){
                     <CardImg src="brukerbilde.jpeg" style={{aspectRatio:"1", objectFit:"cover"}}/>
                     <CardBody>
                         <h5 class="card-title">{userData.user.username}</h5>
-                        <p>Email@Email.com</p>
+                        <p>{userData.user.email}</p>
 
                     </CardBody>
                     <CardFooter style={{height:"30px"}}/>
