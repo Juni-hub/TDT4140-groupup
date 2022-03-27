@@ -122,7 +122,7 @@ const GroupComponent = () => {
                 Lokasjon
               </CardHeader>
               <CardBody>
-                <CardText>{locationMap[group.location.location_name]}</CardText>
+                <CardText>{group.location?locationMap[group.location.location_name]:"Ikke satt"}</CardText>
               </CardBody>
               <CardHeader style={{fontSize:"20px"}}>
                 Interesser
