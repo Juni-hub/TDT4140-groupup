@@ -1,6 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Card, CardBody, CardHeader, CardImg, CardText, Col, Form, Input, Label, Row } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardHeader, CardImg, CardText, Col, Form, Input, InputGroup, InputGroupText, Label, Row } from "reactstrap";
 import React, {useState} from "react";
 
 import { useRouter } from 'next/router';
@@ -76,30 +76,40 @@ ifLoggedIn();
 
     return (
             <div>
-                <Row style={{height:"15vh", textAlign:"center", color:"green", marginTop:"35px"}}>
+                <Row style={{height:"15vh", textAlign:"center",display:"flex", justifyContent:"center", color:"141414", marginTop:"15px", marginBottom:"35px", height:"auto"}}>
+                    <img src="groupup_transparent.png" alt={"GroupUp Logo"} style={{height:"100px", width:"auto"}}/>
                     <h2 style={{fontSize:"55px"}}>Velkommen til groupUp</h2>
                 </Row>
                 <Row>
                 <Col xs="4"></Col>
                 <Col xs="4">
                   <Card>
-                    <CardHeader style={{backgroundColor:"rgba(132, 222, 89, 0.8)", textAlign:"center"}}>Logg inn på profilen din</CardHeader>
+                    <CardHeader style={{backgroundColor:"#ABD08D", textAlign:"center"}}>Logg inn på profilen din</CardHeader>
                     <CardBody>
 
                       <Form onSubmit={handleSubmit}>
-                        <Label>Brukernavn</Label>
-                        <Input type="text" name="username" style={{marginBottom:"30px"}}></Input>
-                        <Label>Passord</Label>
-                        <Input type="password" name="password" style={{marginBottom:"30px"}}></Input>
+                        <InputGroup>
+                          <InputGroupText style={{width:"30%", minWidth:"110px"}}>
+                                Brukernavn:
+                          </InputGroupText>
+                          <Input type="text" name="username"></Input>
+                        </InputGroup>
+                        <br/>
+                        <InputGroup>
+                          <InputGroupText style={{width:"30%", minWidth:"110px"}}>
+                                Passord:
+                          </InputGroupText>
+                          <Input type="password" name="password"></Input>
+                        </InputGroup>
                         <br></br>
-                        <Button  style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", marginBottom:"2px",width:"100%"}} type="submit" name="signIn">Logg inn</Button>
+                        <Button style={{backgroundColor:"#537E36", color:"white", marginBottom:"2px",width:"100%"}} type="submit" name="signIn">Logg inn</Button>
                       </Form>
                       {!isValid && <p style={{color:"red"}}>Brukernavn eller passord var ugyldig</p>}
-                      <br />
-
-                      <CardText style={{textAlign:"center"}}>Eller hvis du ikke har en bruker, registrer deg!</CardText>
-                      <Button  onClick={routerRegister} style={{backgroundColor:"rgba(132, 222, 89, 0.8)", color:"black", width:"100%"}}> Registrer</Button>
-                    </CardBody>
+                      </CardBody>
+                    <CardFooter>
+                      <CardText style={{color: "141414",textAlign:"left", marginBottom:"2px"}}>Ny bruker? Registrer deg:</CardText>
+                      <Button onClick={routerRegister} style={{backgroundColor:"#537E36", color:"white", width:"100%"}}> Registrer</Button>
+                    </CardFooter>
                   </Card>
                 </Col>
                 <Col xs="4"></Col>

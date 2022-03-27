@@ -98,6 +98,21 @@
   background-color: lightcoral;
 }
 
+.button:hover{
+  background-color: #476C2E;
+}
+
 .submitButton{
-  background-color: #33AFFF;
+  background-color: #537E36;
+}
+.submitButton:hover{
+  background-color: #555555;
+}
+.groupCard{
+  background-color:#e1f4f8
+}
+.groupCard:hover{
+  cursor: pointer;
+  transform: scale(1.05);
+  background-color: #c7f2fd;
 }

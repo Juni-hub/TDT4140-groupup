@@ -30,6 +30,7 @@ const AllGroupsList = (props) => {
             },
         }
     }
+  
 
     const getGroupData = (id) => {
         fetch(`http://localhost:8000/all_groups/` + id , requestOptions)
@@ -44,17 +45,33 @@ const AllGroupsList = (props) => {
         router.push("../../group-page/" + originalId + "/other-group/"+id)
     }
 
-    useEffect(() => {
-        setLoading(true)
-        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
-        getGroupData(groupId);
-      }, [])
+  useEffect(() => {
+    setLoading(true);
+    const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null;
+    getGroupData(groupId);
+  }, []);
 
-
-      if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
-      if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Finn nye grupper</h5><hr/>Ingen grupper</p>
-
+  if (isLoading)
+    return (
+      <>
+        <p>Loading...</p>
+        <Progress animated color="info" value={100} />
+      </>
+    );
+  if (!groupData)
+    return (
+      <p>
+        <h5>Ingen data</h5>
+      </p>
+    );
+  if (!groupData[0])
+    return (
+      <p>
+        <h5>Finn nye grupper</h5>
+        <hr />
+        Ingen grupper
+      </p>
+    );
 
   return (
     <div>

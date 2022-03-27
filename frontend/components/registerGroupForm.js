@@ -114,7 +114,7 @@ const  RegisterGroupForm = () => {
         <Container className="d-flex h-100" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop:"5%" }}>
             <Card style={{width:"50%"}}>
                 <Form onSubmit={handleSubmit}>
-                    <CardHeader style={{backgroundColor: "#A9DAB1"}}> Opprett Gruppe </CardHeader>
+                    <CardHeader style={{backgroundColor: "#ABD08D", fontSize:"22px"}}> Opprett Gruppe </CardHeader>
                     <CardBody>
                         <InputGroup>
                             <InputGroupText>Gruppenavn</InputGroupText>
@@ -155,7 +155,7 @@ const  RegisterGroupForm = () => {
                         </Dropdown>
                     </CardBody>
                     <CardFooter>
-                        <Button type="submit">Opprett gruppe</Button>
+                        <Button type="submit" style={{backgroundColor: "#537E36"}}>Opprett gruppe</Button>
                     </CardFooter>
                 </Form>
             </Card>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Router, useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Progress} from "reactstrap";
+import { Progress, Container, Card, CardHeader, CardBody, CardImg, CardFooter} from "reactstrap";
 import { NextURL } from "next/dist/server/web/next-url";
 import UserGroupList from "./UserGroupList";
 
@@ -45,25 +45,27 @@ if(typeof window !== "undefined"){
         }
       else {
      return (
-        <div>
-            <div class="container-fluid">
 
-                <div class="row extra-margin mt-5">
-                    <div class="col-md-4" style={{ minWidth: "340px"}}>
+        <div style={{padding:"30px"}}>
+            <Container className="d-flex h-100" style={{display: "flex", marginTop:"0%"}}>
+                <Card style={{marginRight:"15px", minWidth:"300px", minHeight:"100%", maxWidth:"400px"}}>
+                    <CardImg src="brukerbilde.jpeg" style={{aspectRatio:"1", objectFit:"cover"}}/>
+                    <CardBody>
+                        <h5 class="card-title">{userData.user.username}</h5>
+                        <p>Email@Email.com</p>
 
-                        <div class="text-center">
-                            <img src="https://cdn3.vectorstock.com/i/1000x1000/08/67/person-gray-photo-placeholder-man-vector-23190867.jpg" height={"300px"} alt="Profile Picture" />
-                            <ul class="list-unstyled mb-4 text-left">
-                                <li class="mb-3 mt-3">{userData.user.username}</li>
-                                <li class="mb-3">{userData.user.email}</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                   <UserGroupList></UserGroupList>
-
-                </div>
-            </div>
+                    </CardBody>
+                    <CardFooter style={{height:"30px"}}/>
+                </Card>
+                <Card style={{minWidth:"500px"}}>
+                    <CardHeader style={{backgroundColor: "#ABD08D", fontSize:"22px"}}>
+                        {userData.user.username}s Grupper
+                    </CardHeader>
+                    <CardBody>
+                        <UserGroupList></UserGroupList>
+                    </CardBody>
+                </Card>
+            </Container>
         </div>
   )
 }
