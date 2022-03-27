@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
 import React, {useEffect, useState} from "react";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 
 const NavigationBar = () => {
@@ -52,10 +54,10 @@ const NavigationBar = () => {
     return ( 
         <div>
             <Navbar 
-                color="light"
                 expand="md"
                 light 
-                group="">
+                group="" 
+                style = {{backgroundColor: "#ffffff"}}>
 
                 <NavbarBrand
                 className="me-auto" 
@@ -98,7 +100,7 @@ const NavigationBar = () => {
                             </UncontrolledDropdown>
                         }
                         <NavItem className="ms-auto">
-                            <NavLink href="/login-page" onClick={logOut}>Logg ut</NavLink>
+                            <NavLink href="/login-page" onClick={logOut}>Logg ut{' '}<FontAwesomeIcon icon={faRightFromBracket} style={{color: "#696969"}}></FontAwesomeIcon></NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>

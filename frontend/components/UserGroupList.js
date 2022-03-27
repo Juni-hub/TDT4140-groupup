@@ -5,7 +5,7 @@ import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, R
 import { NextURL } from "next/dist/server/web/next-url";
 import styles from "../styles/Home.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 
 const UserGroupList = () => {
 
@@ -72,7 +72,7 @@ const UserGroupList = () => {
             <>
             <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)",
                                                         
-                                                        }} onClick={()=>goToGroup(group.id)}>
+                }} onClick={()=>goToGroup(group.id)}>
                 <CardImg
                     alt="Card image cap"
                     src= {getImage(group.image)}
@@ -86,10 +86,13 @@ const UserGroupList = () => {
                         className="mb-2 text-muted"
                         tag="h6"
                     >
+                        <FontAwesomeIcon 
+                            icon={faUserGroup} 
+                            style={{color: "#4D4D4D"}}/> {''}
                         {group.expanded_members.length} medlemmer
                     </CardSubtitle>
                     <CardText>
-                        Gruppebesktivelse
+                        {group.description}
                     </CardText>
                 </CardBody>
             </Card>
