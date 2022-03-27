@@ -68,33 +68,6 @@ const GroupComponent = () => {
     return leader;
   };
 
-  const handleImage = (e) =>{
-    e.stopPropagation();
-    e.preventDefault();
-    var image = e.target.files[0];
-    if( image!=null && (image.type.split('/')[0]) === 'image'){
-
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-
-      const requestOptions = {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("Token"),
-        },
-        body: formData
-      };
-      delete requestOptions.headers['Content-Type'];
-      fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((res) => res.json())
-      .then((groupData) => {
-        setGroup(groupData);
-      });
-    }
-    else{
-      return;
-    }
-  };
-
   useEffect(() => {
     if (id) getGroup();
   }, [id]);
@@ -131,9 +104,6 @@ const GroupComponent = () => {
             <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
               <CardBody>
                 <CardImg src={getImage(group.image)} alt="image"></CardImg>
-                <Label>Velg nytt gruppebilde</Label>
-                <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
-                
                 <br />
                 <br />
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
