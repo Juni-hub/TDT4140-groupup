@@ -13,10 +13,6 @@ import {
   Col,
   List,
   ListInlineItem,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Row,
   Spinner,
 } from "reactstrap";
@@ -27,12 +23,10 @@ import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 
-const MatchedGroupPageComponent = () => {
+const OtherGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
-  const [modal, setModal] = useState(false);
-  const togglePopup = () => setModal(!modal);
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
   // Because Next.js will render parts of website server-side
@@ -67,25 +61,6 @@ const MatchedGroupPageComponent = () => {
     return leader;
   };
 
-  const getContactEmail = () => {
-    const contactEmail = "Ingen e-post";
-    group.expanded_members.map((member) => {
-      if (member.id == group.admin) {
-        contactEmail = member.email;
-      }
-    });
-    return contactEmail;
-  };
-
-  const getActivityDate = () => {
-    const activityDate = "Ingen dato spesifisert";
-    const date = new Date(group.activity_date);
-    const month = date.getMonth();
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return day + '.' + month + '.' + year;
-  };
-
   function isGold(goldBool){
     if(goldBool){
         return <FontAwesomeIcon icon={faStar} style={{color:"#ffce08", width:"30px", marginRight:"10px"}}  />
@@ -104,7 +79,7 @@ const MatchedGroupPageComponent = () => {
           <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
             <Col md={10}>
               <CardTitle style={{ fontSize: "60px" }}>
-                {"Matchet gruppe: " + group.name} {isGold(group.is_gold)}
+                {group.name} {isGold(group.is_gold)}
                 </CardTitle>
             </Col>
           </Row>
@@ -118,7 +93,6 @@ const MatchedGroupPageComponent = () => {
                 <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
                 <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
                 <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
-                <Button color="success" onClick={togglePopup}>Planlegg møte </Button>
                 <br />
                 <br />
                 <CardTitle tag="h5" style={{ fontSize: "25px" }}>
@@ -175,19 +149,8 @@ const MatchedGroupPageComponent = () => {
           </Row>
         </CardBody>
       </Card>
-      <Modal isOpen={modal} toggle={togglePopup}>
-                        <ModalHeader toggle={togglePopup}>Planlegg møte</ModalHeader>
-                        <ModalBody>
-                            E-post: {getContactEmail()}
-                            <br />
-                            Dato for ønsket møte: {getActivityDate()}
-                        </ModalBody>
-                <ModalFooter>
-                 <Button color="primary" onClick={togglePopup}>Lukk</Button>
-                </ModalFooter>
-                </Modal>
     </>
   );
 };
 
-export default MatchedGroupPageComponent;
+export default OtherGroupPageComponent;

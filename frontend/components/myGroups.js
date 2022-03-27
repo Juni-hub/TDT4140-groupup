@@ -21,7 +21,7 @@ const MyGroup = () => {
                     </CardHeader>
                     <UserGroupList/>
                     <CardFooter style={{display:"flex", justifyContent:"center"}}>
-                        <Button href="/newGroup" className={styles.submitButton}>
+                        <Button href="/new-group" className={styles.submitButton}>
                             Opprett ny gruppe
                         </Button>
                     </CardFooter>

@@ -85,7 +85,7 @@ const EditGroup = () => {
     };
     var result = await fetch(`http://localhost:8000/group/${id}/`, requestOptions)
     if(result){
-      router.push(`/groupPage/${id}`)
+      router.push(`/group-page/${id}`)
     }
   };
 

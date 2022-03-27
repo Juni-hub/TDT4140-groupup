@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Progress, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Row, Container } from "reactstrap";
+
+import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Container, Progress, Row } from "reactstrap";
+import React, { useEffect, useState } from "react";
+
+import { useRouter } from "next/router";
 
 const AllGroupsList = (props) => {
   const [groupData, setGroupData] = useState(null);
@@ -17,29 +19,31 @@ const AllGroupsList = (props) => {
     return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
   }
 
-  // Checking typof to only check localstorage on client-side (does not exist on server)
-  // Because Next.js will render parts of website server-side
-  if (typeof window !== "undefined") {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("Token"),
-      },
-    };
-  }
-  const goToGroup = (id) => {
-    router.push("../../groupPage/" + originalId + "/findGroups/" + id);
-  };
+    // Checking typof to only check localstorage on client-side (does not exist on server)
+    // Because Next.js will render parts of website server-side
+    if(typeof window !== "undefined"){
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization' : localStorage.getItem('Token')
+            },
+        }
+    }
+  
 
-  const getGroupData = (id) => {
-    fetch(`http://localhost:8000/all_groups/` + id, requestOptions)
-      .then((res) => res.json())
-      .then((groupData) => {
-        setGroupData(groupData);
-        setLoading(false);
-      });
-  };
+    const getGroupData = (id) => {
+        fetch(`http://localhost:8000/all_groups/` + id , requestOptions)
+          .then((res) => res.json())
+          .then((groupData) => {
+            setGroupData(groupData)
+            setLoading(false)
+          })
+    }
+
+    const goToGroup = (id) =>{
+        router.push("../../group-page/" + originalId + "/other-group/"+id)
+    }
 
   useEffect(() => {
     setLoading(true);

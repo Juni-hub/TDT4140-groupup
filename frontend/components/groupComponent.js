@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/router";
 import {React, useEffect, useRef, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
   Badge,
   Button,
@@ -16,7 +18,7 @@ import styles from "../styles/Home.module.css";
 import NavigationBar from "./navBar";
 
 
-const GroupPageComponent = () => {
+const GroupComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["id"];
@@ -38,7 +40,6 @@ const GroupPageComponent = () => {
     fetch(`http://localhost:8000/group/` + id + "/", requestOptions)
       .then((res) => res.json())
       .then((groupData) => {
-        console.log(groupData);
         setGroup(groupData);
       });
   };
@@ -58,33 +59,6 @@ const GroupPageComponent = () => {
       }
     });
     return leader;
-  };
-
-  const handleImage = (e) =>{
-    e.stopPropagation();
-    e.preventDefault();
-    var image = e.target.files[0];
-    if( image!=null && (image.type.split('/')[0]) === 'image'){
-
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-
-      const requestOptions = {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("Token"),
-        },
-        body: formData
-      };
-      delete requestOptions.headers['Content-Type'];
-      fetch(`http://localhost:8000/group/${id}/`, requestOptions).then((res) => res.json())
-      .then((groupData) => {
-        setGroup(groupData);
-      });
-    }
-    else{
-      return;
-    }
   };
 
   useEffect(() => {
@@ -114,9 +88,6 @@ const GroupPageComponent = () => {
             <Card style={{width:"50%", marginRight:"10px"}}>
               <CardImg src={getImage(group.image)} alt="image" style={{display:"block", aspectRatio:"1", objectFit:"cover"}}></CardImg>
               <CardBody>
-                <Label style={{marginBottom:"0px", fontSize:"12px"}}>Last opp bilde: </Label>
-                <Input type='file' id='file'accept="image/" ref={inputFile} style={{display: ''}} onChange={handleImage}></Input>
-                <br/>
                 <Label style={{marginBottom:"2px"}}>Gruppeleder:</Label>
                 <p style={{fontWeight:"bold", fontSize:"20px"}}><Badge>{getGroupAdmin()}</Badge></p>
                 <Label style={{marginBottom:"2px"}}>Antall Medlemmer:</Label>
@@ -167,7 +138,7 @@ const GroupPageComponent = () => {
             </Card>
           </CardBody>
           <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
-            <Button className={styles.submitButton} style={{maxWidth:"max-content", marginBottom:"20px"}} onClick={() => router.push(`/editGroup/${id}`)}>Rediger Informasjon</Button>
+            <Button className={styles.submitButton} style={{maxWidth:"max-content", marginBottom:"20px"}} onClick={() => router.push(`/edit-group/${id}`)}>Rediger Informasjon</Button>
           </div>
         </Card>
         <Card style={{width:"40%"}}>
@@ -181,4 +152,4 @@ const GroupPageComponent = () => {
   );
 };
 
-export default GroupPageComponent;
+export default GroupComponent;

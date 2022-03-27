@@ -45,14 +45,13 @@ const UserGroupList = () => {
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
-            console.log(groupData)
             setLoading(false)
           })
     }
 
     const goToGroup = (id) =>{
         if (typeof window !== "undefined") localStorage.setItem("group", id);
-        router.push("groupPage/"+id)
+        router.push("group-page/"+id)
     }
 
     useEffect(() => {
