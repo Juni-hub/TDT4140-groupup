@@ -2,12 +2,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
 import React, {useEffect, useState} from "react";
+import { useRouter } from 'next/router';
 
 const NavigationBar = () => {
 
     const [groupData, setGroupData] = useState(null)
     const [groupId, setGroupId] = useState(null)
     const [isLoading, setLoading] = useState(false)
+
+    const router = useRouter();
+    const id = router.query["id"];
 
     if(typeof window !== "undefined"){
         const requestOptions = {
@@ -38,15 +42,13 @@ const NavigationBar = () => {
     }
 
     useEffect(() => {
-        const groupId = typeof window !== "undefined" ? localStorage.getItem("group") : null
-        if (groupId != null){
-            setGroupId(groupId);
-            getGroupData(groupId);
+        if (id){
+            setGroupId(id);
+            getGroupData(id);
         }
-    }, [])
-
+    }, [id])
     if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
-
+    
     return ( 
         <div>
             <Navbar 
@@ -90,6 +92,7 @@ const NavigationBar = () => {
                                 <DropdownMenu left>
                                     <DropdownItem href={`/group-page/${groupId}`}>Gruppeprofil</DropdownItem>
                                     <DropdownItem href={`/group-page/${groupId}/matched-groups`}>Matchede grupper</DropdownItem>
+                                    <DropdownItem href={`/group-page/${groupId}/superlikes`}>Superlikes</DropdownItem>
                                     <DropdownItem href={`/group-page/${groupId}/find-groups`}>Finn nye grupper</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
