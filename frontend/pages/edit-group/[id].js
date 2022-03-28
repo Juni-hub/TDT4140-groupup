@@ -72,7 +72,7 @@ const EditGroup = () => {
       interests: groupData.interests.map((interest) => {
         return { interest_name: interest };
       }),
-      location: {location_name:groupData.location}
+      location: groupData.location?{location_name:groupData.location}:null
     };
 
     body = JSON.stringify(body);
@@ -98,7 +98,7 @@ const EditGroup = () => {
       ...group,
       interests: group.interests.map((interest) => interest.interest_name),
       tags: group.tags.map((tag) => tag.tag_name),
-      location: group.location?group.location.location_name:null
+      location: group.location?group.location.location_name:""
     };
   };
 
@@ -203,7 +203,7 @@ const EditGroup = () => {
               <InputGroup>
                 <InputGroupText style={{ minWidth: "150px" }}>Lokasjon</InputGroupText>
                 <Input type="select" value={groupData.location} onChange={(e)=>updateGroupData("location", e.target.value)}>
-                  {[<option value={null}>Ikke satt</option>].concat(
+                  {[<option value={""}>Ikke satt</option>].concat(
                     locations.map((location) => <option value={location}>{locationMap[location]}</option>)
                   )}
                 </Input>
