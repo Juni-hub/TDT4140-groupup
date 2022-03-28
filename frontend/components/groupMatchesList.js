@@ -59,10 +59,7 @@ const groupMatchesList = () => {
 
 
   return (
-    <div class="col-md-8">
-                        
-    <h5>Gruppas matcher</h5>
-    <hr/>
+    <div class="col-md-8">                
     <Row
         md="4"
         sm="3"
