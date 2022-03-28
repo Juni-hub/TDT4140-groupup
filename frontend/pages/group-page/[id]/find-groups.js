@@ -22,9 +22,16 @@ const FindGroups = () => {
   };
 
   const applyFilters = (filterObject) => {
+    console.log(filterInfo);
     setFilterFunction((group) => (group) => {
       return (
         (group.minimum_age && filterObject.age ? group.minimum_age >= filterObject.age : true) &&
+        (filterObject.sizeMin || filterObject.sizeMax
+          ? group.member_limit
+            ? (filterObject.sizeMin ? filterObject.sizeMin <= group.member_limit : true) &&
+              (filterObject.sizeMax ? filterObject.sizeMax >= group.member_limit : true)
+            : false
+          : true) &&
         (filterObject.location ? (group.location ? group.location.location_name == filterObject.location : false) : true) &&
         (filterObject.tag ? (group.tags ? group.tags.find((tag) => tag.tag_name == filterObject.tag) : false) : true) &&
         (filterObject.interest
@@ -55,31 +62,51 @@ const FindGroups = () => {
   return !(tags && locations && tagMap && locationMap) ? (
     <Spinner></Spinner>
   ) : (
-    <div className="" style= {{backgroundColor: "#f0f2f5"}}>
+    <div className="" style={{ backgroundColor: "#f0f2f5" }}>
       <NavigationBar />
-      <Container fluid style={{margin: "10px", marginLeft: "0px" }}>
+      <Container fluid style={{ margin: "10px", marginLeft: "0px" }}>
         <CardGroup className="p-4">
-          <Card style={{ marginRight: "40px",borderRadius: "15px", border: "none", minWidth: "350px", maxWidth: "720px", border: ""}}>
+          <Card style={{ marginRight: "40px", borderRadius: "15px", border: "none", minWidth: "350px", maxWidth: "720px", border: "" }}>
             <AllGroupsList filterFunction={filterFunction} />
           </Card>
 
           {
-            //Card that contains the whole filter view. 
+            //Card that contains the whole filter view.
           }
-          <Card style={{ backgroundColor: "#ffffff", borderRadius: "15px", border: "none", minWidth: "300px", maxWidth: "350px" , maxHeight: "700px", border: ""}}>
-            <div style={{ margin: "20px", padding: "10px"}}>
-              <h5 className="mb-4" style = {{fontWeight: "700"}}>Filtrer gruppene</h5>
+          <Card
+            style={{
+              backgroundColor: "#ffffff",
+              borderRadius: "15px",
+              border: "none",
+              minWidth: "300px",
+              maxWidth: "350px",
+              maxHeight: "700px",
+              border: "",
+            }}
+          >
+            <div style={{ margin: "20px", padding: "10px" }}>
+              <h5 className="mb-4" style={{ fontWeight: "700" }}>
+                Filtrer gruppene
+              </h5>
               <Row>
                 <Label>Aldersgrense</Label>
-                <Input type="number" onChange={(e) => updateFilterInfo("age", e.target.value)}></Input>
+                <Input type="number" onChange={(e) => updateFilterInfo("age", e.target.value ? Number(e.target.value) : "")}></Input>
               </Row>
               <Row>
                 <Label>Gruppestørrelse</Label>
                 <Col>
-                  <Input type="number" placeholder="Nedre grense" onChange={(e) => updateFilterInfo("sizeMin", e.target.value)}></Input>
+                  <Input
+                    type="number"
+                    placeholder="Nedre grense"
+                    onChange={(e) => updateFilterInfo("sizeMin", e.target.value ? Number(e.target.value) : "")}
+                  ></Input>
                 </Col>
                 <Col>
-                  <Input type="number" placeholder="Øvre grense" onChange={(e) => updateFilterInfo("sizeMax", e.target.value)}></Input>
+                  <Input
+                    type="number"
+                    placeholder="Øvre grense"
+                    onChange={(e) => updateFilterInfo("sizeMax", e.target.value ? Number(e.target.value) : "")}
+                  ></Input>
                 </Col>
               </Row>
               <Row>
@@ -87,9 +114,7 @@ const FindGroups = () => {
               </Row>
               <Row>
                 <Input type="select" onChange={(e) => updateFilterInfo("location", e.target.value)}>
-                  {[<option value={null}>Alle</option>].concat(
-                    locations.map((location) => <option value={location}>{locationMap[location]}</option>)
-                  )}
+                  {[<option value={""}>Alle</option>].concat(locations.map((location) => <option value={location}>{locationMap[location]}</option>))}
                 </Input>
               </Row>
               <Row>
