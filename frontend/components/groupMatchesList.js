@@ -55,7 +55,7 @@ const groupMatchesList = () => {
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p><h5>Våre matchede grupper</h5><hr/>Ingen grupper</p>
+      if (!groupData[0]) return <p>Ingen grupper</p>
 
 
   return (
