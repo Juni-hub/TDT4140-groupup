@@ -13,6 +13,8 @@ const MatchedGroups = () => {
     
     return (
         <div>
+                <h5 style={{margin: "15px"}}>Gruppas matcher</h5>
+                    <hr/>
             <Container fluid style={{ margin: "10px" }}>
 
                  {//Maps every group component to myGroups-page
