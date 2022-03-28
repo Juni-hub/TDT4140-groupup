@@ -1,23 +1,32 @@
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useRouter } from "next/router";
-import {React, useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { fetchLocations } from '../utils/requests';
 
 import {
   Badge,
   Button,
   Card,
-  CardBody, CardHeader,
+  CardBody,
+  CardHeader,
   CardImg,
-  CardText, Input, InputGroup, Label,
-  List, ListGroupItem, ListInlineItem, Row, Spinner
+  CardText,
+  Input,
+  InputGroup,
+  Label,
+  List,
+  ListGroupItem,
+  ListInlineItem,
+  Row,
+  Spinner
 } from "reactstrap";
-import styles from "../styles/Home.module.css";
-import NavigationBar from "./navBar";
+import {React, useEffect, useRef, useState} from "react";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GroupMatchesList from "./groupMatchesList";
+import NavigationBar from "./navBar";
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { fetchLocations } from '../utils/requests';
+import styles from "../styles/Home.module.css";
+import { useRouter } from "next/router";
 
 const GroupComponent = () => {
   const [group, setGroup] = useState(null);
@@ -158,6 +167,9 @@ const GroupComponent = () => {
           <CardHeader style ={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
             Matchede Grupper
           </CardHeader>
+          <CardBody>
+          <GroupMatchesList></GroupMatchesList> 
+          </CardBody> 
         </Card>
 
       </div>
