@@ -71,7 +71,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     interests = InterestSerializer(many=True)
     tags = TagSerializer(many=True)
-    location = LocationSerializer()
+    location = LocationSerializer(allow_null=True)
 
     
     expanded_members = serializers.SerializerMethodField()
@@ -97,6 +97,7 @@ class GroupSerializer(serializers.ModelSerializer):
         return group
     
     def update(self, instance, validated_data):
+        print(validated_data)
         instance.interests.set(self.get_interests_from_data(validated_data))
         instance.tags.set(self.get_tags_from_data(validated_data))
         instance.location = self.get_location_from_data(validated_data)
@@ -125,6 +126,8 @@ class GroupSerializer(serializers.ModelSerializer):
     def get_location_from_data(self, validated_data):
         if "location" in validated_data:
             location = validated_data.pop("location")
+            if location==None:
+                return None
             location_obj, created = Location.objects.get_or_create(location_name=location["location_name"])
             return location_obj 
         return None 

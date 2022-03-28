@@ -2,23 +2,27 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/router";
-import {React, useEffect, useRef, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { fetchLocations } from '../utils/requests';
-import GroupMatchesList from "./groupMatchesList";
-
+import { React, useEffect, useRef, useState } from "react";
 import {
   Badge,
   Button,
   Card,
-  CardBody, CardHeader,
+  CardBody,
+  CardHeader,
   CardImg,
-  CardText, Input, InputGroup, Label,
-  List, ListGroupItem, ListInlineItem, Row, Spinner
+  CardText, InputGroup,
+  Label,
+  List,
+  ListGroupItem,
+  ListInlineItem,
+  Row,
+  Spinner
 } from "reactstrap";
 import styles from "../styles/Home.module.css";
+import { fetchLocations } from '../utils/requests';
+import GroupMatchesList from "./groupMatchesList";
 import NavigationBar from "./navBar";
-import groupMatchesList from './groupMatchesList';
+
 
 
 const GroupComponent = () => {
