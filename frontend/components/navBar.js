@@ -2,8 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, Navbar, NavbarBrand, NavbarToggler, Progress, UncontrolledDropdown } from "reactstrap";
 import React, {useEffect, useState} from "react";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from 'next/router';
 
 const NavigationBar = () => {
@@ -62,7 +63,7 @@ const NavigationBar = () => {
                 <NavbarBrand
                 className="me-auto" 
                     href="/">
-                    <img src="../groupup_transparent.png" alt={"GroupUp Logo"} style={{height:"60px", width:"auto", marginInline:"20px"}}></img>
+                    <img src="/groupup_transparent.png" alt={"GroupUp Logo"} style={{height:"60px", width:"auto", marginInline:"20px"}}></img>
                 </NavbarBrand>
                 <NavbarToggler onClick={function noRefCheck(){}}/>
                 <Collapse navbar>
@@ -100,7 +101,7 @@ const NavigationBar = () => {
                             </UncontrolledDropdown>
                         }
                         <NavItem className="ms-auto">
-                            <NavLink href="/login-page" onClick={logOut}>Logg ut{' '}<FontAwesomeIcon icon={faRightFromBracket} style={{color: "#696969"}}></FontAwesomeIcon></NavLink>
+                            <NavLink href="/login" onClick={logOut}>Logg ut{' '}<FontAwesomeIcon icon={faRightFromBracket} style={{color: "#696969"}}></FontAwesomeIcon></NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
