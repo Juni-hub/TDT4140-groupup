@@ -11,7 +11,8 @@ const groupMatchesList = () => {
     const [groupData, setGroupData] = useState(null)
     const [isLoading, setLoading] = useState(false)
     const router = useRouter();
-    const id = router.query["id"];
+    const id = router.query["otherId"];
+    const originalId = router.query["id"];
 
     function getImage(url){
         if (url != null){
@@ -33,7 +34,7 @@ const groupMatchesList = () => {
     }
 
     const getGroupData = () => {
-        fetch(`http://localhost:8000/matches/` + id + "/", requestOptions)
+        fetch(`http://localhost:8000/matches/` + originalId + "/", requestOptions)
           .then((res) => res.json())
           .then((groupData) => {
             setGroupData(groupData)
@@ -47,9 +48,9 @@ const groupMatchesList = () => {
 
     useEffect(() => {
         setLoading(true)
-        if(id)
+        if(originalId)
         getGroupData();
-      }, [id])
+      }, [originalId])
 
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
@@ -86,7 +87,7 @@ const groupMatchesList = () => {
                     {group.expanded_members.length} medlemmer
                 </CardSubtitle>
                 <CardText>
-                    {Group.description}
+                    {group.description}
                 </CardText>
             </CardBody>
         </Card>

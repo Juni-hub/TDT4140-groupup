@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/router";
 import {React, useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { fetchLocations } from '../utils/requests';
 
 import {
   Badge,
@@ -20,6 +21,8 @@ import NavigationBar from "./navBar";
 
 const GroupComponent = () => {
   const [group, setGroup] = useState(null);
+  const [locations, setLocations] = useState(null);
+  const [locationMap, setLocationMap] = useState(null);
   const router = useRouter();
   const id = router.query["id"];
   const inputFile = useRef(null) 
@@ -63,6 +66,10 @@ const GroupComponent = () => {
 
   useEffect(() => {
     if (id) getGroup();
+    fetchLocations().then((data) => {
+      setLocations(data.locations);
+      setLocationMap(data.locationMap);
+    });
   }, [id]);
 
   function isGold(goldBool){
@@ -73,7 +80,7 @@ const GroupComponent = () => {
 }
 
 
-  return !(id && group) ? (
+  return !(id && group && locationMap) ? (
     <Spinner></Spinner>
   ) : (
     <>
@@ -110,6 +117,12 @@ const GroupComponent = () => {
               </CardHeader>
               <CardBody>
                 <CardText>{group.description}</CardText>
+              </CardBody>
+              <CardHeader style={{fontSize:"20px"}}>
+                Lokasjon
+              </CardHeader>
+              <CardBody>
+                <CardText>{group.location?locationMap[group.location.location_name]:"Ikke satt"}</CardText>
               </CardBody>
               <CardHeader style={{fontSize:"20px"}}>
                 Interesser

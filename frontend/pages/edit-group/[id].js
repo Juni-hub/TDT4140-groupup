@@ -6,6 +6,7 @@ import {
   CardHeader, Col, Container, Form, Input, InputGroup, InputGroupText, Label, ListGroup,
   ListGroupItem, Row, Spinner
 } from "reactstrap";
+import { fetchLocations } from "../../utils/requests";
 import NavigatorBar from "../../components/navBar";
 import styles from "../../styles/Home.module.css";
 
@@ -17,6 +18,8 @@ const EditGroup = () => {
   const [interest, setInterest] = useState("");
   const [tags, setTags] = useState(null);
   const [tagMap, setTagMap] = useState({});
+  const [locations, setLocations] = useState(null);
+  const [locationMap, setLocationMap] = useState(null);
 
   const updateGroupData = (field, value) => {
     setGroupData({
@@ -61,7 +64,7 @@ const EditGroup = () => {
       activity_date: groupData.activity_date,
       description: groupData.description,
       member_limit: groupData.member_limit,
-      minimun_age: groupData.minimun_age,
+      minimum_age: groupData.minimum_age,
       name: groupData.name,
       tags: groupData.tags.map((tag) => {
         return { tag_name: tag };
@@ -69,6 +72,7 @@ const EditGroup = () => {
       interests: groupData.interests.map((interest) => {
         return { interest_name: interest };
       }),
+      location: {location_name:groupData.location}
     };
 
     body = JSON.stringify(body);
@@ -94,6 +98,7 @@ const EditGroup = () => {
       ...group,
       interests: group.interests.map((interest) => interest.interest_name),
       tags: group.tags.map((tag) => tag.tag_name),
+      location: group.location?group.location.location_name:null
     };
   };
 
@@ -152,6 +157,10 @@ const EditGroup = () => {
 
   useEffect(() => {
     if (id) fetchData(id);
+    fetchLocations().then((data) => {
+      setLocations(data.locations);
+      setLocationMap(data.locationMap);
+    });
   }, [id]);
 
   return !(groupData && tags) ? (
@@ -189,6 +198,15 @@ const EditGroup = () => {
               <InputGroup>
                 <InputGroupText style={{ minWidth: "150px" }}>Aldersgrense</InputGroupText>
                 <Input value={groupData.minimum_age} type="number" onChange={(e) => updateGroupData("minimum_age", e.target.value)}></Input>
+              </InputGroup>
+              <br></br>
+              <InputGroup>
+                <InputGroupText style={{ minWidth: "150px" }}>Lokasjon</InputGroupText>
+                <Input type="select" value={groupData.location} onChange={(e)=>updateGroupData("location", e.target.value)}>
+                  {[<option value={null}>Ikke satt</option>].concat(
+                    locations.map((location) => <option value={location}>{locationMap[location]}</option>)
+                  )}
+                </Input>
               </InputGroup>
               <br></br>
               <InputGroup>

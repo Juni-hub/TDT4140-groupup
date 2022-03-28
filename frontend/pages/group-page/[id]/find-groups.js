@@ -55,17 +55,20 @@ const FindGroups = () => {
   return !(tags && locations && tagMap && locationMap) ? (
     <Spinner></Spinner>
   ) : (
-    <div className="">
+    <div className="" style= {{backgroundColor: "#f0f2f5"}}>
       <NavigationBar />
-      <Container fluid style={{ margin: "10px", marginLeft: "0px" }}>
-        <CardGroup>
-          <Card style={{ minWidth: "400px" }}>
+      <Container fluid style={{margin: "10px", marginLeft: "0px" }}>
+        <CardGroup className="p-4">
+          <Card style={{ marginRight: "40px",borderRadius: "15px", border: "none", minWidth: "350px", maxWidth: "720px", border: ""}}>
             <AllGroupsList filterFunction={filterFunction} />
           </Card>
 
-          <Card style={{ minWidth: "300px", maxWidth: "350px" }}>
-            <div style={{ margin: "10px" }}>
-              <h5>Filtrer gruppene</h5>
+          {
+            //Card that contains the whole filter view. 
+          }
+          <Card style={{ backgroundColor: "#ffffff", borderRadius: "15px", border: "none", minWidth: "300px", maxWidth: "350px" , maxHeight: "700px", border: ""}}>
+            <div style={{ margin: "20px", padding: "10px"}}>
+              <h5 className="mb-4" style = {{fontWeight: "700"}}>Filtrer gruppene</h5>
               <Row>
                 <Label>Aldersgrense</Label>
                 <Input type="number" onChange={(e) => updateFilterInfo("age", e.target.value)}></Input>
@@ -112,7 +115,7 @@ const FindGroups = () => {
                 <Label>Til</Label>
                 <Input type="date" onChange={(e) => updateFilterInfo("end_date", e.target.value)}></Input>
               </Row>
-              <Button className="btn btn-dark" onClick={() => applyFilters(filterInfo)}>
+              <Button className="btn btn-dark mt-3" onClick={() => applyFilters(filterInfo)}>
                 Filtrer
               </Button>
             </div>
