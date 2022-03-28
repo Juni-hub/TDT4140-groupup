@@ -98,7 +98,7 @@ const EditGroup = () => {
       ...group,
       interests: group.interests.map((interest) => interest.interest_name),
       tags: group.tags.map((tag) => tag.tag_name),
-      location: group.location.location_name
+      location: group.location?group.location.location_name:null
     };
   };
 
