@@ -22,7 +22,6 @@ const FindGroups = () => {
   };
 
   const applyFilters = (filterObject) => {
-    console.log(filterInfo);
     setFilterFunction((group) => (group) => {
       return (
         (group.minimum_age && filterObject.age ? group.minimum_age >= filterObject.age : true) &&
@@ -66,16 +65,17 @@ const FindGroups = () => {
       <NavigationBar />
       <Container fluid>
         <Row style={{margin:"10px"}}>
+        <Col sm={10}></Col>
+          {
+            //Card that contains the whole filter view.
           <Card style={{ marginRight: "40px", minWidth: "350px", maxWidth: "800px", padding:"0" }}>
             <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
               Utforsk grupper
             </CardHeader>
             <AllGroupsList filterFunction={filterFunction} />
           </Card>
-
-          {
-            //Card that contains the whole filter view.
           }
+          <Col sm={2}>
           <Card
             style={{
               minWidth: "400px",
@@ -146,6 +146,8 @@ const FindGroups = () => {
                   </Button>
               </CardFooter>
           </Card>
+
+          </Col>
         </Row>
       </Container>
     </div>
