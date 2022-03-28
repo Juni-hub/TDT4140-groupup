@@ -1,4 +1,4 @@
-import { Button, Container, Card, Row, CardGroup, width, Input, Label, Col, Option, Spinner } from "reactstrap";
+import { Button, Container, Card, Row, CardGroup, width, Input, Label, Col, Option, Spinner, CardHeader, InputGroup, InputGroupText, CardBody, CardFooter } from "reactstrap";
 import { fetchTags, fetchLocations } from "../../../utils/requests";
 import AllGroupsList from "../../../components/allGroupsList";
 import NavigationBar from "../../../components/navBar";
@@ -62,11 +62,14 @@ const FindGroups = () => {
   return !(tags && locations && tagMap && locationMap) ? (
     <Spinner></Spinner>
   ) : (
-    <div className="" style={{ backgroundColor: "#f0f2f5" }}>
+    <div style={{ backgroundColor: "#f0f2f5" }}>
       <NavigationBar />
-      <Container fluid style={{ margin: "10px", marginLeft: "0px" }}>
-        <CardGroup className="p-4">
-          <Card style={{ marginRight: "40px", borderRadius: "15px", border: "none", minWidth: "350px", maxWidth: "720px", border: "" }}>
+      <Container fluid>
+        <Row style={{margin:"10px"}}>
+          <Card style={{ marginRight: "40px", minWidth: "350px", maxWidth: "800px", padding:"0" }}>
+            <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+              Utforsk grupper
+            </CardHeader>
             <AllGroupsList filterFunction={filterFunction} />
           </Card>
 
@@ -75,77 +78,75 @@ const FindGroups = () => {
           }
           <Card
             style={{
-              backgroundColor: "#ffffff",
-              borderRadius: "15px",
-              border: "none",
-              minWidth: "300px",
-              maxWidth: "350px",
+              minWidth: "400px",
+              maxWidth: "450px",
               maxHeight: "700px",
-              border: "",
-            }}
-          >
-            <div style={{ margin: "20px", padding: "10px" }}>
-              <h5 className="mb-4" style={{ fontWeight: "700" }}>
+              padding:"0"
+            }}>
+              <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px", margin:"0"}}>
                 Filtrer gruppene
-              </h5>
-              <Row>
-                <Label>Aldersgrense</Label>
-                <Input type="number" onChange={(e) => updateFilterInfo("age", e.target.value ? Number(e.target.value) : "")}></Input>
-              </Row>
-              <Row>
-                <Label>Gruppestørrelse</Label>
-                <Col>
-                  <Input
-                    type="number"
-                    placeholder="Nedre grense"
-                    onChange={(e) => updateFilterInfo("sizeMin", e.target.value ? Number(e.target.value) : "")}
-                  ></Input>
-                </Col>
-                <Col>
-                  <Input
-                    type="number"
-                    placeholder="Øvre grense"
-                    onChange={(e) => updateFilterInfo("sizeMax", e.target.value ? Number(e.target.value) : "")}
-                  ></Input>
-                </Col>
-              </Row>
-              <Row>
-                <Label>Lokasjon</Label>
-              </Row>
-              <Row>
-                <Input type="select" onChange={(e) => updateFilterInfo("location", e.target.value)}>
-                  {[<option value={""}>Alle</option>].concat(locations.map((location) => <option value={location}>{locationMap[location]}</option>))}
-                </Input>
-              </Row>
-              <Row>
-                <Label>Tag</Label>
-              </Row>
-              <Row>
-                <Input type="select" onChange={(e) => updateFilterInfo("tag", e.target.value)}>
-                  {[<option value={""}>Alle</option>].concat(tags.map((tag) => <option value={tag}>{tagMap[tag]}</option>))}
-                </Input>
-              </Row>
-              <Row>
-                <Label>Interesse</Label>
-              </Row>
-              <Row>
-                <Input type="text" placeholder="Interesse" onChange={(e) => updateFilterInfo("interest", e.target.value)}></Input>
-              </Row>
-              <Row>
-                <Label>Dato for ønsket aktivitet</Label>
-              </Row>
-              <Row>
-                <Label>Fra</Label>
-                <Input type="date" onChange={(e) => updateFilterInfo("start_date", e.target.value)}></Input>
-                <Label>Til</Label>
-                <Input type="date" onChange={(e) => updateFilterInfo("end_date", e.target.value)}></Input>
-              </Row>
-              <Button className="btn btn-dark mt-3" onClick={() => applyFilters(filterInfo)}>
-                Filtrer
-              </Button>
-            </div>
+              </CardHeader>
+              <CardBody>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Aldersgrense</InputGroupText>
+                  <Input type="number" onChange={(e) => updateFilterInfo("age", e.target.value ? Number(e.target.value) : "")}></Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Gruppestørrelse</InputGroupText>
+                    <Input
+                      type="number"
+                      placeholder="Nedre grense"
+                      onChange={(e) => updateFilterInfo("sizeMin", e.target.value ? Number(e.target.value) : "")}
+                    ></Input>
+                    <Input
+                      type="number"
+                      placeholder="Øvre grense"
+                      onChange={(e) => updateFilterInfo("sizeMax", e.target.value ? Number(e.target.value) : "")}
+                    ></Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Lokasjon</InputGroupText>
+                  <Input type="select" onChange={(e) => updateFilterInfo("location", e.target.value)}>
+                    {[<option value={""}>Alle</option>].concat(locations.map((location) => <option value={location}>{locationMap[location]}</option>))}
+                  </Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Tag</InputGroupText>
+                  <Input type="select" onChange={(e) => updateFilterInfo("tag", e.target.value)}>
+                    {[<option value={""}>Alle</option>].concat(tags.map((tag) => <option value={tag}>{tagMap[tag]}</option>))}
+                  </Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Interesse</InputGroupText>
+                  <Input type="text" placeholder="Interesse" onChange={(e) => updateFilterInfo("interest", e.target.value)}></Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"100%"}}>Dato for ønsket aktivitet</InputGroupText>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Fra</InputGroupText>
+                  <Input type="date" onChange={(e) => updateFilterInfo("start_date", e.target.value)}></Input>
+                </InputGroup>
+                <br/>
+                <InputGroup>
+                  <InputGroupText style={{width:"140px"}}>Til</InputGroupText>
+                  <Input type="date" onChange={(e) => updateFilterInfo("end_date", e.target.value)}></Input>
+                </InputGroup>
+                <br/>
+              </CardBody>
+              <CardFooter>
+                  <Button style={{backgroundColor:"#537E36"}} onClick={() => applyFilters(filterInfo)}>
+                    Filtrer
+                  </Button>
+              </CardFooter>
           </Card>
-        </CardGroup>
+        </Row>
       </Container>
     </div>
   );

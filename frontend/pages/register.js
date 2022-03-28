@@ -4,7 +4,7 @@ import RegisterUserForm  from '../components/registerUserForm';
 
 const RegisterUser = () => {
   return (
-    <div className={styles.registerPage}>
+    <div className={styles.registerPage} style={{backgroundColor: "#f0f2f5"}}>
       <RegisterUserForm />
     </div>
   )

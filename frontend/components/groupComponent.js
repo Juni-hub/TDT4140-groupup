@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import {React, useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { fetchLocations } from '../utils/requests';
+import GroupMatchesList from "./groupMatchesList";
 
 import {
   Badge,
@@ -17,6 +18,7 @@ import {
 } from "reactstrap";
 import styles from "../styles/Home.module.css";
 import NavigationBar from "./navBar";
+import groupMatchesList from './groupMatchesList';
 
 
 const GroupComponent = () => {
@@ -86,7 +88,7 @@ const GroupComponent = () => {
     <>
       <NavigationBar />
 
-      <div style={{width:"100%", padding:"15px", display:"flex", justifyContent:"center"}}>
+      <div style={{width:"100%", padding:"15px", display:"flex"}}>
         <Card style={{width:"50%", marginRight:"10px"}}>
           <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
             {isGold(group.is_gold)}{group.name}
@@ -158,6 +160,9 @@ const GroupComponent = () => {
           <CardHeader style ={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
             Matchede Grupper
           </CardHeader>
+          <CardBody>
+            <GroupMatchesList/>
+          </CardBody>
         </Card>
 
       </div>

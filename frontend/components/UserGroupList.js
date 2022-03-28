@@ -28,6 +28,13 @@ const UserGroupList = () => {
         return null;
     }
 
+    function getCardBackGround(goldBool) {
+        if(goldBool) {
+            return "red"
+        }
+        return "blue"
+    }
+
     // Checking typof to only check localstorage on client-side (does not exist on server)
     // Because Next.js will render parts of website server-side
     if(typeof window !== "undefined"){
@@ -70,9 +77,7 @@ const UserGroupList = () => {
             
             {[...groupData].map((group, i) =>(
             <>
-            <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)",
-                                                        
-                }} onClick={()=>goToGroup(group.id)}>
+            <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={()=>goToGroup(group.id)}>
                 <CardImg
                     alt="Card image cap"
                     src= {getImage(group.image)}

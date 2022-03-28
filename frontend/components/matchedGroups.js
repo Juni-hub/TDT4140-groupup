@@ -1,4 +1,4 @@
-import { Container, Row } from "reactstrap";
+import { Card, CardBody, CardHeader, Container, Row } from "reactstrap";
 
 import GroupMatchesList from "./groupMatchesList";
 import React from "react";
@@ -13,13 +13,18 @@ const MatchedGroups = () => {
     
     return (
         <div>
-            <Container fluid style={{ margin: "10px" }}>
+            <Container style={{ padding: "10px", height:"90vh"}}>
 
                  {//Maps every group component to myGroups-page
                  }   
-                <Row style={{ marginBottom: "15px" }}>
-                    <GroupMatchesList></GroupMatchesList> 
-                </Row>
+                <Card>
+                    <CardHeader style={{fontSize:"22px", backgroundColor:"#ABD08D"}}>
+                        Matchede Grupper:
+                    </CardHeader>
+                    <CardBody> 
+                        <GroupMatchesList></GroupMatchesList> 
+                    </CardBody>
+                </Card>
             </Container>
         </div>
     );

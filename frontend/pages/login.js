@@ -75,7 +75,7 @@ ifLoggedIn();
     
 
     return (
-            <div>
+            <div style={{backgroundColor: "#f0f2f5"}}>
                 <Row style={{height:"15vh", textAlign:"center",display:"flex", justifyContent:"center", color:"141414", marginTop:"15px", marginBottom:"35px", height:"auto"}}>
                     <img src="groupup_transparent.png" alt={"GroupUp Logo"} style={{height:"100px", width:"auto"}}/>
                     <h2 style={{fontSize:"55px"}}>Velkommen til groupUp</h2>
