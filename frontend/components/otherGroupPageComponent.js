@@ -25,9 +25,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
+import { fetchLocations } from '../utils/requests';
 
 const OtherGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
+  const [locations, setLocations] = useState(null);
+  const [locationMap, setLocationMap] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
 
@@ -52,6 +55,10 @@ const OtherGroupPageComponent = () => {
   };
   useEffect(() => {
     if (id) getGroup();
+    fetchLocations().then((data) => {
+      setLocations(data.locations);
+      setLocationMap(data.locationMap);
+    });
   }, [id]);
 
   const getGroupAdmin = () => {

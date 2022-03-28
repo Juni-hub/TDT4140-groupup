@@ -21,6 +21,7 @@ import {
   ModalHeader,
   Row,
   Spinner,
+  ListGroupItem
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
@@ -28,12 +29,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
+import { fetchLocations } from '../utils/requests';
 
 const MatchedGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
   const [modal, setModal] = useState(false);
+  const [locations, setLocations] = useState(null);
+  const [locationMap, setLocationMap] = useState(null);
   const togglePopup = () => setModal(!modal);
 
   // Checking typof to only check localstorage on client-side (does not exist on server)
@@ -57,6 +61,10 @@ const MatchedGroupPageComponent = () => {
   };
   useEffect(() => {
     if (id) getGroup();
+    fetchLocations().then((data) => {
+      setLocations(data.locations);
+      setLocationMap(data.locationMap);
+    });
   }, [id]);
 
   const getGroupAdmin = () => {
