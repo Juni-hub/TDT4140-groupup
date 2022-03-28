@@ -1,8 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, CardBody, CardFooter, CardHeader, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, ListGroup, ListGroupItem, Progress, Input, InputGroup, InputGroupText, Label } from "reactstrap";
+
+import { Button, Card, CardBody, CardFooter, CardHeader, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupText, Label, ListGroup, ListGroupItem, Progress } from "reactstrap";
 import React, {useEffect, useState} from "react";
-import { useRouter } from 'next/router';
+
 import styles from '../styles/Home.module.css';
+import { useRouter } from 'next/router';
 
 const  RegisterGroupForm = () => {
 
@@ -10,7 +12,7 @@ const  RegisterGroupForm = () => {
     const [profileData, setProfileData] = useState(null);
 
     const [groupMembers, setgroupMembers] = useState([]);
-    const [isGold, setIsGold] = useState([]);
+    const [isGold, setIsGold] = useState(false);
 
     const [isLoading, setLoading] = useState(false);
     const [dropDownIsOpen, setDropdownIsOpen] = useState(false);
