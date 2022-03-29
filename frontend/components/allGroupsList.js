@@ -139,9 +139,8 @@ return !(groupData && thisGroupData) ? (
               .map((group, i) => (
                 <>
                   <Card className={styles.groupCard} 
-                  style={{border: "", borderRadius: "10px", minWidth: "220px", padding:"0px", margin: "10px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}}
-                  onClick={() => goToGroup(group.id)}>
-                    <CardImg alt="Card image cap" src={getImage(group.image)} style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}} />
+                  style={{border: "", borderRadius: "10px", minWidth: "220px", padding:"0px", margin: "10px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}}>
+                    <CardImg alt="Card image cap" src={getImage(group.image)} style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}} onClick={() => goToGroup(group.id)} />
                     <CardBody style={{position:"relative"}}>
                       <CardTitle tag="h5">{group.name}</CardTitle>
                       <CardSubtitle className="mb-2 mt-2 text-muted" tag="h6">
