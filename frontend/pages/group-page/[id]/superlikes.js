@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
+  Container,
   Button,
   Card,
   CardBody,
@@ -22,7 +23,7 @@ import {
   Spinner,
 } from "reactstrap";
 import { React, useEffect, useRef, useState } from "react";
-
+import styles from "../../../styles/Home.module.css";
 import NavigationBar from "../../../components/navBar";
 import { useRouter } from "next/router";
 
@@ -66,33 +67,42 @@ const superlikes = () => {
   }, [originalId]);
 
   return (
+    <div style={{backgroundColor: "#f0f2f5", height: "100vh"}}>
     <>
       <NavigationBar></NavigationBar>
       {!groups ? (
         <Spinner></Spinner>
       ) : (
         <>
-          <h5>Gruppas superlikes</h5>
-          <hr />
-          <Row>
-            {groups.map((group, i) => (
-              <Col sm={3}>
-                <Card style={{ margin: "10px", minWidth: "260px" }} onClick={() => goToGroup(group.id)}>
-                  <CardImg alt="Card image cap" src={getImage(group.image)} top width="150px" />
-                  <CardBody>
-                    <CardTitle tag="h5">{group.name}</CardTitle>
-                    <CardSubtitle className="mb-2 text-muted" tag="h6">
-                      {group.expanded_members.length} medlemmer
-                    </CardSubtitle>
-                    <CardText>{group.description}</CardText>
-                  </CardBody>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <Container>
+            <Card style={{marginTop:"10px"}}>
+              <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+                Gruppas mottatte superlikes
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  {groups.map((group, i) => (
+                    <Col sm={3}>
+                      <Card className={styles.groupCard} style={{border: "", borderRadius: "10px", minWidth: "220px", padding:"0px", margin: "10px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={() => goToGroup(group.id)}>
+                        <CardImg alt="Card image cap" src={getImage(group.image)} style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}} />
+                        <CardBody>
+                          <CardTitle tag="h5">{group.name}</CardTitle>
+                          <CardSubtitle className="mb-2 text-muted" tag="h6">
+                            {group.expanded_members.length} medlemmer
+                          </CardSubtitle>
+                          <CardText>{group.description}</CardText>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </CardBody>
+            </Card>
+          </Container>
         </>
       )}
     </>
+  </div>
   );
 };
 

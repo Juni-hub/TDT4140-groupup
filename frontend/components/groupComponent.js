@@ -1,6 +1,8 @@
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import { useRouter } from "next/router";
+import { React, useEffect, useRef, useState } from "react";
 import {
   Badge,
   Button,
@@ -8,9 +10,7 @@ import {
   CardBody,
   CardHeader,
   CardImg,
-  CardText,
-  Input,
-  InputGroup,
+  CardText, InputGroup,
   Label,
   List,
   ListGroupItem,
@@ -18,15 +18,12 @@ import {
   Row,
   Spinner
 } from "reactstrap";
-import {React, useEffect, useRef, useState} from "react";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from "../styles/Home.module.css";
+import { fetchLocations } from '../utils/requests';
 import GroupMatchesList from "./groupMatchesList";
 import NavigationBar from "./navBar";
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { fetchLocations } from '../utils/requests';
-import styles from "../styles/Home.module.css";
-import { useRouter } from "next/router";
+
+
 
 const GroupComponent = () => {
   const [group, setGroup] = useState(null);
@@ -95,7 +92,7 @@ const GroupComponent = () => {
     <>
       <NavigationBar />
 
-      <div style={{width:"100%", padding:"15px", display:"flex", justifyContent:"center"}}>
+      <div style={{width:"100%", padding:"15px", display:"flex"}}>
         <Card style={{width:"50%", marginRight:"10px"}}>
           <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
             {isGold(group.is_gold)}{group.name}
@@ -168,8 +165,8 @@ const GroupComponent = () => {
             Matchede Grupper
           </CardHeader>
           <CardBody>
-          <GroupMatchesList></GroupMatchesList> 
-          </CardBody> 
+            <GroupMatchesList/>
+          </CardBody>
         </Card>
 
       </div>

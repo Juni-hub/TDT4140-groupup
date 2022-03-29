@@ -5,6 +5,7 @@ import { Spinner, Card, CardBody, CardTitle, CardText, CardImg, CardSubtitle, Ro
 import { NextURL } from "next/dist/server/web/next-url";
 import { faHeart, faStar, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from "../styles/Home.module.css";
 
 const AllGroupsList = (props) => {
 
@@ -25,11 +26,11 @@ const AllGroupsList = (props) => {
     function getLikeButton(groupID){
          if(thisGroupData.liked_groups.includes(groupID)){
              //Icon - This group likes the other group
-             return <FontAwesomeIcon icon={faHeart} style={{color: "#DF4B5F"}} />
+             return <FontAwesomeIcon icon={faHeart} style={{color: "#DF4B5F", fontSize:"30px"}} />
          }
          else{
              //Icon - This group has not liked the other group
-             return <FontAwesomeIcon icon={faHeart} onClick={() => likeHandle(groupID, thisGroupData.id)} style={{color: "#4D4D4D"}} />
+             return <FontAwesomeIcon icon={faHeart} onClick={() => likeHandle(groupID, thisGroupData.id)} style={{color: "#4D4D4D", fontSize:"30px"}} />
          }
     }
 
@@ -40,11 +41,11 @@ const AllGroupsList = (props) => {
         }
         else if(thisGroupData.super_liked_groups.includes(groupID)){
             //Icon - This group superlikes the other group
-            return <Button style={{border: "none", backgroundColor: "white"}}><FontAwesomeIcon icon={faStar} style={{color: "#01b6cb"}} /></Button>
+            return <Button style={{border: "none", backgroundColor: "rgba(0,0,0,0)"}}><FontAwesomeIcon icon={faStar} style={{color: "#01b6cb", fontSize:"30px"}} /></Button>
         }
         else{
             //Icon - This group has not liked the other group
-            return <Button style={{border: "none", backgroundColor: "white"}}><FontAwesomeIcon icon={faStar} onClick={() => superlikeHandle(groupID, thisGroupData.id)} style={{color: "#4D4D4D"}} /></Button>
+            return <Button style={{border: "none", backgroundColor: "rgba(0,0,0,0)"}}><FontAwesomeIcon icon={faStar} onClick={() => superlikeHandle(groupID, thisGroupData.id)} style={{color: "#4D4D4D",fontSize:"30px"}} /></Button>
         }
    }
 
@@ -132,15 +133,15 @@ return !(groupData && thisGroupData) ? (
     <div>
       <Container fluid>
         <div class="" style = {{margin: "10px", paddingTop: "10px"}}>
-          <h5 style = {{fontWeight: "700"}}> Finn nye grupper</h5>
           <Row md="4" sm="3" xs="1">
             {[...groupData]
               .filter((group) => (props.filterFunction ? props.filterFunction(group) : true))
               .map((group, i) => (
                 <>
-                  <Card style={{ backgroundColor: "#fffff", border: "", borderRadius: "10px", margin: "10px", minWidth: "260px"}}>
-                    <CardImg alt="Card image cap" src={getImage(group.image)} top width="150px" onClick={() => goToGroup(group.id)} />
-                    <CardBody>
+                  <Card className={styles.groupCard} 
+                  style={{border: "", borderRadius: "10px", minWidth: "220px", padding:"0px", margin: "10px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}}>
+                    <CardImg alt="Card image cap" src={getImage(group.image)} style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}} onClick={() => goToGroup(group.id)} />
+                    <CardBody style={{position:"relative"}}>
                       <CardTitle tag="h5">{group.name}</CardTitle>
                       <CardSubtitle className="mb-2 mt-2 text-muted" tag="h6">
                         <FontAwesomeIcon icon={faUserGroup} style={{color: "#696969"}}></FontAwesomeIcon>
@@ -148,10 +149,14 @@ return !(groupData && thisGroupData) ? (
                         {group.expanded_members.length} medlemmer
                       </CardSubtitle>
                       <CardText>{group.description}</CardText>
-                      <Button style={{border: "none", backgroundColor: "white"}}>
-                        {getLikeButton(group.id)}
-                      </Button>
-                        {getSuperlikeButton(group.id)}
+                      <div style={{height:"20px"}}>
+                      </div>
+                      <div style= {{right:"10px",bottom:"5px", position:"absolute", minHeight:"min-content"}}>
+                        <Button style={{border: "none", backgroundColor:"rgba(0,0,0,0)"}}>
+                          {getLikeButton(group.id)}
+                        </Button>
+                          {getSuperlikeButton(group.id)}
+                      </div>
                       
                     </CardBody>
                   </Card>

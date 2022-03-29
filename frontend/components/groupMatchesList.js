@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Progress, Row } from "reactstrap";
 import React, {useEffect, useState} from "react";
+import styles from "../styles/Home.module.css";
 
 import { NextURL } from "next/dist/server/web/next-url";
 import { useRouter } from 'next/router'
@@ -55,11 +56,10 @@ const groupMatchesList = () => {
 
       if (isLoading) return <><p>Loading...</p><Progress animated color="info" value={100} /></>
       if (!groupData) return <p><h5>Ingen data</h5></p>
-      if (!groupData[0]) return <p>Ingen grupper</p>
+      if (!groupData[0]) return <p>Ingen Matchede Grupper</p>
 
 
   return (
-    <div class="col-md-8">                
     <Row
         md="4"
         sm="3"
@@ -67,12 +67,12 @@ const groupMatchesList = () => {
     >
     {[...groupData].map((group, i) =>(
            <>
-        <Card style={{margin: "10px", minWidth: "300px" }} onClick={()=>goToGroup(group.id)}>
+        <Card className={styles.groupCard} style={{padding:"0px", margin: "10px", minWidth:"200px", maxWidth:"250px", boxShadow:"0 2px 4px 0 rgba(100, 100, 100, 0.26)"}} onClick={()=>goToGroup(group.id)}>
             <CardImg
                 alt="Card image cap"
                 src= {getImage(group.image)}
                 top
-                width="150px" />
+                style={{display:"block", aspectRatio:"5/4", objectFit:"cover"}} />
             <CardBody>
                 <CardTitle tag="h5">
                 {group.name}
@@ -91,7 +91,6 @@ const groupMatchesList = () => {
         </>
     ))}
     </Row>
-</div>
   )
 }
 

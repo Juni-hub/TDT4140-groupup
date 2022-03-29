@@ -1,6 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
+  Label,
+  InputGroup,
   Badge,
   Button,
   Card,
@@ -10,6 +12,7 @@ import {
   CardImg,
   CardText,
   CardTitle,
+  ListGroupItem,
   Col,
   List,
   ListInlineItem,
@@ -17,14 +20,17 @@ import {
   Spinner,
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
-
+import styles from "../styles/Home.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavigationBar from "./navBar";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
+import { fetchLocations } from '../utils/requests';
 
 const OtherGroupPageComponent = () => {
   const [group, setGroup] = useState(null);
+  const [locations, setLocations] = useState(null);
+  const [locationMap, setLocationMap] = useState(null);
   const router = useRouter();
   const id = router.query["otherId"];
 
@@ -49,6 +55,10 @@ const OtherGroupPageComponent = () => {
   };
   useEffect(() => {
     if (id) getGroup();
+    fetchLocations().then((data) => {
+      setLocations(data.locations);
+      setLocationMap(data.locationMap);
+    });
   }, [id]);
 
   const getGroupAdmin = () => {
@@ -68,87 +78,86 @@ const OtherGroupPageComponent = () => {
     return null;
 }
 
+function getImage(url){
+  if (url != null){
+      return "http://localhost:8000" + url;
+  }
+  return "https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+}
+
   return !(id && group) ? (
     <Spinner></Spinner>
   ) : (
     <>
       <NavigationBar />
 
-      <Card style={{ backgroundColor: "lightgreen" }}>
-        <CardBody>
-          <Row style={{ margin: "10px", marginBottom: "40px", height: "70px" }}>
-            <Col md={10}>
-              <CardTitle style={{ fontSize: "60px" }}>
-                {group.name} {isGold(group.is_gold)}
-                </CardTitle>
-            </Col>
-          </Row>
-          <CardGroup>
-            {/*Card containing basic group info*/}
-            <Card style={{ margin: "20px", backgroundColor: "#fff" }}>
+      <div style={{width:"100%", padding:"15px", display:"flex"}}>
+        <Card style={{width:"50%", marginRight:"10px"}}>
+          <CardHeader style={{backgroundColor:"#ABD08D", fontSize:"22px"}}>
+            {isGold(group.is_gold)}{group.name}
+          </CardHeader>
+          <CardBody style={{display:"flex"}}>
+            <Card style={{width:"50%", marginRight:"10px"}}>
+              <CardImg src={getImage(group.image)} alt="image" style={{display:"block", aspectRatio:"1", objectFit:"cover"}}></CardImg>
               <CardBody>
-                <CardImg src="https://as2.ftcdn.net/v2/jpg/04/70/29/97/1000_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="image"></CardImg>
-                <br />
-                <br />
-                <CardTitle tag="h3">Gruppeleder: {getGroupAdmin()}</CardTitle>
-                <CardTitle tag="h5">Antall medlemmer: {group.members.length}</CardTitle>
-                <CardTitle tag="h5">Aldersgrense: {group.minimum_age} år</CardTitle>
-                <br />
-                <br />
-                <CardTitle tag="h5" style={{ fontSize: "25px" }}>
-                  {" "}
-                  Medlemmer:
-                </CardTitle>
-                <hr />
+                <Label style={{marginBottom:"2px"}}>Gruppeleder:</Label>
+                <p style={{fontWeight:"bold", fontSize:"20px"}}><Badge>{getGroupAdmin()}</Badge></p>
+                <Label style={{marginBottom:"2px"}}>Antall Medlemmer:</Label>
+                <p style={{marginLeft:"10px", fontWeight:"bold"}}>{group.members.length}</p>
+                <Label style={{marginBottom:"2px"}}>Aldersgrense:</Label>
+                <p style={{marginLeft:"10px", fontWeight:"bold"}}>{group.minimum_age}</p>
+                <Label style={{marginBottom:"2px"}}>Medlemmer:</Label>
                 <List type="inline">
                   {group.expanded_members.map((member, key) => (
                     <ListInlineItem key={key} style={{ fontSize: "20px" }}>
-                      <Badge color="success">{member.username}</Badge>
+                      <Badge>{member.username}</Badge>
                     </ListInlineItem>
                   ))}
                 </List>
               </CardBody>
             </Card>
-
-            {/*Card containing group description , intrests*/}
-            <Card style={{ margin: "20px", marginTop: "50px", backgroundColor: "#fff" }}>
+            <Card style={{width:"50%"}}>
+              <CardHeader style={{fontSize:"20px"}}>
+                Beskrivelse
+              </CardHeader>
               <CardBody>
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Beskrivelse
-                </CardTitle>
-                <hr></hr>
-                <CardText style={{ fontSize: "20px" }}>{group.description}</CardText>
-                <br />
-                <br />
-                <CardTitle tag="h5" style={{ fontSize: "30px", textAlign: "center" }}>
-                  Interesser
-                </CardTitle>
-                <hr />
-
-                <List type="inline">
-                  {group.interests.map((interest, key) => (
-                    <ListInlineItem style={{ fontSize: "20px" }} key={key}>
-                      <Badge color="success">{interest.interest_name}</Badge>
-                    </ListInlineItem>
-                  ))}
-                </List>
+                <CardText>{group.description}</CardText>
               </CardBody>
+              <CardHeader style={{fontSize:"20px"}}>
+                Lokasjon
+              </CardHeader>
+              <CardBody>
+                <CardText>{group.location?locationMap[group.location.location_name]:"Ikke satt"}</CardText>
+              </CardBody>
+              <CardHeader style={{fontSize:"20px"}}>
+                Interesser
+              </CardHeader>
+                <InputGroup style={{display:"table", justifyContent:"center"}}>
+                  {group.interests.map((interest, key) => (
+                    <ListGroupItem key={key} style={{margin:"4px", backgroundColor:"#e4f0db", fontStyle:"italic"}}>
+                     {interest.interest_name}
+                    </ListGroupItem>
+                  ))}
+                </InputGroup>
+                <CardHeader style={{fontSize:"20px"}}>
+                  Tags
+                </CardHeader>
+                <CardBody>
+                  <Row style={{ height: "10vh", fontSize: "25px", textAlign: "" }}>
+                    <List type="inline">
+                      {group.tags.map((tag, key) => (
+                        <ListInlineItem key={key}>
+                          <Button style={{ minWidth: "100px", backgroundColor:"#E5EEF0", color:"black"}}>{tag.tag_name}</Button>
+                        </ListInlineItem>
+                      ))}
+                    </List>
+                  </Row>
+                </CardBody>
             </Card>
-          </CardGroup>
+          </CardBody>
+        </Card>
 
-          {/*Row for viewing tags*/}
-          <Row style={{ height: "10vh", fontSize: "25px", textAlign: "" }}>
-            <List type="inline">
-              <ListInlineItem style={{ fontSize: "30px" }}>Tags:</ListInlineItem>
-              {group.tags.map((tag, key) => (
-                <ListInlineItem key={key}>
-                  <Badge>{tag.tag_name}</Badge>
-                </ListInlineItem>
-              ))}
-            </List>
-          </Row>
-        </CardBody>
-      </Card>
+      </div>
     </>
   );
 };

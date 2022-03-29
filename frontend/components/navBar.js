@@ -86,6 +86,7 @@ const NavigationBar = () => {
                                 inNavbar 
                                 nav
                                 class="px-3 nav-item py-md-2"
+                                style={{fontWeight:"bold"}}
                                 >
                                 <DropdownToggle 
                                 caret

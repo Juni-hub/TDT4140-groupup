@@ -3,7 +3,7 @@ import react from "react";
 
 const findGroupPage = () =>{
     return(
-        <div className="">
+        <div className="" style={{backgroundColor: "#f0f2f5"}}>
             <FindGroupPageComponent />
         </div>
     )
